@@ -6,7 +6,6 @@ const {JWT_SECRET}=require("../config")
 const {client}=require("../db")
 const {userMiddleware}=require("../middlewares/userMiddleware")
 const rides=require("./rides");
-const { default: axios } = require("axios");
 
 router.use("/rides",rides);
 
