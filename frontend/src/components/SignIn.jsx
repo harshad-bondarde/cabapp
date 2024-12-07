@@ -6,11 +6,13 @@ import { Button } from "../components/Button"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
 import { Warning } from "./warning"
-
+import { useDispatch } from "react-redux"
+import { setAuthUser } from "../store/userSlice"
 import toast, { Toaster } from 'react-hot-toast';
 
 export function SignIn({setSignIn}){
     const navigate=useNavigate();
+    const dispatch=useDispatch()
 
     const [email,setEmail]=useState("");
     const [password,setPassword]=useState("");
@@ -65,21 +67,19 @@ export function SignIn({setSignIn}){
                                                 email,
                                                 password
                                             })
-                                            if(response.data.message=="user not found"){
-                                                setUserExists("* User not found")
-                                            }
-                                            else{
+                                            
                                                 const token=response.data.token;
                                                 localStorage.setItem("token",token);
-                                                
+                                                dispatch(setAuthUser(response.data.authUser))
                                                 notifySignedIn()
 
                                                 navigate("/cabapp/home")
+                                            
+                                        }catch(e){
+                                            if(e.status==403){
+                                                setUserExists(e.response.data.message)
                                             }
-
-                                        }catch(error){
-                                            signedFalied()
-                                            console.log("Error while signin: ",error)
+                                            console.log("Error while signin: ",e)
                                         }
                                     }
                                 }}/>
