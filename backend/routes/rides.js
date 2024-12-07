@@ -7,6 +7,16 @@ const {client}=require("../db")
 router.post("/addRide",userMiddleware,async(req,res)=>{
     const userId=req.userId
     const info=req.body;
+
+    const fromLocationInfo=req.body.fromLocationInfo
+    const toLocationInfo=req.body.toLocationInfo
+
+    const fromLocation=fromLocationInfo.name_preferred+"-"+fromLocationInfo.place_formatted
+    const toLocation=toLocationInfo.name_preferred+"-"+toLocationInfo.place_formatted
+    
+    const fromCoordinates=fromLocationInfo.coordinates
+    const toCoordinates=toLocationInfo.coordinates
+
     try{           
         await client.query('BEGIN')     
         const text=`insert into rides (userId,
@@ -14,6 +24,10 @@ router.post("/addRide",userMiddleware,async(req,res)=>{
                                        fromlocation,
                                        totime,
                                        tolocation,
+                                       fromlongitude,
+                                       fromlatitude,
+                                       tolongitude,
+                                       tolatitude,
                                        date,
                                        boolcar,
                                        vehiclename,
@@ -21,12 +35,16 @@ router.post("/addRide",userMiddleware,async(req,res)=>{
                                        price,
                                        facilities,
                                        numberofseatsavailable)
-                    values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12);`
-        const response=await client.query(text,[userId,
+                    values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16);`
+        const response1=await client.query(text,[userId,
                                         info.fromTime,
-                                        info.fromLocation,
+                                        fromLocation, 
                                         info.toTime,
-                                        info.toLocation,
+                                        toLocation, 
+                                        fromCoordinates.longitude,
+                                        fromCoordinates.latitude,
+                                        toCoordinates.longitude,
+                                        toCoordinates.latitude,
                                         info.date,
                                         info.boolCar,
                                         info.vehicleName,
@@ -38,34 +56,52 @@ router.post("/addRide",userMiddleware,async(req,res)=>{
         const text2=`update users
                     set numberofrides=numberofrides+1
                     where id=$1`
-        await client.query(text2,[userId])
-
-        await client.query('COMMIT');
-
+        const response2=await client.query(text2,[userId])
+        if(response1.rowCount>0 && response2.rowCount>0){
+            await client.query('COMMIT');
             return res.status(200).json({
-                message:"ride inserted"
+                message:"Ride Inserted"
             })
+        }   
+
+        await client.query('ROLLBACK')
+        return res.status(503).json({
+            message:"Something Went Wrong Try Again..."
+        })                             
     }catch(e){
         await client.query('ROLLBACK');
+        console.log(e)
         return res.status(403).json({
-            message:`error while inserting ride ${e}`
+            message:`Error while inserting ride`
         })
     }    
 })
 
 
-router.post("/AvailableRides",async(req,res)=>{
+router.post("/AvailableRides",userMiddleware,async(req,res)=>{
     const userId=req.userId;
-    const info=req.body;
+    // const info=req.body;
+    const date=req.body.date;
+    const fromCoordinates=req.body.fromCoordinates
+    const toCoordinates=req.body.toCoordinates
+    
     try{
         const text=`select * from rides 
-                    where fromlocation=$1 and tolocation=$2 and date=$3 `
-        const response=await client.query(text,[info.from,info.to,info.date]);
+                    where fromlongitude=$1 and fromlatitude=$2 and tolongitude=$3 and tolatitude=$4 and date=$5 and boolride=$6`
+        const response=await client.query(text,[
+                                    fromCoordinates.longitude,
+                                    fromCoordinates.latitude,
+                                    toCoordinates.longitude,
+                                    toCoordinates.latitude,
+                                    date,
+                                    true
+        ]);
         return res.status(200).json({
             rides:response.rows
         })
     }
     catch(e){
+        console.log(e)
         return res.status(403).json({
             message:"error while searching for a ride..."
         })
@@ -81,13 +117,16 @@ router.get("/bookings",userMiddleware, async(req,res)=>{
                         bookedrides.captainid,
                         bookedrides.captainfirstname,
                         bookedrides.captainlastname,
-                        bookedrides."date",
-                        bookedrides.boolride,
+                        rides.rideid,
                         rides.userid,
                         rides.fromtime,
                         rides.fromlocation,
+                        rides.fromlongitude,
+                        rides.fromlatitude,
                         rides.totime,
                         rides.tolocation,
+                        rides.tolongitude,
+                        rides.tolatitude,
                         rides.date,
                         rides.boolcar,
                         rides.vehiclename,
@@ -102,8 +141,9 @@ router.get("/bookings",userMiddleware, async(req,res)=>{
         })
     }
     catch(e){
+        console.log(e)
         return res.status(500).json({
-            message:"internal server error "+e
+            message:"internal server error "
         })
     }
 })
@@ -122,8 +162,36 @@ router.get("/getrides",userMiddleware,async (req,res)=>{
         })
     
     }catch(e){
+        console.log(e)
         return res.status(503).json({
-            error:"error while getting the rides :"+e
+            error:"error while getting the rides :"
+        })
+    }
+})
+
+router.post("/getpassengerdetailes",userMiddleware,async (req,res)=>{
+    const userId=req.userId;
+    console.log(userId)
+    const { rideId }=req.body
+    console.log(rideId)
+    const text=`select users.firstname,
+                       users.lastname,
+                       users.email,
+                       users.gender,
+                       users.phoneno,
+                       bookedrides.seatsbooked
+                       from users 
+                       join bookedrides on bookedrides.userid=users.id 
+                       where rideid=$1`
+    try {
+        const response=await client.query(text,[rideId])
+        return res.status(200).json({
+            passengers:response.rows
+        })
+    } catch (e) {
+        console.log(e)
+        return res.status(503).json({
+            message:"something went wrong"
         })
     }
 })

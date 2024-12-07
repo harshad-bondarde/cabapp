@@ -33,7 +33,7 @@ router.post("/signup",async(req,res)=>{
     const text=`select id from users where email=$1`
     const response=await client.query(text,[body.email])
 
-    if(response.rows.length>=1){
+    if(response.rows.length==1){
         return res.json({
             message:'email already exists'
         })
@@ -43,16 +43,19 @@ router.post("/signup",async(req,res)=>{
                     values ($1,$2,$3,$4,$5,$6)`
     try {
         const response2=await client.query(addquery,[body.firstName,body.lastName,body.password,body.email,body.gender,body.phoneNo])
+        if(response2.rows.length>0){
+
+        }
+        res.status(200).json({
+            msg:"user inserted"
+        })
     } catch (error) {
         console.log(error);
-        return res.status(403).json({
+        return res.status(503).json({
             msg:"error while inserting in database"
         })
     }
 
-    res.json({
-        msg:"user inserted"
-    })
 
 
 })
@@ -72,18 +75,19 @@ router.post("/signin",async(req,res)=>{
         })
     }
 
-    const text=`select id from users where email=$1 and password=$2`;
+    const text=`select * from users where email=$1 and password=$2`;
     const response=await client.query(text,[body.email,body.password]);
     if(response.rows.length==0){
         return res.status(403).json({
-            message:"user not found"
+            message:"User Not Found"
         })
     }
 
     const userId=response.rows[0].id;
     const token=jwt.sign({userId:userId},JWT_SECRET);
-    return res.json({
-        token:token
+    return res.status(200).json({
+        token:token,
+        authUser:response.rows[0]
     })
 })
 
@@ -106,8 +110,8 @@ router.post("/getuser",userMiddleware,async(req,res)=>{
         })
     }catch(e){
         console.log("error while searching user in database: ",e)
-        res.status(403).json({
-            error:e
+        res.status(503).json({
+            message:"Something Went Wrong try again"
         })
     }
 
@@ -116,7 +120,6 @@ router.post("/getuser",userMiddleware,async(req,res)=>{
 router.post("/bookride",userMiddleware,async(req,res)=>{
     const userId=req.userId
     const body=req.body;
-    console.log("hello")
     try{
         client.query('BEGIN')
         const text1=`insert into bookedrides (userid,
@@ -162,17 +165,18 @@ router.post("/bookride",userMiddleware,async(req,res)=>{
 //cancel rides for user
 router.post("/cancelride",userMiddleware,async(req,res)=>{
     const body=req.body;
+    console.log(body)
     try{
         await client.query('BEGIN')
         const text1=`delete from bookedrides
                     where bookedridesid=$1`
         const response1=await client.query(text1,[body.bookedRidesId])
-        
+        console.log(response1)
         const text2=`update rides
                      set numberofseatsavailable=numberofseatsavailable+$1
                      where rideid=$2`
         const response2=await client.query(text2,[body.seatsBooked , body.rideId])
-
+        console.log(response2)
         if(response1.rowCount==1 && response2.rowCount==1){
             await client.query('Commit')
             return res.status(200).json({
@@ -196,6 +200,8 @@ router.post("/cancelride",userMiddleware,async(req,res)=>{
 router.post("/deleteride",userMiddleware, async(req,res)=>{
     const userId=req.userId
     const body=req.body;
+    console.log(body)
+    console.log(userId)
     try{
         await client.query('BEGIN')
         
@@ -203,12 +209,12 @@ router.post("/deleteride",userMiddleware, async(req,res)=>{
                      set boolride=$1
                      where rideid=$2`
         const response1=await client.query(text1,[false,body.rideId])
-
+        // console.log(response1)
         const text2=`update users
                      set numberofrides=numberofrides-1
-                     where userid=$1`
+                     where id=$1`
         const response2=await client.query(text2,[userId]);
-
+        console.log(response2)
         if(response1.rowCount>0 && response2.rowCount>0){
             await client.query('COMMIT')
             return res.status(200).json({
@@ -223,7 +229,7 @@ router.post("/deleteride",userMiddleware, async(req,res)=>{
     }catch(e){
         await client.query('ROLLBACK')
         return res.status(503).json({
-            error:e
+            message:"Error while deleting the ride"
         })
     }
 })
