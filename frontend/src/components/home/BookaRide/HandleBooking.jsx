@@ -1,8 +1,8 @@
 import axios from "axios"
 import toast from "react-hot-toast"
 // import { useNavigate } from "react-router-dom"
-export async function HandleBooking({ride,seatsBooked,captainId,captainFirstname,captainLastname,navigate}){
-    const rideId=ride.rideid
+export async function HandleBooking({rideId,seatsBooked,captainId,captainFirstname,captainLastname,navigate}){
+    
     let date=new Date()
     let day=date.getDate()
     let month=date.getMonth()+1
@@ -23,6 +23,7 @@ export async function HandleBooking({ride,seatsBooked,captainId,captainFirstname
                 authorization:localStorage.getItem("token")
             }
         })
+        console.log(response)
 
         if(response.status==200){
             toast.success("Ride Booked !!!")

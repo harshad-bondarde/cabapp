@@ -1,5 +1,7 @@
 import { useState } from "react"
-import { AddRideInputBox } from "./AddRide/AddRideInputBox"
+import { AddRideInputBoxAddress } from "./AddRide/AddRideInputBoxAddress"
+import { AddRideInputBox2 } from "./AddRide/AddRideInputBox2"
+
 import axios from "axios"
 import {Warning} from "../warning"
 
@@ -16,8 +18,12 @@ export function AddRide(){
     
     const [fromTime,setFromTime]=useState("")
     const [fromLocation,setFromLocation]=useState("")
+    const [fromLocationInfo,setFromLocationInfo]=useState({})
+    
     const [toTime,setToTime]=useState("")
     const [toLocation,setToLocation]=useState("")
+    const [toLocationInfo,setToLocationInfo]=useState({})
+
     const [date,setDate]=useState("")
     const [boolCar,setBoolCar]=useState(false)
     const [vehicleName,setVehicleName]=useState("")
@@ -30,15 +36,13 @@ export function AddRide(){
     const [numberOfSeatsWarning,setNumberOfSeatsWarning]=useState("")
     const [priceWarning,setPriceWarning]=useState("")
 
+    console.log(fromLocationInfo)
+    console.log(toLocationInfo)
     const validateInputs=()=>{
         let ans=true;
         const regex = /^[A-Za-z]+$/
-        if(!regex.test(fromLocation)){
-            setFromLocationWarning("location must contain only characters")
-            ans=false;
-        }
-        if(!regex.test(toLocation)){
-            setToLocationWarning("location must contain only characters")
+        if(fromLocation==toLocation){
+            setToLocationWarning("Locations Must Be different")
             ans=false;
         }
         
@@ -59,8 +63,7 @@ export function AddRide(){
 
     const [value,SetValue]=useState(dayjs())
     const [showDate,setShowDate]=useState(false)
-    const [dattePlaceholder,setDatePlaceholder]=useState("Date")
-    
+    const [datePlaceholder,setDatePlaceholder]=useState("Date")
     function DateComponent(){
         return(
             <div className="">
@@ -71,7 +74,6 @@ export function AddRide(){
                         <DatePicker
                             value={value}
                             onChange={(e)=>{
-                                // (e)=>SetValue(e)
                                 const date=e.$D+"-"+(e.$M+1)+"-"+e.$y
                                 setDate(date)
                                 setDatePlaceholder(date)
@@ -97,43 +99,43 @@ export function AddRide(){
                 <div className="border-2 items-center w-full h-full mb-16 flex flex-col justify-center rounded-xl border-slate-200 shadow-lg bg-slate-200">
                     <div className="flex justify-between mx-16 space-x-24  ">
                         <div>
-                            <AddRideInputBox label="From" OnChange={(e)=>{setFromLocation(e.target.value.toLowerCase())}}/>
+                            <AddRideInputBoxAddress label="From" searchForAddress={true} setFinalLocation={setFromLocation} setFinalLocationInfo={setFromLocationInfo}/>
                                 <Warning label={fromLocationWarning}/>
 
-                            <AddRideInputBox label="Pickup Time"  OnChange={(e)=>{setFromTime(e.target.value)}}/>
+                            <AddRideInputBox2 value={fromTime} label="Pickup Time" OnChange={(e)=>{setFromTime(e.target.value)}}/>
 
                             
                             <div className="flex flex-col space-y-3 cursor-pointer">    
                                 <div onClick={()=>{
                                         setShowDate(e=>!e)
                                     }}>
-                                    <AddRideInputBox label={"Date"} placeholder={dattePlaceholder}  />
+                                    <AddRideInputBox2 label={"Date"} placeholder={datePlaceholder}  />
                                 </div>    
                                 {showDate?<DateComponent/>:null}
                             </div>
 
-                            <AddRideInputBox label="Vehicle Name"  OnChange={(e)=>{setVehicleName(e.target.value)}}/>
+                            <AddRideInputBox2 label="Vehicle Name" value={vehicleName}  OnChange={(e)=>{setVehicleName(e.target.value)}}/>
                             <div className="flex justify-center space-x-9 mt-4">
                                 <div>
-                                    <input className="mr-1" type="radio" name="vehicle" onClick={()=>{setBoolCar(true)}}/>Car
+                                    <input className="mr-1" type="radio" name="vehicle" value={boolCar} onClick={()=>{setBoolCar(true)}}/>Car
                                 </div>
                                 <div>
-                                    <input className="mr-1" type="radio" name="vehicle" onClick={()=>{setBoolCar(false)}}/>Bike
+                                    <input className="mr-1" type="radio" name="vehicle" value={boolCar} onClick={()=>{setBoolCar(false)}}/>Bike
                                 </div>
                             </div>
                         </div>
                         <div>
-                            <AddRideInputBox label="To"  OnChange={(e)=>{setToLocation(e.target.value.toLowerCase())}}/>
+                            <AddRideInputBoxAddress label="To" searchForAddress={true} setFinalLocation={setToLocation} setFinalLocationInfo={setToLocationInfo}/>
                             <Warning label={toLocationWarning}/>
                             
-                            <AddRideInputBox label="Drop Time"  OnChange={(e)=>{setToTime(e.target.value)}}/>
-                            <AddRideInputBox label="No of Passengers"  OnChange={(e)=>{setNumberOfSeats(e.target.value)}}/>
+                            <AddRideInputBox2 label="Drop Time" value={toTime}  OnChange={(e)=>{setToTime(e.target.value)}}/>
+                            <AddRideInputBox2 label="No of Passengers" value={numberOfSeats}  OnChange={(e)=>{setNumberOfSeats(e.target.value)}}/>
                             <Warning label={numberOfSeatsWarning}/>
                             
-                            <AddRideInputBox label="Price"  OnChange={(e)=>{setPrice(e.target.value)}}/>
+                            <AddRideInputBox2 label="Price" value={price}  OnChange={(e)=>{setPrice(e.target.value)}}/>
                             <Warning label={priceWarning}/>
                             
-                            <AddRideInputBox label="Fascilities"  OnChange={(e)=>{setFascilities(e.target.value)}}/>
+                            <AddRideInputBox2 label="Fascilities" value={facilities} OnChange={(e)=>{setFascilities(e.target.value)}}/>
                         </div>
 
                         
@@ -142,7 +144,6 @@ export function AddRide(){
                     <button className="border w-18 bg-blue-700 text-white p-2 text-center  border-blue-600 rounded-lg h-10 shadow-lg hover:shadow-blue-400 transition ease-in-out"
                        onClick={async ()=>{
                         let valid=validateInputs() ;
-                        console.log(valid)
                         if(fromLocation==toLocation){
                             valid=false;
                             setFromLocationWarning("Both Locations Must be different")
@@ -152,9 +153,9 @@ export function AddRide(){
                             try{
                                 const response=await axios.post("http://localhost:3000/user/rides/addRide",{
                                     fromTime,
-                                    fromLocation,
+                                    fromLocationInfo,
                                     toTime,
-                                    toLocation,
+                                    toLocationInfo,
                                     date,
                                     boolCar,
                                     vehicleName,
@@ -166,8 +167,9 @@ export function AddRide(){
                                         authorization:localStorage.getItem("token")
                                     }
                                 })
+                                console.log(response)
                                 toast.success("Ride Added")
-                                
+                                console.log("ride added")
                                 setFromTime("")
                                 setFromLocation("")
                                 setToTime("")
@@ -181,9 +183,11 @@ export function AddRide(){
 
                             }catch(e){
                                 console.log("error while Adding Rides: ",e);
-                                if(e.response && e.response.status==403){
+                                if(e.response && e.response.status==401){
                                     toast.error("You are Not Signed In")
                                     navigate("/cabapp")
+                                }else{
+                                    toast.error(e.response.data.message)
                                 }
                                 
                             }

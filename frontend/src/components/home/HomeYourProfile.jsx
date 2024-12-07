@@ -20,7 +20,7 @@ export function YourProfile({userInfo}){
                 // console.log(response)
                 setRides(response.data.rides)
             }catch(e){
-                if(e.response && e.response.status==403){
+                if(e.response && e.response.status==401){
                     toast.error("You are Not Signed")
                     
                     navigate("/cabapp")
@@ -30,6 +30,8 @@ export function YourProfile({userInfo}){
         }
         getrides()
     },[])
+
+    console.log(rides)
 
     function convertToDateObject(dateString) {
         const [day, month, year] = dateString.split("-").map(Number);

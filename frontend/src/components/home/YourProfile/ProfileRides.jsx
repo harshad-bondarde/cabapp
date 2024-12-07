@@ -5,27 +5,38 @@ import toast from 'react-hot-toast';
 
 export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
     
-    function UpRide({ride , pastRidesButton}){
-        const rideId=ride?.rideId
+    function ProfRide({ride , pastRidesButton}){
+        const rideId=ride?.rideid
         const boolRide=ride?.boolride
         const boolCar=ride?.boolcar
         const date=ride?.date;
-        const fromLocation=ride?.fromlocation
-        const toLocation=ride?.tolocation
-        const fromTime=ride?.fromtime
-        const toTime=ride?.totime
         const price=ride?.price
         const seatsBooked=ride?.numberofseats-ride?.numberofseatsavailable
         const vehicleName=ride?.vehiclename
+
+        const fromTime=ride?.fromtime
+        const fromLocationArray=ride?.fromlocation.split("-")
+        const fromCoordinates={
+            fromlongitude:ride?.fromlongitude,
+            fromlatitude:ride?.fromlatitude,
+        }
+
+        const toTime=ride?.totime
+        const toLocationArray=ride?.tolocation.split("-")
+        const toCoordinates={
+            tolongitude:ride?.tolongitude,
+            tolatitude:ride?.tolatitude,
+        }
+        
         
         function capitaliser(name){
             let ans=""
             for(let i=0;i<name.length;i++){
                 if(i==0){
                     ans+=name[i].toUpperCase()
-                }else[
+                }else{
                     ans+=name[i]
-                ]
+                }
             }
             return ans;
         }
@@ -57,14 +68,19 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
                             </div>
 
 
-                            <div className=' mt-5 ml-14 mr-14'>
+                            <div className=' mt-3 ml-14 mr-14'>
                                 <div className="flex space-x-5 items-center">    
                                     <div className="flex flex-col items mt-1 ml-3 text-lg font-medium space-y-1">
-                                        <div>
-                                            {fromTime?fromTime:"?"}
-                                        </div>
-                                        <div>
-                                            {fromLocation?capitaliser(fromLocation):"?"}
+                                        <div className='flex flex-col items-center'>
+                                            <div className=''>
+                                                {fromTime}
+                                            </div>
+                                            <div className='text-xl'>
+                                                {fromLocationArray[0]}
+                                            </div>
+                                            <div className='text-sm '>
+                                                {fromLocationArray[1]}
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="flex items-center space-x-1">
@@ -80,11 +96,16 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
 
                                     </div>
                                     <div className="flex flex-col items mt-1 ml-3 text-lg font-medium space-y-1">
-                                        <div>
-                                            {toTime?toTime:"?"}
-                                        </div>
-                                        <div>
-                                            {toLocation?capitaliser(toLocation):"?"}
+                                        <div className='flex flex-col items-center'>
+                                            <div className=''>
+                                                {toTime}
+                                            </div>
+                                            <div className='text-xl'>
+                                                {toLocationArray[0]}
+                                            </div>
+                                            <div className='text-sm'>
+                                                {toLocationArray[1]}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -176,8 +197,8 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
     }
     return (
         <>
-            { upcomingRides && !pastRidesButton ? upcomingRides.map((ride,key)=><UpRide key={key} ride={ride} pastRidesButton={pastRidesButton}  />) : null }
-            { pastRides && pastRidesButton ?  pastRides.map((ride,key)=><UpRide key={key} ride={ride} pastRidesButton={pastRidesButton}  />) : null }
+            { upcomingRides && !pastRidesButton ? upcomingRides.map((ride,key)=><ProfRide key={key} ride={ride} pastRidesButton={pastRidesButton}  />) : null }
+            { pastRides && pastRidesButton ?  pastRides.map((ride,key)=><ProfRide key={key} ride={ride} pastRidesButton={pastRidesButton}  />) : null }
         </>
     )
 }

@@ -21,9 +21,11 @@ export function YourBookings(){
                 setBookings(response.data.bookedRides);
             } catch (e) {
                 setBookings([]);
-                if(e.response && e.response.status==403){
+                if(e.response && e.response.status==401){
                     toast.error("You are Not Signed In")
                     navigate("/cabapp")
+                }else{
+                    console.log(e)
                 }
             }
         };
@@ -54,7 +56,6 @@ export function YourBookings(){
         setUpcomingRides(upcoming)
         
     },[bookings])
-
     
     return (
         <>

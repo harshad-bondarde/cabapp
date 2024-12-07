@@ -13,17 +13,30 @@ import axios from "axios"
 import {Warning} from "../../warning"
 import { HandleBooking } from './HandleBooking';
 import { useNavigate } from 'react-router-dom';
-
+import toast from 'react-hot-toast';
 export function Ride({ride}){
     const navigate=useNavigate()
     const [seatsBooked,setSeatsBooked]=useState(0)
-    const [seatWarning,SetSeatWarning]=useState(false);
     
     const rideId=ride.rideid;
     const captainId=ride.userid;
+
     const fromTime=ride.fromtime;
     const fromLocation=ride.fromlocation;
+    const fromLocationArray=fromLocation.split("-")
+    console.log(fromLocationArray)
+    const fromCoordinates={
+        fromLongitude:ride.fromlongitude,
+        fromlatitde:ride.fromlatitude
+    }
+    
     const toLocation=ride.tolocation;
+    const toLocationArray=toLocation.split("-")
+    const toCoordinates={
+        toLongitude:ride.tolongitude,
+        tolatitde:ride.tolatitude
+    }
+    
     const toTime=ride.totime;
     const date=ride.date;
     const boolCar=ride.boolcar;
@@ -94,13 +107,14 @@ export function Ride({ride}){
 
     const [showBookTicket,setShowBookTicket]=useState(false)
     function BookTicket(){
+        console.log(ride)
         return (
             <>  
-                <div className='fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex flex-col items-center pt-40'>
-                    <div className='ml-14'>
-                        <X onClick={()=>{setShowBookTicket(false)}} className='ml-96 rounded-full bg-gray-400 p-1 hover:bg-red-300 hover:p-0'/>
+                <div className='fixed inset-0 z-20 bg-black bg-opacity-50 backdrop-blur-sm flex flex-col items-center pt-32'>
+                    <div className='mb-10'>
+                        <X onClick={()=>{setShowBookTicket(false)}} className='rounded-full bg-gray-400 p-1 hover:bg-red-300 hover:p-0'/>
                     </div>
-                    <div className=' border-2 border-blue-400 shadow-2xl  bg-gray-100 rounded-2xl p-2 w-fit h-fit'> 
+                    <div className='border-2 border-blue-400 shadow-2xl  bg-gray-100 rounded-2xl p-2 w-fit h-fit'> 
                         
                         <div className='flex justify-between items-center'>    
                             
@@ -109,13 +123,13 @@ export function Ride({ride}){
                                     { captainInfo.firstname? captainInfo.firstname[0].toUpperCase():"?"}
                                 </div>
 
-                                <div className='flex flex-col items-center'>    
-                                    <div className='flex space-x-1 mt-4 ml-3'>
+                                <div className='ml-3 flex flex-col items-center'>    
+                                    <div className='flex space-x-1 mt-4'>
                                         <div>{captainInfo.firstname ? capitaliser(captainInfo.firstname) : "?"}</div>
                                         <div>{captainInfo.lastname ? capitaliser(captainInfo.lastname) : "?"}</div>
                                     </div>
-                                    <div className='text-xs text-blue-500 mr-3'>
-                                        {captainInfo.numberofrides} ride{captainInfo.numberofrids>1?"s":null} published
+                                    <div className='text-xs text-blue-500'>
+                                        {captainInfo.numberofrides} ride{captainInfo.numberofrides>1?"s":null} published
                                     </div>
                                 </div>
                             </div>
@@ -127,12 +141,19 @@ export function Ride({ride}){
 
                         <div className='flex justify-center mt-5'>
                             <div className="flex space-x-5 items-center">    
-                                <div className="flex flex-col items  ml-3 text-sm font-medium space-y-1">
-                                    <div>
-                                        {fromTime}
-                                    </div>
-                                    <div>
-                                        {capitaliser(fromLocation)}
+                                <div className="flex flex-col items ml-3 text-sm font-medium space-y-1">
+                                    {/* <div className='w-14'> */}
+                                    {/* </div> */}
+                                    <div className='flex flex-col items-center'>
+                                        <div className='text-xl'>
+                                            {fromLocationArray[0]}
+                                        </div>
+                                        <div>
+                                            {fromLocationArray[1]}
+                                        </div>
+                                        <div>
+                                            {fromTime}
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="flex items-center space-x-1">
@@ -148,11 +169,17 @@ export function Ride({ride}){
 
                                 </div>
                                 <div className="flex flex-col items mt-1 ml-3 font-medium text-sm space-y-1">
-                                    <div>
-                                        {toTime}
-                                    </div>
-                                    <div>
-                                        {capitaliser(toLocation)}
+                                    <div className='flex flex-col items-center'>
+                                        <div className='text-xl'>
+                                            {toLocationArray[0]}
+                                        </div>
+                                        <div>
+                                            {toLocationArray[1]}
+                                        </div>
+                                        <div>
+                                            {toTime}
+                                        </div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -178,16 +205,10 @@ export function Ride({ride}){
                                         No. of passengers :
                                     </div> 
                                     <div>
-                                        <input placeholder={seatsBooked} onChange={(e)=>{
-                                                const value=parseInt(e.target.value)
-                                                if(value>numberOfSeatsAvailable)
-                                                        SetSeatWarning(true)
-                                                else{
-                                                    SetSeatWarning(false)
-                                                    setSeatsBooked(parseInt(value))
-                                                }
-                                            }} type="text" className='border-2 w-20 pl-1 border-gray-400 rounded ml-2 font-medium'  />
-                                            {seatWarning?<Warning label={"* Enter Valid Number"}/>:null}
+                                        
+                                        <input value={seatsBooked} onChange={(e)=>{
+                                                setSeatsBooked(e.target.value)
+                                        }} type="number" className='border-2 w-20 pl-1 border-gray-400 rounded ml-2 font-medium'  />
                                             
                                     </div>
                             </div>
@@ -225,11 +246,16 @@ export function Ride({ride}){
                         </div>
                         <div className='flex justify-center'>
                             <div onClick={()=>{
-                                if(seatsBooked==0){
-                                    SetSeatWarning("* Enter Number of Seats")
+                                if(seatsBooked>numberOfSeatsAvailable){
+                                    toast.error("Enter Valid Number")
                                     return;
                                 }
-                                HandleBooking({ride,seatsBooked,captainId,captainFirstname,captainLastname,navigate})
+                                if(seatsBooked==0){
+                                    toast.error("Enter Number of Seats")
+                                    return;
+                                }
+                                const rideId=ride.rideid
+                                HandleBooking({rideId,seatsBooked,captainId,captainFirstname,captainLastname,navigate})
                                 setShowBookTicket(false);
                                 }} className=' border-2 bg-blue-500 hover:border-blue-400  text-white p-2 mb-2 rounded-2xl text-center mt-4 w-20 cursor-pointer'>
                                 Book
@@ -249,16 +275,22 @@ export function Ride({ride}){
                 if(numberOfSeatsAvailable>0){
                     setShowBookTicket(e=>!e)
                 }
-            }} className={`border-2 h-32 mx-40 cursor-pointer rounded-xl p-2 shadow-md ${showBookTicket ?'': 'hover:border-blue-300 transition ease-in-out duration-300 hover:shadow-2xl hover:-translate-y-1'}`}>
+            }} className={`border-2 h-38 mx-40 cursor-pointer rounded-xl p-2 shadow-md ${showBookTicket ?'': 'hover:border-blue-300 transition ease-in-out duration-300 hover:shadow-2xl hover:-translate-y-1'}`}>
                 <div className='flex justify-between'>   
                     
                     <div className="flex  space-x-5 items-center">    
-                        <div className="flex flex-col items mt-1 ml-3 text-sm font-medium space-y-1">
-                            <div>
+                        <div className="flex mt-1 ml-3 items-center text-sm font-medium space-y-1">
+                            <div className='w-14'>
                                 {fromTime}
                             </div>
-                            <div>
-                                {capitaliser(fromLocation)}
+                            <div className='flex flex-col items-center'>
+                                <div className='text-xl'>
+                                   {fromLocationArray[0]}
+                                </div>
+                                <div>
+                                   {fromLocationArray[1]}
+                                    
+                                </div>
                             </div>
                         </div>
                         <div className="flex items-center space-x-1">
@@ -273,13 +305,21 @@ export function Ride({ride}){
                             </div>
 
                         </div>
-                        <div className="flex flex-col items mt-1 ml-3 font-medium text-sm space-y-1">
-                            <div>
+                        <div className="flex flex-col mt-1 ml-3 font-medium text-sm space-y-1">
+                        <div className="flex mt-1 ml-3 items-center text-sm font-medium space-y-1">
+                            <div className='w-14'>
                                 {toTime}
                             </div>
-                            <div>
-                                {capitaliser(toLocation)}
+                            <div className='flex flex-col items-center'>
+                                <div className='text-xl'>
+                                   {toLocationArray[0]}
+                                </div>
+                                <div>
+                                   {toLocationArray[1]}
+                                    
+                                </div>
                             </div>
+                        </div>
                         </div>
                     </div>
 

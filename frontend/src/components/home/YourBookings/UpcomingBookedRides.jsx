@@ -6,28 +6,42 @@ import toast from 'react-hot-toast';
 export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButton }){
 
     function UpRide({ride , bookingsButton}){
+        console.log(ride)
         const bookedRidesId=ride?.bookedridesid
-        const boolCar=ride?.boolcar
-        const captainFirstname=ride?.captainfirstname
-        const captainLastname=ride?.captainlastname
-        const captainId=ride?.captainid 
         const date=ride?.date;
-        const fromLocation=ride?.fromlocation
-        const toLocation=ride?.tolocation
-        const fromTime=ride?.fromtime
-        const toTime=ride?.totime
+        const boolCar=ride?.boolcar
         const price=ride?.price
         const seatsBooked=ride?.seatsbooked
         const vehicleName=ride?.vehiclename
+
+        const captainFirstname=ride?.captainfirstname
+        const captainLastname=ride?.captainlastname
+        const captainId=ride?.captainid 
+        
+        const fromTime=ride?.fromtime
+        const fromLocationArray=ride?.fromlocation.split("-")
+        const fromCoordinates={
+            fromlongitude:ride?.fromlongitude,
+            fromlatitude:ride?.fromlatitude,
+        }
+
+        const toTime=ride?.totime
+        const toLocationArray=ride?.tolocation.split("-")
+        const toCoordinates={
+            tolongitude:ride?.tolongitude,
+            tolatitude:ride?.tolatitude,
+        }
+        console.log(fromLocationArray)
+        console.log(toLocationArray)
 
         function capitaliser(name){
             let ans=""
             for(let i=0;i<name.length;i++){
                 if(i==0){
                     ans+=name[i].toUpperCase()
-                }else[
+                }else{
                     ans+=name[i]
-                ]
+                }
             }
             return ans;
         }
@@ -66,12 +80,17 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
 
                             <div className=' mt-5 ml-14 mr-14'>
                                 <div className="flex space-x-5 items-center">    
-                                    <div className="flex flex-col items mt-1 ml-3 text-lg font-medium space-y-1">
-                                        <div>
-                                            {fromTime?fromTime:"?"}
-                                        </div>
-                                        <div>
-                                            {fromLocation?capitaliser(fromLocation):"?"}
+                                    <div className="flex flex-col items mt-1 text-lg font-medium space-y-1">
+                                        <div className='flex flex-col items-center'>
+                                            <div className=''>
+                                                {fromTime}
+                                            </div>
+                                            <div className='text-xl'>
+                                                {fromLocationArray[0]}
+                                            </div>
+                                            <div className='text-sm '>
+                                                {fromLocationArray[1]}
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="flex items-center space-x-1">
@@ -87,11 +106,16 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
 
                                     </div>
                                     <div className="flex flex-col items mt-1 ml-3 text-lg font-medium space-y-1">
-                                        <div>
-                                            {toTime?toTime:"?"}
-                                        </div>
-                                        <div>
-                                            {toLocation?capitaliser(toLocation):"?"}
+                                        <div className='flex flex-col items-center'>
+                                            <div className=''>
+                                                {toTime}
+                                            </div>
+                                            <div className='text-xl'>
+                                                {toLocationArray[0]}
+                                            </div>
+                                            <div className='text-sm'>
+                                                {toLocationArray[1]}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -143,20 +167,24 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
                         { !bookingsButton ? 
                             <div onClick={async()=>{
                                     const response=await axios.post("http://localhost:3000/user/cancelride",{
-                                        bookedRidesId
+                                        bookedRidesId,
+                                        rideId:ride?.rideid
                                     },{
                                         headers:{
                                             authorization:localStorage.getItem("token")
                                         }
                                     })
 
-                                    if(response.status==500 || response.status==403){
+                                    if(response.status==503 || response.status==401){
                                         toast.error("Internal Server Error")
                                     }else if(response.status==200){
                                         toast.success("Ride Cancelled Successfully")
                                     }
 
-                            }} className='border-2 rounded-2xl shadow-xl p-2 flex flex-col justify-center cursor-pointer transition ease-in-out duration-300 hover:-translate-y-1 bg-red-300 border-red-300 hover:shadow-red-400 '>
+                                 }} 
+                                
+                                className='border-2 rounded-2xl shadow-xl p-2 flex flex-col justify-center cursor-pointer transition ease-in-out duration-300 hover:-translate-y-1 bg-red-300 border-red-300 hover:shadow-red-400 '>
+                                
                                 <div className='flex flex-col items-center text-sm font-medium'>
                                     Cancel
                                 </div> 
@@ -174,7 +202,6 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
             </>
         )
     }
-
     return (
         <div className="mt-16 space w-full">
             {upcomingRides && !bookingsButton ? upcomingRides.map((ride,key)=><UpRide key={key} ride={ride} bookingsButton={bookingsButton}/>) : null}  
