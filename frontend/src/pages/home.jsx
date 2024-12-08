@@ -11,7 +11,7 @@ import { useDispatch , useSelector } from 'react-redux'
 import { setAuthUser } from "../store/userSlice"
 import { useNavigate } from "react-router-dom"
 import GetRealTimeLocations from "../components/mapboxAPI/getRealTimeLocations"
-
+import OverHome from "../components/OverHome"
 export function Home() {
     const navigate=useNavigate()
     const dispatch=useDispatch()
@@ -35,7 +35,7 @@ export function Home() {
 
     return (
         <div className="relative bg-slate-100 h-screen">
-            {   showMap &&
+            {/* {   showMap &&
                 <div className="absolute z-50 inset-0 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-0">
                     <div className="flex justify-center">
                         <div className="flex flex-col items-center w-full h-full ml-20 mr-20 ">
@@ -43,8 +43,8 @@ export function Home() {
                         </div>
                     </div>
                 </div>
-            }
-
+            } */}
+            <OverHome/>
             <Header setRenderButton={setRenderButton} firstname={userInfo.firstname} />
             
             <div className="flex h-fit overflow-auto">
