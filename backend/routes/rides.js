@@ -84,17 +84,18 @@ router.post("/AvailableRides",userMiddleware,async(req,res)=>{
     const date=req.body.date;
     const fromCoordinates=req.body.fromCoordinates
     const toCoordinates=req.body.toCoordinates
-    
+    // implement query to search for only date dest and source loc
     try{
         const text=`select * from rides 
-                    where fromlongitude=$1 and fromlatitude=$2 and tolongitude=$3 and tolatitude=$4 and date=$5 and boolride=$6`
+                    where fromlongitude=$1 and fromlatitude=$2 and tolongitude=$3 and tolatitude=$4 and date=$5 and boolride=$6 and userid!=$7`
         const response=await client.query(text,[
                                     fromCoordinates.longitude,
                                     fromCoordinates.latitude,
                                     toCoordinates.longitude,
                                     toCoordinates.latitude,
                                     date,
-                                    true
+                                    true,
+                                    userId
         ]);
         return res.status(200).json({
             rides:response.rows
@@ -155,7 +156,7 @@ router.get("/getrides",userMiddleware,async (req,res)=>{
     const userId=req.userId;
     try{
         const text=`select * from rides 
-                    where userid=$1`
+                    where userid=$1 order by (boolride is false),date`
         const response=await client.query(text,[userId])
         return res.status(200).json({
             rides:response.rows

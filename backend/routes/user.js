@@ -98,7 +98,7 @@ router.post("/getuser",userMiddleware,async(req,res)=>{
     if(userId==null)
             userId=req.userId
     try{
-        const text=`select firstname,lastname,password,email,gender,phoneno,rating,numberofrides,ratingsgiven from users where id=$1`;
+        const text=`select firstname,lastname,email,gender,phoneno,rating,numberofrides,ratingsgiven from users where id=$1`;
         const response=await client.query(text,[userId])
         if(response.rows.length==0){
             return res.status(200).json({
