@@ -45,8 +45,8 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
             <>  
                 {   ride ?
 
-                    <div className='flex justify-center m-3 w-full '>
-                        <div className="border-2 border-blue-200 shadow-blue-200 h-32 mx-3 rounded-xl p-2 shadow-md flex justify-between w-fit">
+                    <div className='flex justify-center m-3 '>
+                        <div className="border-2 border-blue-200 shadow-blue-200 h-32 mx-3 rounded-xl p-2 shadow-md flex justify-between w-full">
                             
                             <div className='w-44 flex justify-start'>
                                 <div className='flex flex-col space-y-3 '>
@@ -121,7 +121,7 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
                                 
                                 <div>   
                                     { boolRide ?  
-                                        <div className='text-center font-medium text-'>
+                                        <div className='text-center font-medium'>
                                             <div className='flex space-x-5 font-medium text-sm'>
                                                 <div>
                                                     {seatsBooked ? "Seats Booked : "+seatsBooked:"Seats Booked : 0"}
@@ -150,8 +150,8 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
                                             </div>
                                         </div>
                                         :
-                                        <div className='border-2 p-4 rounded-lg bg-red-400 font-medium'>
-                                            Ride Cancelled
+                                        <div className='border-2 p-4 rounded-lg bg-red-400 font-medium w-56 text-center'>
+                                            Ride Deleted
                                         </div>
                                     }
                                 </div>
@@ -161,8 +161,10 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
                         </div>
                         
                         
-                        { !pastRidesButton && boolRide ? 
+                        { !pastRidesButton ? 
                             <div onClick={async()=>{
+                                    if(!boolRide)
+                                        return;
                                     const response=await axios.post("http://localhost:3000/user/deleteride",{
                                         rideId
                                     },{
@@ -177,10 +179,10 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
                                         toast.success("Ride Deleted Successfully")
                                     }
 
-                            }} className='border-2 rounded-2xl shadow-xl p-2 flex flex-col justify-center cursor-pointer transition ease-in-out duration-300 hover:-translate-y-1 bg-red-300 border-red-300 hover:shadow-red-400 '>
-                                <div className='flex flex-col items-center text-sm font-medium'>
-                                    Cancel
-                                </div> 
+                            }} className={`border-2 rounded-2xl shadow-xl p-2 flex flex-col justify-center ${boolRide ? `cursor-pointer transition ease-in-out duration-300 hover:-translate-y-1 bg-red-300 border-red-300 hover:shadow-red-400 `:`bg-gray-300` } `}>
+                                <button className={`flex flex-col items-center text-sm font-medium cursor-not-allowed`}>
+                                    Delete
+                                </button> 
                             </div>
                             :
                             null
@@ -189,7 +191,7 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
 
                 :
                     <>
-                        No Upcoming Rides
+                        {/* No Upcoming Rides */}
                     </>
                 }
             </>

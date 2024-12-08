@@ -275,117 +275,116 @@ export function Ride({ride}){
                 if(numberOfSeatsAvailable>0){
                     setShowBookTicket(e=>!e)
                 }
-            }} className={`border-2 h-38 mx-40 cursor-pointer rounded-xl p-2 shadow-md ${showBookTicket ?'': 'hover:border-blue-300 transition ease-in-out duration-300 hover:shadow-2xl hover:-translate-y-1'}`}>
-                <div className='flex justify-between'>   
+                }} className={`border-2 h-38 mx-40 cursor-pointer rounded-xl p-2 shadow-md ${showBookTicket ?'': 'hover:border-blue-300 transition ease-in-out duration-300 hover:shadow-2xl hover:-translate-y-1'}`}>
+                    <div className='flex justify-between'>   
+                        
+                        <div className="flex  space-x-5 items-center">    
+                            <div className="flex mt-1 ml-3 items-center text-sm font-medium space-y-1">
+                                <div className='flex flex-col items-center mr-4 mt-1'>
+                                    <div className='text-xl'>
+                                        {fromLocationArray[0]}
+                                    </div>
+                                    <div>
+                                        {fromLocationArray[1]}    
+                                    </div>
+                                </div>
+                                <div className='w-14'>
+                                    {fromTime}
+                                </div>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                                <div className='w-24'>
+                                    <hr className='border-2 border-slate-500 rounded-full'/>
+                                </div>
+                                <div>
+                                    <CircleChevronRight className="text-slate-500 "/>
+                                </div>
+                                <div className='w-24'>
+                                    <hr className='border-2 border-slate-500 rounded-full'/>
+                                </div>
+
+                            </div>
+                            <div className="flex flex-col mt-1 ml-3 font-medium text-sm space-y-1">
+                            <div className="flex mt-1 ml-3 items-center text-sm font-medium space-y-1">
+                                <div className='w-14'>
+                                    {toTime}
+                                </div>
+                                <div className='flex flex-col items-center'>
+                                    <div className='text-xl'>
+                                    {toLocationArray[0]}
+                                    </div>
+                                    <div>
+                                    {toLocationArray[1]}
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+
+                        <div className='flex text-3xl items-center font-medium mr-2 mb-3'>
+                            <IndianRupee className="mt-1"/>
+                            {price}
+                        </div>
                     
-                    <div className="flex  space-x-5 items-center">    
-                        <div className="flex mt-1 ml-3 items-center text-sm font-medium space-y-1">
-                            <div className='w-14'>
-                                {fromTime}
-                            </div>
+                    </div> 
+
+
+                    <hr className="border-1 mx-2 border-gray-300 rounded-2xl mt-2"/>
+                    
+                    
+                    <div className='flex items-center justify-between ml-1'>
+                        <div className='flex items-center space-x-4'>
+                            
                             <div className='flex flex-col items-center'>
-                                <div className='text-xl'>
-                                   {fromLocationArray[0]}
+                                <div className="mt-2 ml-4 ">
+                                    {boolCar?<CarFront/>:<Bike/>} 
                                 </div>
-                                <div>
-                                   {fromLocationArray[1]}
-                                    
+                                <div className='ml-4 text-sm font-semibold'>
+                                    {capitaliser(vehicleName)}
                                 </div>
                             </div>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                            <div className='w-24'>
-                                <hr className='border-2 border-slate-500 rounded-full'/>
+                            
+                            <div className='mt-3 ml-6 text-xl p-1 bg-gray-400 text-white border-2 rounded-full w-10 h-10 text-center '>
+                                { captainInfo.firstname? captainInfo.firstname[0].toUpperCase():"?"}
                             </div>
+
+                            <div className=' flex items-center mt-3 ml-3 font-medium text-sm'>
+                                
+                                <div className='flex space-x-1'>
+                                    <div>{captainInfo.firstname ? capitaliser(captainInfo.firstname) : "?"}</div>
+                                    <div>{captainInfo.lastname ? capitaliser(captainInfo.lastname) : "?"}</div>
+                                </div>
+
+                                <div className='flex ml-3 items-center text-gray-500'>
+                                    {captainInfo.ratingsgiven>0 ?
+                                        <div className='text-xs mr-1'>{((captainInfo.rating)/(captainInfo.ratingsgiven))}</div>
+                                        :
+                                        0
+                                    }
+                                    <div className=''>
+                                        <Star size={12} className='' />
+                                    </div>
+                                </div>
+                            
+                            </div>
+                            
                             <div>
-                                <CircleChevronRight className="text-slate-500 "/>
-                            </div>
-                            <div className='w-24'>
-                                <hr className='border-2 border-slate-500 rounded-full'/>
-                            </div>
-
-                        </div>
-                        <div className="flex flex-col mt-1 ml-3 font-medium text-sm space-y-1">
-                        <div className="flex mt-1 ml-3 items-center text-sm font-medium space-y-1">
-                            <div className='w-14'>
-                                {toTime}
-                            </div>
-                            <div className='flex flex-col items-center'>
-                                <div className='text-xl'>
-                                   {toLocationArray[0]}
-                                </div>
-                                <div>
-                                   {toLocationArray[1]}
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-
-                    <div className='flex text-3xl items-center font-medium mr-2 mb-3'>
-                        <IndianRupee className="mt-1"/>
-                        {price}
-                    </div>
-                
-                </div> 
-
-
-                <hr className="border-1 mx-2 border-gray-300 rounded-2xl mt-2"/>
-                
-                
-                <div className='flex items-center justify-between'>
-                    <div className='flex items-center'>
-                        
-                        <div className='flex flex-col items-center'>
-                            <div className="mt-2 ml-4 ">
-                                {boolCar?<CarFront/>:<Bike/>}
-                            </div>
-                            <div className='ml-4 text-sm font-semibold'>
-                                {capitaliser(vehicleName)}
-                            </div>
-                        </div>
-                        
-                        <div className='mt-3 ml-6 text-xl p-1 bg-gray-400 text-white border-2 rounded-full w-10 h-10 text-center '>
-                            { captainInfo.firstname? captainInfo.firstname[0].toUpperCase():"?"}
-                        </div>
-
-                        <div className=' flex items-center mt-3 ml-3 font-medium text-sm'>
-                            
-                            <div className='flex space-x-1'>
-                                <div>{captainInfo.firstname ? capitaliser(captainInfo.firstname) : "?"}</div>
-                                <div>{captainInfo.lastname ? capitaliser(captainInfo.lastname) : "?"}</div>
-                            </div>
-
-                            <div className='flex ml-3 items-center text-gray-500'>
-                                {captainInfo.ratingsgiven>0 ?
-                                    <div className='text-xs mr-1'>{((captainInfo.rating)/(captainInfo.ratingsgiven))}</div>
+                                {  numberOfSeatsAvailable>0 ?
+                                    <Seats numberOfSeats={numberOfSeats} numberOfSeatsAvailable={numberOfSeatsAvailable} />
                                     :
-                                    0
+                                    <div className={`text-xs font-medium mt-3 ml-6 border-2 p-2 rounded-3xl bg-red-300 border-red-300 shadow-md `}>This Ride is full !!!</div>
                                 }
-                                <div className=''>
-                                    <Star size={12} className='' />
-                                </div>
+                                
                             </div>
-                        
                         </div>
-                        
-                        <div>
-                            {  numberOfSeatsAvailable>0 ?
-                                <Seats numberOfSeats={numberOfSeats} numberOfSeatsAvailable={numberOfSeatsAvailable} />
-                                :
-                                <div className={`text-xs font-medium mt-3 ml-6 border-2 p-2 rounded-3xl bg-red-300 border-red-300 shadow-md `}>This Ride is full !!!</div>
-                            }
-                            
-                        </div>
-                    </div>
 
-                    <div className='flex space-x-2 text-xs font-normal mt-3'>
-                        {facilities.map((fac,index)=><div key={index}
-                                                className='border-2 p-1 rounded-md bg-blue-400 '
-                                            >{fac}</div>)}
+                        <div className='flex space-x-2 text-xs font-normal mt-3'>
+                            {facilities.map((fac,index)=><div key={index}
+                                                    className='border-2 p-1 rounded-md bg-blue-400 '
+                                                >{fac}</div>)}
+                        </div>
                     </div>
-                </div>
             </div>
         </>
     )

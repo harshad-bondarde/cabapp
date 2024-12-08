@@ -11,12 +11,14 @@ function App() {
         <Routes>
           <Route path="/cabapp" element={<CabApp/>}/>
           <Route path="/cabapp/home" element={<Home/>}/>
-          <Route path="/cabapp/Test" element={<Test/>}/>
+          <Route path="/cabapp/Test" element={<Test/>}/> {/*for testing */}
         </Routes>
       </BrowserRouter>
       <Toaster/>
     </>
   )
 }
-
+//add feature in your profile rides - map green red people emoji there onclick->display passenger details 
+//add ticket id in bookedride and your profile rides for users 
+//add onclick event for in bookedrides to show info of the captain 
 export default App

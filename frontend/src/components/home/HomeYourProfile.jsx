@@ -66,7 +66,7 @@ export function YourProfile({userInfo}){
                 {userInfo ? <Profile userInfo={userInfo}/> : null}
             </div>
 
-            <div className="flex justify-between w-full mx-3 space-x-1 mt-10">
+            <div className="flex justify-between  mx-3 space-x-1 mt-10">
                 <div onClick={()=>{setPastRidesButton(false)}} className={`border-4 w-1/2 rounded border-gray-300 text-center bg-gray-300 p-3 cursor-pointer ${!pastRidesButton?"bg-gray-400 border-gray-400 font-medium":""}`}>
                     Upcoming Rides
                 </div>

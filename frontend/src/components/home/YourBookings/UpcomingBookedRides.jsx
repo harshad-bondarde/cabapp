@@ -2,10 +2,12 @@ import { CarFront } from 'lucide-react';
 import { Bike , IndianRupee  , CircleChevronRight} from 'lucide-react';
 import axios from "axios"
 import toast from 'react-hot-toast';
+import { Profile } from '../YourProfile/Profile';
+import { useEffect, useState } from 'react';
 
 export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButton }){
 
-    function UpRide({ride , bookingsButton}){
+    function UpRide({ride , bookingsButton }){
         console.log(ride)
         const bookedRidesId=ride?.bookedridesid
         const date=ride?.date;
@@ -17,6 +19,7 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
         const captainFirstname=ride?.captainfirstname
         const captainLastname=ride?.captainlastname
         const captainId=ride?.captainid 
+
         
         const fromTime=ride?.fromtime
         const fromLocationArray=ride?.fromlocation.split("-")
@@ -50,13 +53,12 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
             <>  
                 {   ride ?
 
-                    <div className='flex justify-center m-3 w-full '>
-                        <div className="border-2 border-blue-200 shadow-blue-200 h-32 mx-3 rounded-xl p-2 shadow-md flex justify-between w-fit">
-                            
+                    <div className='flex justify-center m-3 '>
+                        <div className="border-2 border-blue-200 shadow-blue-200 h-32 mx-3 rounded-xl p-2 shadow-md flex justify-between w-full">
                             <div className='w-44 flex justify-start'>
                                 <div className='flex flex-col space-y-3 '>
                                     
-                                    <div className="flex">
+                                    <div className="flex cursor-pointer mt-2 ml-2 transition ease-in-out duration-300 hover:-translate-y-1 " >
                                         <div className="text-xl p-1 bg-gray-400 text-white border-2 rounded-full w-10 h-10 text-center">
                                             { captainFirstname?captainFirstname[0].toUpperCase():"?" }
                                         </div>
@@ -78,7 +80,7 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
                             </div>
 
 
-                            <div className=' mt-5 ml-14 mr-14'>
+                            <div className=' mt-3 ml-14 mr-14'>
                                 <div className="flex space-x-5 items-center">    
                                     <div className="flex flex-col items mt-1 text-lg font-medium space-y-1">
                                         <div className='flex flex-col items-center'>
@@ -189,11 +191,11 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
                                     Cancel
                                 </div> 
                             </div>
+                            
                             :
                             null
                         }
                     </div>
-
                 :
                     <>
                         No Upcoming Rides
@@ -203,9 +205,10 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
         )
     }
     return (
-        <div className="mt-16 space w-full">
-            {upcomingRides && !bookingsButton ? upcomingRides.map((ride,key)=><UpRide key={key} ride={ride} bookingsButton={bookingsButton}/>) : null}  
-            {bookedRides && bookingsButton ? bookedRides.map((ride,key)=><UpRide key={key} ride={ride} bookingsButton={bookingsButton}/>) : null}  
+        <div className="mt-16 space w-full relative">
+            
+            {upcomingRides && !bookingsButton ? upcomingRides.map((ride,key)=><UpRide key={key} ride={ride} />) : null}  
+            {bookedRides && bookingsButton ? bookedRides.map((ride,key)=><UpRide key={key} ride={ride} />) : null}  
         </div>
     )
 }

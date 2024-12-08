@@ -6,7 +6,7 @@ import { Button } from "../components/Button"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
 import { Warning } from "./warning"
-import { useDispatch } from "react-redux"
+import { useDispatch ,useSelector } from "react-redux"
 import { setAuthUser } from "../store/userSlice"
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -68,12 +68,13 @@ export function SignIn({setSignIn}){
                                                 password
                                             })
                                             
-                                                const token=response.data.token;
-                                                localStorage.setItem("token",token);
-                                                dispatch(setAuthUser(response.data.authUser))
-                                                notifySignedIn()
+                                            dispatch(setAuthUser(response.data.authUser))
+                                            const token=response.data.token;
+                                            localStorage.setItem("token",token);
+                                            notifySignedIn()
+                                            localStorage.setItem("authUser",JSON.stringify(response.data.authUser));
 
-                                                navigate("/cabapp/home")
+                                            navigate("/cabapp/home")
                                             
                                         }catch(e){
                                             if(e.status==403){

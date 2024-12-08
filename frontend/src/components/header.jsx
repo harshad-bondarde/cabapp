@@ -22,6 +22,7 @@ export function Header({setRenderButton , firstname}){
                 <div className="flex bg-red-200 border-2 font-medium text-sm border-red-200 rounded-lg p-3 shadow-xl cursor-pointer hover:shadow-red-300 transition ease-in-out duration-300">
                     <div onClick={()=>{
                         localStorage.removeItem("token")
+                        localStorage.removeItem("authUser")
                         dispatch(setAuthUser(null))
                         navigate("/cabapp")
                     }}>
