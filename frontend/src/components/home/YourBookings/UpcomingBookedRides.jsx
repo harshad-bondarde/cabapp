@@ -4,11 +4,13 @@ import axios from "axios"
 import toast from 'react-hot-toast';
 import { Profile } from '../YourProfile/Profile';
 import { useEffect, useState } from 'react';
+import { useDispatch,useSelector } from 'react-redux';
+import { setShowCaptainInfo } from '../../../store/userSlice';
 
 export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButton }){
+    const dispatch=useDispatch()
 
     function UpRide({ride , bookingsButton }){
-        console.log(ride)
         const bookedRidesId=ride?.bookedridesid
         const date=ride?.date;
         const boolCar=ride?.boolcar
@@ -19,7 +21,7 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
         const captainFirstname=ride?.captainfirstname
         const captainLastname=ride?.captainlastname
         const captainId=ride?.captainid 
-
+        const {showCaptainInfo}=useSelector(state=>state.user)
         
         const fromTime=ride?.fromtime
         const fromLocationArray=ride?.fromlocation.split("-")
@@ -34,8 +36,6 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
             tolongitude:ride?.tolongitude,
             tolatitude:ride?.tolatitude,
         }
-        console.log(fromLocationArray)
-        console.log(toLocationArray)
 
         function capitaliser(name){
             let ans=""
@@ -48,6 +48,25 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
             }
             return ans;
         }
+
+        async function getCaptainInfo(){
+            try{
+                const response=await axios.post("http://localhost:3000/user/getuser",{
+                    userId:captainId
+                },{
+                    headers:{
+                        authorization:localStorage.getItem("token")
+                    }
+                })
+                // console.log(response)
+                dispatch(setShowCaptainInfo(response.data.userInfo))
+                // console.log("HI")
+            
+            }catch (error) {
+                toast.error("Error While Getting Info")
+                console.log(error)
+            }
+        }
     
         return (
             <>  
@@ -58,7 +77,9 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
                             <div className='w-44 flex justify-start'>
                                 <div className='flex flex-col space-y-3 '>
                                     
-                                    <div className="flex cursor-pointer mt-2 ml-2 transition ease-in-out duration-300 hover:-translate-y-1 " >
+                                    <div
+                                        className="flex cursor-pointer mt-2 ml-2 transition ease-in-out duration-300 hover:-translate-y-1 "
+                                        onClick={getCaptainInfo} >
                                         <div className="text-xl p-1 bg-gray-400 text-white border-2 rounded-full w-10 h-10 text-center">
                                             { captainFirstname?captainFirstname[0].toUpperCase():"?" }
                                         </div>
@@ -99,8 +120,8 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
                                         <div className='w-24'>
                                             <hr className='border-2 border-slate-500 rounded-full'/>
                                         </div>
-                                        <div>
-                                            <CircleChevronRight className="text-slate-500 "/>
+                                        <div  className="text-slate-500 ">
+                                            <CircleChevronRight/>
                                         </div>
                                         <div className='w-24'>
                                             <hr className='border-2 border-slate-500 rounded-full'/>

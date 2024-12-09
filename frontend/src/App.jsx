@@ -20,5 +20,5 @@ function App() {
 }
 //add feature in your profile rides - map green red people emoji there onclick->display passenger details 
 //add ticket id in bookedride and your profile rides for users 
-//add onclick event for in bookedrides to show info of the captain 
+//add loading feature everywhere 
 export default App

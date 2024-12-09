@@ -112,7 +112,7 @@ export function Ride({ride}){
             <>  
                 <div className='fixed inset-0 z-20 bg-black bg-opacity-50 backdrop-blur-sm flex flex-col items-center pt-32'>
                     <div className='mb-10'>
-                        <X onClick={()=>{setShowBookTicket(false)}} className='rounded-full bg-gray-400 p-1 hover:bg-red-300 hover:p-0'/>
+                        <X onClick={()=>{setShowBookTicket(false)}} className='rounded-full bg-gray-400 p-1 hover:bg-red-300 hover:p-0 trasition ease-in-out duration-300'/>
                     </div>
                     <div className='border-2 border-blue-400 shadow-2xl  bg-gray-100 rounded-2xl p-2 w-fit h-fit'> 
                         

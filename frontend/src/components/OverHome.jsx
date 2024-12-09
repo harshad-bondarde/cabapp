@@ -10,7 +10,7 @@ const OverHome = () => {
     return (
         <>
             {   showMap &&
-                <div className="z-50 inset-0 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-0">
+                <div className="absolute z-50 inset-0 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-0">
                     <div className="flex justify-center">
                         <div className="flex flex-col items-center w-full h-full ml-20 mr-20 ">
                             <GetRealTimeLocations INITIAL_ZOOM={5}/>
@@ -20,7 +20,7 @@ const OverHome = () => {
             }
             {
                 showCaptainInfo && 
-                <div className="z-50 inset-0 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-0">
+                <div className="absolute z-50 inset-0 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-0">
                     <div className="flex justify-center">
                         <div className="flex flex-col items-center w-full h-full ml-20 mr-20 ">
                             <ShowCaptainInfo/>
