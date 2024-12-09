@@ -6,6 +6,8 @@ import { Profile } from '../YourProfile/Profile';
 import { useEffect, useState } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
 import { setShowCaptainInfo } from '../../../store/userSlice';
+import { EmptyRides } from '../../EmptyRides';
+import EndofList from '../../EndofList';
 
 export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButton }){
     const dispatch=useDispatch()
@@ -228,8 +230,39 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
     return (
         <div className="mt-16 space w-full relative">
             
-            {upcomingRides && !bookingsButton ? upcomingRides.map((ride,key)=><UpRide key={key} ride={ride} />) : null}  
-            {bookedRides && bookingsButton ? bookedRides.map((ride,key)=><UpRide key={key} ride={ride} />) : null}  
+            {   !bookingsButton ?
+
+                    <div>
+                        {
+                            upcomingRides.length>0 ?
+                                <>
+                                    {upcomingRides.map((ride,key)=><UpRide key={key} ride={ride} />)}
+                                    <EndofList/>
+                                </>
+                            :
+                            <>
+                                    <EmptyRides/>
+                                </>
+                        }
+                    </div>
+                
+                :
+                
+                <div>
+                        {
+                            bookedRides.length>0 ?
+                            <>
+                                    {bookedRides.map((ride,key)=><UpRide key={key} ride={ride} />)}
+                                    <EndofList/>
+                                </>
+                            :
+                                <>
+                                    <EmptyRides/>
+                                </>
+                        }
+
+                </div>
+            }
         </div>
     )
 }

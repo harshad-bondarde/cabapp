@@ -2,6 +2,8 @@ import { CarFront } from 'lucide-react';
 import { Bike , IndianRupee  , CircleChevronRight} from 'lucide-react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { EmptyRides } from '../../EmptyRides';
+import EndofList from '../../EndofList';
 
 export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
     
@@ -199,8 +201,41 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
     }
     return (
         <>
-            { upcomingRides && !pastRidesButton ? upcomingRides.map((ride,key)=><ProfRide key={key} ride={ride} pastRidesButton={pastRidesButton}  />) : null }
-            { pastRides && pastRidesButton ?  pastRides.map((ride,key)=><ProfRide key={key} ride={ride} pastRidesButton={pastRidesButton}  />) : null }
+            {/* { upcomingRides && !pastRidesButton ? upcomingRides.map((ride,key)=><ProfRide key={key} ride={ride} pastRidesButton={pastRidesButton}  />) : null }
+            { pastRides && pastRidesButton ?  pastRides.map((ride,key)=><ProfRide key={key} ride={ride} pastRidesButton={pastRidesButton}  />) : null } */}
+            {   !pastRidesButton ?
+
+                        <div>
+                            {
+                                upcomingRides.length>0 ?
+                                    <>
+                                        {upcomingRides.map((ride,key)=><ProfRide key={key} ride={ride} />)}
+                                        <EndofList/>
+                                    </>
+                                :
+                                <>
+                                        <EmptyRides/>
+                                    </>
+                            }
+                        </div>
+
+                        :
+
+                        <div>
+                            {
+                                pastRides?.length>0 ?
+                                <>
+                                        {pastRides.map((ride,key)=><ProfRide key={key} ride={ride} />)}
+                                        <EndofList/>
+                                    </>
+                                :
+                                    <div className='mt-10'>
+                                        <EmptyRides/>
+                                    </div>
+                            }
+
+                        </div>
+            }
         </>
     )
 }

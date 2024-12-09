@@ -2,14 +2,14 @@ import { useState } from "react"
 import { BookRidesInputBox } from "./BookaRide/HomeBookRIdesInputBox"
 import axios from "axios"
 import { Ride } from "./BookaRide/Ride"
-import { EmptyRides } from "./BookaRide/EmptyRides"
+import { EmptyRides } from "../EmptyRides"
 import toast from "react-hot-toast"
 import {DatePicker} from "@mui/x-date-pickers/DatePicker"
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from "dayjs"
 import { X } from 'lucide-react';
-
+import EndofList from "../EndofList"
 export function BookRides(){
     const [finalfrom,setFinalFrom]=useState("")
     const [finalTo,setFinalTo]=useState("")
@@ -116,7 +116,14 @@ export function BookRides(){
                 
                 <div>   
                          
-                    { rides.length>0 ? rides.map((ride,index)=><Ride key={index} ride={ride}/>) :<EmptyRides/>}
+                    { rides.length>0 ? 
+                        <>
+                            {rides.map((ride,index)=><Ride key={index} ride={ride}/>)} 
+                            <EndofList/>
+                        </>
+                        
+                      :
+                        <EmptyRides/>}
                         
                 </div>
                 :            
