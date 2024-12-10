@@ -4,14 +4,19 @@ import axios from "axios"
 import { ProfileRides } from "./YourProfile/ProfileRides";
 import { useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
+import {LoadingBlue} from "../Loading";
 
 export function YourProfile({userInfo}){
     const navigate=useNavigate()
     const [pastRidesButton,setPastRidesButton]=useState(false)
     const [rides,setRides]=useState([])
+    const [loading,setLoading]=useState(false)
+    console.log(loading)
+
     useEffect(()=>{
         const getrides=async ()=>{
             try{
+                setLoading(true)
                 const response=await axios.get("http://localhost:3000/user/rides/getrides",{
                     headers:{
                         authorization:localStorage.getItem("token")
@@ -25,7 +30,8 @@ export function YourProfile({userInfo}){
                     
                     navigate("/cabapp")
                 }
-
+            }finally{
+                setLoading(false)
             }
         }
         getrides()
@@ -76,7 +82,15 @@ export function YourProfile({userInfo}){
             </div>
 
             <div>
-                <ProfileRides upcomingRides={upcomingRides} bookedRides={pastRides} pastRidesButton={pastRidesButton}/>
+                {   !loading ?
+                        <ProfileRides upcomingRides={upcomingRides} bookedRides={pastRides} pastRidesButton={pastRidesButton}/>
+                    :
+                        <div className="flex justify-center mt-20">
+                            <div className="w-20 h-20">
+                                <LoadingBlue/>
+                            </div>
+                        </div>
+                }    
             </div>
         </>
     )

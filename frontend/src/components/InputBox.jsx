@@ -10,9 +10,8 @@ export function InputBox({label,placeholder,OnChange}){
             {placeholder?
                 <input type="text" onChange={OnChange} placeholder={placeholder} className="border-2 ml-3  rounded-2xl p-2 transition ease-in-out duration-150 hover:-translate-y-1 hover:shadow-lg cursor-pointer hover:border-green-300 "/>
                 :
-                <input type="text" onChange={OnChange} placeholder={label} className="border-2 ml-3  rounded-2xl p-2 transition ease-in-out duration-150 hover:-translate-y-1 hover:shadow-lg cursor-pointer hover:border-green-300 w-80"/>
-            }
-            
+                <input type={label=='Password' ? 'password': 'text'} onChange={OnChange} placeholder={label} className="border-2 ml-3  rounded-2xl p-2 transition ease-in-out duration-150 hover:-translate-y-1 hover:shadow-lg cursor-pointer hover:border-green-300 w-80 "/>
+                }
         </div>
     )
 }

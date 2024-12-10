@@ -8,11 +8,13 @@ import { useDispatch,useSelector } from 'react-redux';
 import { setShowCaptainInfo } from '../../../store/userSlice';
 import { EmptyRides } from '../../EmptyRides';
 import EndofList from '../../EndofList';
-
+import { LoadingRed } from '../../Loading';
 export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButton }){
     const dispatch=useDispatch()
+    const [loading,setLoading]=useState(false)
 
     function UpRide({ride , bookingsButton }){
+        
         const bookedRidesId=ride?.bookedridesid
         const date=ride?.date;
         const boolCar=ride?.boolcar
@@ -69,7 +71,19 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
                 console.log(error)
             }
         }
-    
+        const Label=()=>{
+            return (
+                <>
+                    {   !loading ?
+                            <>Cancel</>
+                        :
+                            <div className='w-10 h-10'>
+                                <LoadingRed/>
+                            </div>
+                    }
+                </>
+            )
+        }
         return (
             <>  
                 {   ride ?
@@ -191,6 +205,7 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
                         
                         { !bookingsButton ? 
                             <div onClick={async()=>{
+                                    setLoading(true)
                                     const response=await axios.post("http://localhost:3000/user/cancelride",{
                                         bookedRidesId,
                                         rideId:ride?.rideid
@@ -199,6 +214,8 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
                                             authorization:localStorage.getItem("token")
                                         }
                                     })
+                                    if(response)
+                                        setLoading(false)
 
                                     if(response.status==503 || response.status==401){
                                         toast.error("Internal Server Error")
@@ -208,10 +225,10 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
 
                                  }} 
                                 
-                                className='border-2 rounded-2xl shadow-xl p-2 flex flex-col justify-center cursor-pointer transition ease-in-out duration-300 hover:-translate-y-1 bg-red-300 border-red-300 hover:shadow-red-400 '>
+                                className='border-2 w-15 rounded-2xl shadow-xl p-2 flex flex-col justify-center cursor-pointer transition ease-in-out duration-300 hover:-translate-y-1 bg-red-300 border-red-300 hover:shadow-red-400 '>
                                 
                                 <div className='flex flex-col items-center text-sm font-medium'>
-                                    Cancel
+                                    <Label/>
                                 </div> 
                             </div>
                             
@@ -221,7 +238,7 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
                     </div>
                 :
                     <>
-                        No Upcoming Rides
+                        {null}
                     </>
                 }
             </>

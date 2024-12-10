@@ -7,7 +7,7 @@ const EndofList = () => {
             <hr className='border-1 border-gray-400 rounded-full'/>
         </div>
         <div className='w-48 text-center font-medium '>
-            End of list
+            End of List
         </div>
         <div className='w-full'>
             <hr className='border-1 border-gray-400 rounded-full'/>

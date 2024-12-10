@@ -4,6 +4,8 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { EmptyRides } from '../../EmptyRides';
 import EndofList from '../../EndofList';
+import { LoadingRed } from '../../Loading';
+import { useState } from 'react';
 
 export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
     
@@ -15,6 +17,7 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
         const price=ride?.price
         const seatsBooked=ride?.numberofseats-ride?.numberofseatsavailable
         const vehicleName=ride?.vehiclename
+        const [loading,setLoading]=useState(false)
 
         const fromTime=ride?.fromtime
         const fromLocationArray=ride?.fromlocation.split("-")
@@ -42,7 +45,21 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
             }
             return ans;
         }
-    
+        const Lable=()=>{
+            return (
+                <>
+                    {   !loading ?
+                            <>
+                                Delete
+                            </>
+                        :
+                            <div className='w-10 h-10'>
+                                <LoadingRed/>
+                            </div>
+                    }
+                </>
+            )
+        }
         return (
             <>  
                 {   ride ?
@@ -167,6 +184,7 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
                             <div onClick={async()=>{
                                     if(!boolRide)
                                         return;
+                                    setLoading(true)
                                     const response=await axios.post("http://localhost:3000/user/deleteride",{
                                         rideId
                                     },{
@@ -174,7 +192,9 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
                                             authorization:localStorage.getItem("token")
                                         }
                                     })
-
+                                    if(response){
+                                        setLoading(false)
+                                    }
                                     if(response.status==500 || response.status==403){
                                         toast.error("Internal Server Error")
                                     }else if(response.status==200){
@@ -182,8 +202,8 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
                                     }
 
                             }} className={`border-2 rounded-2xl shadow-xl p-2 flex flex-col justify-center ${boolRide ? `cursor-pointer transition ease-in-out duration-300 hover:-translate-y-1 bg-red-300 border-red-300 hover:shadow-red-400 `:`bg-gray-300` } `}>
-                                <button className={`flex flex-col items-center text-sm font-medium cursor-not-allowed`}>
-                                    Delete
+                                <button className={`flex flex-col items-center text-sm font-medium ${!boolRide?'cursor-not-allowed':''}`}>
+                                    <Lable/>
                                 </button> 
                             </div>
                             :
@@ -201,8 +221,6 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
     }
     return (
         <>
-            {/* { upcomingRides && !pastRidesButton ? upcomingRides.map((ride,key)=><ProfRide key={key} ride={ride} pastRidesButton={pastRidesButton}  />) : null }
-            { pastRides && pastRidesButton ?  pastRides.map((ride,key)=><ProfRide key={key} ride={ride} pastRidesButton={pastRidesButton}  />) : null } */}
             {   !pastRidesButton ?
 
                         <div>
@@ -213,9 +231,9 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
                                         <EndofList/>
                                     </>
                                 :
-                                <>
+                                    <div className='mt-10'>
                                         <EmptyRides/>
-                                    </>
+                                    </div>
                             }
                         </div>
 

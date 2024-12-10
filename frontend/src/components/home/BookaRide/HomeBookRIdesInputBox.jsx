@@ -1,10 +1,8 @@
-import { useGeocodingCore } from '@mapbox/search-js-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useGetSuggestions } from '../../mapboxAPI/useGetSuggestions'
 import { MapPin } from 'lucide-react';
 import toast from 'react-hot-toast';
-import GetRealTimeLocations from '../../mapboxAPI/getRealTimeLocations';
-import { useDispatch , useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setShowMap , setMapCoordinates } from '../../../store/mapSlice';
 export function BookRidesInputBox({label , placeholder , searchForAddress ,setFinalLocation , coordinates , setCoordinates}){
     
@@ -31,20 +29,21 @@ export function BookRidesInputBox({label , placeholder , searchForAddress ,setFi
                     {label} :
                 </div>
                 <div className=''>
-                    {searchForAddress ? <MapPin className='cursor-pointer' onClick={handlePinClick} size={'15'}/> : null}
+                    {searchForAddress ? <div className='flex items-center text-gray-400'> View <MapPin className='cursor-pointer ml-1' onClick={handlePinClick} size={'15'}/> </div>: null}
                 </div>
             </div>
-            <input type="text" value={searchForAddress==true ? location : ''} onChange={e=>{ 
+            <input
+                type="text" value={searchForAddress==true ? location : ''} onChange={e=>{ 
                                                                                     if(e.target.value==""){
                                                                                         setSuggestions([])
                                                                                         setLocation("")
                                                                                         return;
+                                                                                    }else{
+                                                                                        getSuggestions(e) 
                                                                                     }
                                                                                     setCoordinates({})
-                                                                                    if(e.target.value!="")
-                                                                                        getSuggestions(e) 
                                                                             }} 
-                placeholder={placeholder ? placeholder : label} className="border-2 shadow-md w-full rounded-2xl p-2 transition ease-in-out duration-300 hover:-translate-y-1 hover:shadow-lg cursor-pointer  h-14 "/>
+                placeholder={placeholder ? placeholder : label} className="border-2 shadow-md w-full rounded-2xl p-2 transition ease-in-out duration-300 hover:-translate-y-1 hover:shadow-lg cursor-pointer text-gray-900  h-14 "/>
             
             {
                 searchForAddress && 

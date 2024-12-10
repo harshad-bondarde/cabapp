@@ -1,9 +1,10 @@
 import { useState } from "react"
 import { AddRideInputBoxAddress } from "./AddRide/AddRideInputBoxAddress"
 import { AddRideInputBox2 } from "./AddRide/AddRideInputBox2"
+import {Warning} from "../warning"
+import {LoadingBlue} from "../Loading"
 
 import axios from "axios"
-import {Warning} from "../warning"
 
 import {DatePicker} from "@mui/x-date-pickers/DatePicker"
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -15,6 +16,7 @@ import { useNavigate } from "react-router-dom"
 
 export function AddRide(){
     const navigate=useNavigate()
+    const [loading,setLoading]=useState(false)
     
     const [fromTime,setFromTime]=useState("")
     const [fromLocation,setFromLocation]=useState("")
@@ -87,6 +89,37 @@ export function AddRide(){
         )
     }
 
+    function setAllEmpty(){
+        setFromTime("")
+        setFromLocation("")
+        setToTime("")
+        setToLocation("")
+        setDate("")
+        setBoolCar(false)
+        setVehicleName("")
+        setNumberOfSeats(0)
+        setPrice(0)
+        setFascilities("")    
+    }
+
+    const Lable=()=>{
+        
+        return(
+            <div>
+                {   !loading ? 
+                        <>Submit</>
+                    :
+                        <div className="">
+                            <div className="w-6 h-6 ml-4 ">
+                                <LoadingBlue/>
+                            </div>
+                        </div>
+
+                }
+            </div>
+        )
+    }
+
     return (
         <div className="flex justify-center ">
 
@@ -141,7 +174,7 @@ export function AddRide(){
                         
                     </div>
                     
-                    <button className="border w-18 bg-blue-700 text-white p-2 text-center  border-blue-600 rounded-lg h-10 shadow-lg hover:shadow-blue-400 transition ease-in-out"
+                    <div className="border cursor-pointer w-20 h-10 bg-blue-700 text-white p-2 text-center border-blue-600 rounded-lg shadow-lg hover:shadow-blue-400 transition ease-in-out"
                        onClick={async ()=>{
                         let valid=validateInputs() ;
                         if(fromLocation==toLocation){
@@ -151,6 +184,7 @@ export function AddRide(){
                         if(valid){
                             console.log("sent")
                             try{
+                                setLoading(true)
                                 const response=await axios.post("http://localhost:3000/user/rides/addRide",{
                                     fromTime,
                                     fromLocationInfo,
@@ -169,17 +203,7 @@ export function AddRide(){
                                 })
                                 console.log(response)
                                 toast.success("Ride Added")
-                                console.log("ride added")
-                                setFromTime("")
-                                setFromLocation("")
-                                setToTime("")
-                                setToLocation("")
-                                setDate("")
-                                setBoolCar(false)
-                                setVehicleName("")
-                                setNumberOfSeats(0)
-                                setPrice(0)
-                                setFascilities("")
+                                setAllEmpty()
 
                             }catch(e){
                                 console.log("error while Adding Rides: ",e);
@@ -190,9 +214,11 @@ export function AddRide(){
                                     toast.error(e.response.data.message)
                                 }
                                 
+                            }finally{
+                                setLoading(false)
                             }
                         }
-                       }} >Submit</button>
+                       }} ><Lable/></div>
                 </div>
             </div>
             

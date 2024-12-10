@@ -21,6 +21,7 @@ export function SignUp({ setSignIn }) {
     const [genderWarning, setGenderWarning] = useState('')
     const [phoneNoWarning, setPhoneNoWarning] = useState('')
     const [userExists, setUserExists] = useState('')
+    const [loading,setLoading]=useState(false)
 
     const validateInputs = () => {
         let valid=true;
@@ -97,9 +98,10 @@ export function SignUp({ setSignIn }) {
                         <InputBox label="PhoneNo" OnChange={e => setPhoneNo(e.target.value)} />
                         <Warning label={phoneNoWarning} />
 
-                        <Button label="SignUp" OnClick={async () => {
+                        <Button label="SignUp" loading={loading} OnClick={async () => {
                             const valid=validateInputs()
                             if(valid){
+                                setLoading(true)
                                 try {
                                     const response = await axios.post("http://localhost:3000/user/signup", {
                                         firstName,
@@ -118,6 +120,8 @@ export function SignUp({ setSignIn }) {
                                 }
                                 catch (error) {
                                     console.log("error during SignUp: ", error);
+                                }finally{
+                                    setLoading(false)
                                 }
                             }
                         }} />

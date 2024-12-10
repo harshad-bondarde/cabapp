@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react"
 import { UpcomingBookedRides } from "./YourBookings/UpcomingBookedRides"
 import { useNavigate } from "react-router-dom"
+import {LoadingBlue} from "../Loading"
 import toast from "react-hot-toast"
-
 import axios from "axios"
 
 export function YourBookings(){
     const navigate=useNavigate()
     const [bookingsButton,setBookingsButton]=useState(false)
     const [bookings,setBookings]=useState([])
+    const [loading,setLoading]=useState(false)
 
     useEffect(() => {
         const getBookingsArray = async () => {
             try {
+                setLoading(true)
                 const response = await axios.get("http://localhost:3000/user/rides/bookings", {
                     headers: {
                         authorization: localStorage.getItem("token")
@@ -27,6 +29,8 @@ export function YourBookings(){
                 }else{
                     console.log(e)
                 }
+            }finally{
+                setLoading(false)
             }
         };
         getBookingsArray();
@@ -68,16 +72,15 @@ export function YourBookings(){
                 </div>
             </div>
 
-            {/* {  
-                bookingsButton?
-                
-                <UpcomingBookedRides bookedRides={bookedRides}/>
+            {   !loading ?
+                    <UpcomingBookedRides bookedRides={bookedRides} upcomingRides={upcomingRides} bookingsButton={bookingsButton}/>
                 :
-                <UpcomingBookedRides upcomingRides={upcomingRides}/>
-            } */}
-
-            <UpcomingBookedRides bookedRides={bookedRides} upcomingRides={upcomingRides} bookingsButton={bookingsButton}/>
-
+                    <div className="flex justify-center mt-20">
+                        <div className="w-20 h-20">
+                            <LoadingBlue/>
+                        </div>
+                    </div>
+            }
 
         </>
     )

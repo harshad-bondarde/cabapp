@@ -16,6 +16,7 @@ export function SignIn({setSignIn}){
 
     const [email,setEmail]=useState("");
     const [password,setPassword]=useState("");
+    const [loading,setLoading]=useState(false)
     
     const notifySignedIn=()=>{
        toast.success('Signed In');
@@ -54,42 +55,48 @@ export function SignIn({setSignIn}){
                         
                         <div className="flex flex-col items-center">
                             <Heading label="SignIn"/>
-                            <div className="w-full">
+                            <form className="w-full">
                                 <InputBox label="Email" OnChange={e=>setEmail(e.target.value)}/>
                                 <Warning label={emailWarning}/>
                                 <InputBox label="Password" OnChange={e=>setPassword(e.target.value)}/>
                                 <Warning label={passwordWarning}/>
-                                <Button label="SignIn" OnClick={async ()=>{
-                                    const valid=validateInputs();
-                                    if(valid){
-                                        try{    
-                                            const response=await axios.post("http://localhost:3000/user/signin",{
-                                                email,
-                                                password
-                                            })
-                                            
-                                            dispatch(setAuthUser(response.data.authUser))
-                                            const token=response.data.token;
-                                            localStorage.setItem("token",token);
-                                            notifySignedIn()
-                                            localStorage.setItem("authUser",JSON.stringify(response.data.authUser));
 
-                                            navigate("/cabapp/home")
-                                            
-                                        }catch(e){
-                                            if(e.status==403){
-                                                setUserExists(e.response.data.message)
+                                    <Button label="SignIn" loading={loading} OnClick={async ()=>{
+                                        const valid=validateInputs();
+                                        if(valid){
+                                            try{  
+                                                
+                                                setLoading(true)  
+                                                const response=await axios.post("http://localhost:3000/user/signin",{
+                                                    email,
+                                                    password
+                                                })
+                                                
+                                                dispatch(setAuthUser(response.data.authUser))
+                                                const token=response.data.token;
+                                                localStorage.setItem("token",token);
+                                                notifySignedIn()
+                                                localStorage.setItem("authUser",JSON.stringify(response.data.authUser));
+
+                                                navigate("/cabapp/home")
+                                                
+                                            }catch(e){
+                                                if(e.status==403){
+                                                    setUserExists(e.response.data.message)
+                                                }
+                                                console.log("Error while signin: ",e)
+                                            }finally{
+                                                setLoading(false)
                                             }
-                                            console.log("Error while signin: ",e)
                                         }
-                                    }
-                                }}/>
+                                    }}
+                                    />
                                 <Warning label={userExists}/>
 
                                 <div className="font-thin flex justify-center mt-1">
                                     <div className="mr-2">Don't have an account ?</div> <div className="underline text-blue-600 cursor-pointer" onClick={()=>{setSignIn(prevState=>!prevState)}}>SignUp</div> 
                                 </div>
-                            </div>
+                            </form>
                         </div>
             </div> 
         </div>

@@ -2,9 +2,13 @@ import {IconCircleDashedPlus} from "@tabler/icons-react"
 import { useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux";
 import { setAuthUser } from "../store/userSlice";
+import { LoadingRed } from "./Loading";
+import { useState } from "react";
+
 export function Header({setRenderButton , firstname}){
     const navigate=useNavigate();
     const dispatch=useDispatch()
+    const [loading,setLoading]=useState(false)
     return (
         <div className="bg-slate-100 p-2 mx-2 rounded-xl mt-1 shadow-md border-slate-500 flex justify-between ">
             <div className="bg-green-500 rounded-full w-20 h-20 text-center flex flex-col justify-center text-slate-50 text-lg p-1 ml-6 shadow-lg border-green-500 border-4 shadow-green-300 ">
@@ -16,17 +20,25 @@ export function Header({setRenderButton , firstname}){
                   onClick={()=>{
                     setRenderButton(3)
                   }}  >
-                    {/* H */}
                     {firstname? firstname[0].toUpperCase() : null}
                 </div>
-                <div className="flex bg-red-200 border-2 font-medium text-sm border-red-200 rounded-lg p-3 shadow-xl cursor-pointer hover:shadow-red-300 transition ease-in-out duration-300">
+                <div className="flex bg-red-200 w-15 h-13 border-2 font-medium text-sm border-red-200 rounded-lg p-3 shadow-xl cursor-pointer hover:shadow-red-300 transition ease-in-out duration-300">
                     <div onClick={()=>{
-                        localStorage.removeItem("token")
-                        localStorage.removeItem("authUser")
-                        dispatch(setAuthUser(null))
+                        setLoading(true)
+                            localStorage.removeItem("token")
+                            localStorage.removeItem("authUser")
+                            dispatch(setAuthUser(null))
+                        setLoading(false)
                         navigate("/cabapp")
                     }}>
-                        Sign Out
+                        {   !loading  ?
+                                'Sign Out'
+                                :
+                                <div className="w-5 h-5 ">
+                                    {/* 'Sign Out' */}
+                                    <LoadingRed/>
+                                </div>
+                        }
                     </div>
                 </div>
             

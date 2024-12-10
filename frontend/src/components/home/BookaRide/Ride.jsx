@@ -7,6 +7,7 @@ import { Star } from 'lucide-react';
 import { X } from 'lucide-react';
 import { Phone } from 'lucide-react';
 import { Mail } from 'lucide-react';
+import { LoadingBlue } from '../../Loading';
 
 import { useEffect, useState } from 'react';
 import axios from "axios"
@@ -16,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 export function Ride({ride}){
     const navigate=useNavigate()
+    const [loading,setLoading]=useState(false)
     const [seatsBooked,setSeatsBooked]=useState(0)
     
     const rideId=ride.rideid;
@@ -82,6 +84,24 @@ export function Ride({ride}){
             ]
         }
         return ans;
+    }
+
+    const BookingLabel=()=>{
+        return (
+            <>
+                {   !loading ?
+                        <>
+                            Book
+                        </>
+                    :
+                        <div className="w-5 ml-5">
+                            <div>
+                                <LoadingBlue/>
+                            </div>
+                        </div>
+                }
+            </>
+        )
     }
 
     function Seats({numberOfSeats,numberOfSeatsAvailable}){
@@ -255,10 +275,10 @@ export function Ride({ride}){
                                     return;
                                 }
                                 const rideId=ride.rideid
-                                HandleBooking({rideId,seatsBooked,captainId,captainFirstname,captainLastname,navigate})
+                                HandleBooking({rideId,seatsBooked,captainId,captainFirstname,captainLastname,navigate,setLoading})
                                 setShowBookTicket(false);
                                 }} className=' border-2 bg-blue-500 hover:border-blue-400  text-white p-2 mb-2 rounded-2xl text-center mt-4 w-20 cursor-pointer'>
-                                Book
+                                <BookingLabel/>
                             </div>
                         </div>
                     </div>
@@ -274,6 +294,10 @@ export function Ride({ride}){
             <div onClick={()=>{
                 if(numberOfSeatsAvailable>0){
                     setShowBookTicket(e=>!e)
+                }else{
+                        toast.error('Sorry Ride is Full !!!');
+                        return;
+                    
                 }
                 }} className={`border-2 h-38 mx-40 cursor-pointer rounded-xl p-2 shadow-md ${showBookTicket ?'': 'hover:border-blue-300 transition ease-in-out duration-300 hover:shadow-2xl hover:-translate-y-1'}`}>
                     <div className='flex justify-between'>   

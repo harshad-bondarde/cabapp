@@ -10,6 +10,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from "dayjs"
 import { X } from 'lucide-react';
 import EndofList from "../EndofList"
+import {LoadingBlue} from "../Loading"
 export function BookRides(){
     const [finalfrom,setFinalFrom]=useState("")
     const [finalTo,setFinalTo]=useState("")
@@ -31,6 +32,7 @@ export function BookRides(){
     // numberofseatsavailable:2,
     // facilities:"AC WaterBottle" 
     const [showRides,setShowRides]=useState(false)
+    const [loading,setLoading]=useState(false)
 
     const [value,SetValue]=useState(dayjs())
     const [showDate,setShowDate]=useState(false)
@@ -63,7 +65,7 @@ export function BookRides(){
 
     console.log(rides)
     return (
-        <div className="">  
+        <div className="w-full">  
             <div className="flex justify-center mt-5 text-xl font-medium text-stone-700">
                 Find a Ride
             </div>
@@ -85,16 +87,20 @@ export function BookRides(){
                 
                 <button className="border-4 p-3 ml-6 mt-6 mb-20 w-20 h-14  bg-blue-500 border-blue-500 hover:shadow-md rounded-xl text-white"
                     onClick={async ()=>{
-                            if(finalfrom!="" && finalTo!="" && date!=""){    
+                            if(finalfrom!="" && finalTo!="" && date!=""){  
+                                setLoading(true)
                                 const response=await axios.post("http://localhost:3000/user/rides/AvailableRides",{
                                     fromCoordinates,
                                     toCoordinates,
                                     date
-                            },{
-                                headers:{
-                                    authorization:localStorage.getItem("token")
+                                },{
+                                    headers:{
+                                        authorization:localStorage.getItem("token")
+                                    }
+                                })
+                                if(response){
+                                    setLoading(false)
                                 }
-                            })
                                 console.log(response)
                                 if(response.data.status==403){
                                     //error while connecting to database try after sometime
@@ -114,21 +120,31 @@ export function BookRides(){
 
             {   showRides?            
                 
-                <div>   
-                         
-                    { rides.length>0 ? 
-                        <>
-                            {rides.map((ride,index)=><Ride key={index} ride={ride}/>)} 
-                            <EndofList/>
-                        </>
-                        
-                      :
-                        <EmptyRides/>}
-                        
-                </div>
+                    <div>  
+                        {   !loading ?
+                                <div>     
+                                    { rides.length>0 ? 
+                                        <>
+                                            {rides.map((ride,index)=><Ride key={index} ride={ride}/>)} 
+                                            <EndofList/>
+                                        </>
+                                        
+                                    :
+                                        <EmptyRides/>
+                                    }
+                                </div>
+                            :
+                            <div className="flex justify-center mt-10 ">
+                                <div className="w-20 h-20">
+                                    <LoadingBlue/>
+                                </div>
+                            </div>
+                        }
+                    </div>
                 :            
-                null
+                    null
             }
+            
 
             
         </div>
