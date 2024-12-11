@@ -3,12 +3,14 @@ import {CabApp} from "./pages/cabapp"
 import { Home } from "./pages/home"
 import {Test} from "./pages/test"
 import toast, { Toaster } from 'react-hot-toast';
+import Hello from "./pages/Hello";
 function App() {
 
   return (
     <>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Hello/>} />
           <Route path="/cabapp" element={<CabApp/>}/>
           <Route path="/cabapp/home" element={<Home/>}/>
           <Route path="/cabapp/Test" element={<Test/>}/> {/*for testing */}
