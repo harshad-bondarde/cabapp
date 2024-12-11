@@ -35,7 +35,7 @@ export function YourBookings(){
         };
         getBookingsArray();
     }, []); 
-    
+    console.log(bookings)
 
     function convertToDateObject(dateString) {
         const [day, month, year] = dateString.split("-").map(Number);

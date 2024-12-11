@@ -8,9 +8,9 @@ const ShowCaptainInfo = () => {
     const {showCaptainInfo}=useSelector(state=>state.user)
   return (
     <>
-        <div className=''>
-            <div className=''>
-                <X className='ml-56 mt-24 bg-gray-500 rounded-full p-1 hover:bg-red-500' onClick={()=>dispatch(setShowCaptainInfo(null))}/>
+        <div>
+            <div className='flex justify-center mt-32'>
+                <X className=' bg-gray-500 rounded-full p-1 hover:bg-red-500' onClick={()=>dispatch(setShowCaptainInfo(null))}/>
             </div>
             <Profile userInfo={showCaptainInfo}/>
         </div> 

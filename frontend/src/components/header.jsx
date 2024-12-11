@@ -11,7 +11,7 @@ export function Header({setRenderButton , firstname}){
     const [loading,setLoading]=useState(false)
     return (
         <div className="bg-slate-100 p-2 mx-2 rounded-xl mt-1 shadow-md border-slate-500 flex justify-between ">
-            <div className="bg-green-500 rounded-full w-20 h-20 text-center flex flex-col justify-center text-slate-50 text-lg p-1 ml-6 shadow-lg border-green-500 border-4 shadow-green-300 ">
+            <div className="bg-blue-500 rounded-full font-semibold w-20 h-20 text-center flex flex-col justify-center text-slate-200 text-lg p-1 ml-6 shadow-lg border-blue-500 border-4 shadow-blue-500 ">
                 CabApp
             </div>
 

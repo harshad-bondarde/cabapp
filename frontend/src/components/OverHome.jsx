@@ -29,8 +29,8 @@ const OverHome = () => {
                 </div>
             }
 
-            {
-                passengerDetails && 
+            {   
+                passengerDetails?.length>0 && 
                 <div style={{ overflow:'scroll' }} className="fixed z-50 inset-0 h-screen w-screen bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-0">
                     <div className="flex justify-center">
                         <div className="flex flex-col items-center w-full h-full ml-20 mr-20 ">

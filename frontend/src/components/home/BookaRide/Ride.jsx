@@ -276,7 +276,8 @@ export function Ride({ride}){
                                 }
                                 const rideId=ride.rideid
                                 HandleBooking({rideId,seatsBooked,captainId,captainFirstname,captainLastname,navigate,setLoading})
-                                setShowBookTicket(false);
+                                if(loading==false)
+                                    setShowBookTicket(false);
                                 }} className=' border-2 bg-blue-500 hover:border-blue-400  text-white p-2 mb-2 rounded-2xl text-center mt-4 w-20 cursor-pointer'>
                                 <BookingLabel/>
                             </div>
@@ -406,7 +407,11 @@ export function Ride({ride}){
                         <div className='flex space-x-2 text-xs font-normal mt-3'>
                             {facilities.map((fac,index)=><div key={index}
                                                     className='border-2 p-1 rounded-md bg-blue-400 '
-                                                >{fac}</div>)}
+                                                >
+                                                    {
+                                                        fac!="" && <>{fac}</>
+                                                    }
+                                                </div>)}
                         </div>
                     </div>
             </div>

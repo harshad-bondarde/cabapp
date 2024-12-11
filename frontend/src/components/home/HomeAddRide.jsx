@@ -12,7 +12,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from "dayjs"
 import { X } from 'lucide-react';
 import toast from "react-hot-toast"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useSubmit } from "react-router-dom"
 
 export function AddRide(){
     const navigate=useNavigate()
@@ -21,17 +21,19 @@ export function AddRide(){
     const [fromTime,setFromTime]=useState("")
     const [fromLocation,setFromLocation]=useState("")
     const [fromLocationInfo,setFromLocationInfo]=useState({})
+    const [boardingPoint,setboardingPoint]=useState("")
     
     const [toTime,setToTime]=useState("")
     const [toLocation,setToLocation]=useState("")
     const [toLocationInfo,setToLocationInfo]=useState({})
+    const [droppingPoint,setDroppingPoint]=useState("")
 
     const [date,setDate]=useState("")
     const [boolCar,setBoolCar]=useState(false)
     const [vehicleName,setVehicleName]=useState("")
     const [numberOfSeats,setNumberOfSeats]=useState(0)
     const [price,setPrice]=useState(0)
-    const [facilities,setFascilities]=useState("")
+    const [facilities,setFacilities]=useState("")
 
     const [fromLocationWarning,setFromLocationWarning]=useState("")
     const [toLocationWarning,setToLocationWarning]=useState("")
@@ -41,12 +43,12 @@ export function AddRide(){
     console.log(fromLocationInfo)
     console.log(toLocationInfo)
     const validateInputs=()=>{
+        if(fromLocation =="" || toLocation==""){
+            toast.error("Enter Locations !!!")
+            return;
+        }
         let ans=true;
         const regex = /^[A-Za-z]+$/
-        if(fromLocation==toLocation){
-            setToLocationWarning("Locations Must Be different")
-            ans=false;
-        }
         
         const numberRegex = /^\d+$/;
         if(!numberRegex.test(numberOfSeats)){
@@ -79,6 +81,7 @@ export function AddRide(){
                                 const date=e.$D+"-"+(e.$M+1)+"-"+e.$y
                                 setDate(date)
                                 setDatePlaceholder(date)
+                                SetValue(e)
                             }
                             }
                         />
@@ -92,14 +95,16 @@ export function AddRide(){
     function setAllEmpty(){
         setFromTime("")
         setFromLocation("")
+        setFromLocationInfo({})
         setToTime("")
         setToLocation("")
+        setToLocationInfo({})
         setDate("")
         setBoolCar(false)
         setVehicleName("")
         setNumberOfSeats(0)
         setPrice(0)
-        setFascilities("")    
+        setFacilities("")    
     }
 
     const Lable=()=>{
@@ -107,7 +112,7 @@ export function AddRide(){
         return(
             <div>
                 {   !loading ? 
-                        <>Submit</>
+                        <>Publish</>
                     :
                         <div className="">
                             <div className="w-6 h-6 ml-4 ">
@@ -125,18 +130,24 @@ export function AddRide(){
 
             <div className=" flex flex-col h-screen justify-start">
                 
-                <div className="m-8 font-semibold text-green-700 rounded-3xl p-2 shadow-lg text-center h-14 text-lg">
+                <div className="m-8 font-semibold text-blue-500 rounded-3xl p-2 shadow-lg shadow-blue-200 text-center h-14 text-lg">
                     Become a Captain And Save Costs By Providing Rides To Passengers
                 </div>
 
-                <div className="border-2 items-center w-full h-full mb-16 flex flex-col justify-center rounded-xl border-slate-200 shadow-lg bg-slate-200">
+                <div className="border-2 items-center w-full h-full mb-16 flex flex-col justify-center rounded-xl border-slate-200 shadow-lg shadow-blue-200 bg-slate-200">
                     <div className="flex justify-between mx-16 space-x-24  ">
-                        <div>
-                            <AddRideInputBoxAddress label="From" searchForAddress={true} setFinalLocation={setFromLocation} setFinalLocationInfo={setFromLocationInfo}/>
+                        <div className="w-80">
+                            <AddRideInputBoxAddress label="From" searchForAddress={true} setFinalLocation={setFromLocation} setFinalLocationInfo={setFromLocationInfo} finalLocationInfo={fromLocationInfo}/>
                                 <Warning label={fromLocationWarning}/>
-
-                            <AddRideInputBox2 value={fromTime} label="Pickup Time" OnChange={(e)=>{setFromTime(e.target.value)}}/>
-
+                            
+                            <div className="flex space-x-2">
+                                <div className="w-1/2">
+                                    <AddRideInputBox2 value={fromTime} label="Pickup Time" OnChange={(e)=>{setFromTime(e.target.value)}}/>
+                                </div>
+                                <div className="w-1/2">
+                                    <AddRideInputBox2 label="Drop Time" value={toTime}  OnChange={(e)=>{setToTime(e.target.value)}}/>
+                                </div>
+                            </div>
                             
                             <div className="flex flex-col space-y-3 cursor-pointer">    
                                 <div onClick={()=>{
@@ -148,7 +159,25 @@ export function AddRide(){
                             </div>
 
                             <AddRideInputBox2 label="Vehicle Name" value={vehicleName}  OnChange={(e)=>{setVehicleName(e.target.value)}}/>
-                            <div className="flex justify-center space-x-9 mt-4">
+                            
+                        </div>
+                        <div className="w-80">
+                            <AddRideInputBoxAddress label="To" searchForAddress={true} setFinalLocation={setToLocation} setFinalLocationInfo={setToLocationInfo} finalLocationInfo={toLocationInfo}/>
+                            <Warning label={toLocationWarning}/>
+                            
+                            
+                            <div className="flex justify-between space-x-2 items-center">
+                                <div>    
+                                    <AddRideInputBox2 label="No of Passengers" value={numberOfSeats}  OnChange={(e)=>{setNumberOfSeats(e.target.value)}}/>
+                                    <Warning label={numberOfSeatsWarning}/>
+                                </div>
+                                <div>    
+                                    <AddRideInputBox2 label="Price" value={price}  OnChange={(e)=>{setPrice(e.target.value)}}/>
+                                    <Warning label={priceWarning}/>
+                                </div>    
+                            </div>
+                            <AddRideInputBox2 label="Facilities" value={facilities} OnChange={(e)=>{setFacilities(e.target.value)}}/>
+                            <div className="flex justify-center space-x-9 m-11">
                                 <div>
                                     <input className="mr-1" type="radio" name="vehicle" value={boolCar} onClick={()=>{setBoolCar(true)}}/>Car
                                 </div>
@@ -157,68 +186,69 @@ export function AddRide(){
                                 </div>
                             </div>
                         </div>
-                        <div>
-                            <AddRideInputBoxAddress label="To" searchForAddress={true} setFinalLocation={setToLocation} setFinalLocationInfo={setToLocationInfo}/>
-                            <Warning label={toLocationWarning}/>
-                            
-                            <AddRideInputBox2 label="Drop Time" value={toTime}  OnChange={(e)=>{setToTime(e.target.value)}}/>
-                            <AddRideInputBox2 label="No of Passengers" value={numberOfSeats}  OnChange={(e)=>{setNumberOfSeats(e.target.value)}}/>
-                            <Warning label={numberOfSeatsWarning}/>
-                            
-                            <AddRideInputBox2 label="Price" value={price}  OnChange={(e)=>{setPrice(e.target.value)}}/>
-                            <Warning label={priceWarning}/>
-                            
-                            <AddRideInputBox2 label="Fascilities" value={facilities} OnChange={(e)=>{setFascilities(e.target.value)}}/>
-                        </div>
 
                         
                     </div>
                     
                     <div className="border cursor-pointer w-20 h-10 bg-blue-700 text-white p-2 text-center border-blue-600 rounded-lg shadow-lg hover:shadow-blue-400 transition ease-in-out"
                        onClick={async ()=>{
-                        let valid=validateInputs() ;
-                        if(fromLocation==toLocation){
-                            valid=false;
-                            setFromLocationWarning("Both Locations Must be different")
-                        }
-                        if(valid){
-                            console.log("sent")
-                            try{
-                                setLoading(true)
-                                const response=await axios.post("http://localhost:3000/user/rides/addRide",{
-                                    fromTime,
-                                    fromLocationInfo,
-                                    toTime,
-                                    toLocationInfo,
-                                    date,
-                                    boolCar,
-                                    vehicleName,
-                                    numberOfSeats,
-                                    price,
-                                    facilities
-                                },{
-                                    headers:{
-                                        authorization:localStorage.getItem("token")
+                                    let valid=validateInputs();
+                                    if(fromLocation==toLocation){
+                                        valid=false;
+                                        setFromLocationWarning("Both Locations Must be different")
+                                        setToLocationWarning("Both Locations Must be different")
                                     }
-                                })
-                                console.log(response)
-                                toast.success("Ride Added")
-                                setAllEmpty()
-
-                            }catch(e){
-                                console.log("error while Adding Rides: ",e);
-                                if(e.response && e.response.status==401){
-                                    toast.error("You are Not Signed In")
-                                    navigate("/cabapp")
-                                }else{
-                                    toast.error(e.response.data.message)
+                                    if(!valid)  return
+                                        console.log("sent")
+                                    if(price==0){
+                                        toast.error("Enter Price")
+                                        return;
+                                    }
+                                    if(numberOfSeats==0){
+                                        toast.error("Enter Seats")
+                                        return;
+                                    }
+                                        try{
+                                            setLoading(true)
+                                            const response=await axios.post("http://localhost:3000/user/rides/addRide",{
+                                                fromTime,
+                                                fromLocationInfo,
+                                                toTime,
+                                                toLocationInfo,
+                                                date,
+                                                boolCar,
+                                                vehicleName,
+                                                numberOfSeats,
+                                                price,
+                                                facilities
+                                            },{
+                                                headers:{
+                                                    authorization:localStorage.getItem("token")
+                                                }
+                                            })
+                                            console.log(response)
+                                            toast.success("Ride Added")
+                                            
+                                        }catch(e){
+                                            console.log("error while Adding Rides: ",e);
+                                            if(e.response && e.response.status==401){
+                                                toast.error("You are Not Signed In")
+                                                navigate("/cabapp")
+                                            }else{
+                                                if(e.response && e.reponse.data && e.response.data.message)
+                                                    toast.error(e.response.message)
+                                                else    
+                                                toast.error("Unexpected Error Occured")
+                                            }
+                                        }finally{
+                                            setLoading(false)
+                                            setAllEmpty()
+                                        }
+                                        
+                                    
+                                    }
                                 }
-                                
-                            }finally{
-                                setLoading(false)
-                            }
-                        }
-                       }} ><Lable/></div>
+                        ><Lable/></div>
                 </div>
             </div>
             

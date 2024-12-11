@@ -11,7 +11,7 @@ export function CabApp(){
                 
                 <div className="flex flex-col justify-start items-center ">    
                     
-                    <h1 className="text-4xl m-2 p-4 border-2 border-green-600 rounded-3xl  bg-green-600 text-white font-extrabold shadow-2xl shadow-blue-950 ">CabApp</h1>
+                    <h1 className="text-4xl m-2 p-4 border-2 border-blue-600 rounded-3xl  bg-blue-600 shadow-blue-400 text-gray-200 font-bold shadow-2xl ">CabApp</h1>
                     
                     <div className="flex justify-between mt-5 ">
                         <div className=" flex flex-col justify-start m-14 mr-14  items-center ">    

@@ -2,7 +2,7 @@ import {LoadingBlue} from "./Loading"
 
 export function Button({label , OnClick , loading}){
     return (
-            <div onClick={OnClick} className="cursor-pointer transition ease-in-out hover:border-green-600 w-full p-2 flex flex-col items-center border mt-3 rounded-3xl font-semibold text-white bg-green-500">
+            <div onClick={OnClick} className="cursor-pointer transition ease-in-out hover:border-blue-600 w-full p-2 flex flex-col items-center border mt-3 rounded-3xl font-semibold text-white bg-blue-500">
                 { 
                     !loading ?
 

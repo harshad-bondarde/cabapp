@@ -18,7 +18,16 @@ const ShowPassengerDetails = () => {
             <div className='p-3'>
                 {passenger?.gender}
             </div>
-            <div className='p-3'>
+            <div className='p-3 overflow-y-auto
+                        [&::-webkit-scrollbar]:w-2
+                        [&::-webkit-scrollbar]:h-2
+                        [&::-webkit-scrollbar-track]:bg-gray-500
+                        [&::-webkit-scrollbar-thumb]:bg-gray-300
+                        dark:[&::-webkit-scrollbar-track]:bg-neutral-300
+                        dark:[&::-webkit-scrollbar-track]:rounded-full
+                        dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500
+                        dark:[&::-webkit-scrollbar-thumb]:rounded-full
+                        '>
                 {passenger?.email}
             </div>
             <div className='p-3'>

@@ -83,6 +83,8 @@ export function SignIn({setSignIn}){
                                             }catch(e){
                                                 if(e.status==403){
                                                     setUserExists(e.response.data.message)
+                                                }else{
+                                                    toast.error("Unexpected Error Occured")
                                                 }
                                                 console.log("Error while signin: ",e)
                                             }finally{

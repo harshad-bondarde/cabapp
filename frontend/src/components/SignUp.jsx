@@ -5,7 +5,6 @@ import { InputBox } from "../components/InputBox"
 import { Button } from "../components/Button"
 import { useState } from "react"
 import { Warning } from "./warning"
-
 export function SignUp({ setSignIn }) {
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
@@ -73,6 +72,7 @@ export function SignUp({ setSignIn }) {
 
         return valid
     }
+    console.log(gender)
     return (
         <div>
             <div className="border-8  shadow-2xl  w-96 h rounded-2xl p-3 mb-10 ">
@@ -92,9 +92,11 @@ export function SignUp({ setSignIn }) {
                         <InputBox label="Password" OnChange={e => setPassword(e.target.value)} />
                         <Warning label={passwordWarning} />
 
-                        <InputBox label="Gender" OnChange={e => setGender(e.target.value.toLowerCase())} />
-                        <Warning label={genderWarning} />
-
+                        <div className="flex">
+                            <InputBox label="Gender" OnChange={e => setGender(e.target.value.toLowerCase())} />
+                            <Warning label={genderWarning} />
+                        </div>
+                        
                         <InputBox label="PhoneNo" OnChange={e => setPhoneNo(e.target.value)} />
                         <Warning label={phoneNoWarning} />
 
@@ -112,7 +114,6 @@ export function SignUp({ setSignIn }) {
                                         phoneNo
                                     })
                                     console.log(response)
-                                    // console.log(response.data.message)
                                     if (response.data.message == "email already exists") {
                                         setUserExists("* Email already exists")
                                     }

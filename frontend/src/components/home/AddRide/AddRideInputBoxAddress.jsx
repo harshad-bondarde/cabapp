@@ -1,18 +1,36 @@
 import { useState } from "react"
 import { useGetSuggestions } from "../../mapboxAPI/useGetSuggestions"
+import { MapPin } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import { setShowMap ,setMapCoordinates } from "../../../store/mapSlice";
 
-export function AddRideInputBoxAddress({ label , placeholder ,setFinalLocation ,setFinalLocationInfo }){
-    
+export function AddRideInputBoxAddress({ label , placeholder ,setFinalLocation ,setFinalLocationInfo ,finalLocationInfo }){
+    const dispatch=useDispatch()    
     const [location,setLocation]=useState("")
     const [suggestions,setSuggestions]=useState([])
     const getSuggestions=useGetSuggestions({setSuggestions,setLocation})    
-    
+    const handlePinClick=()=>{
+        console.log("hi")
+        const coordinates=finalLocationInfo.coordinates
+        if(!coordinates){
+            toast.error("Select a Location !!!")
+            return;
+        }
+        dispatch(setMapCoordinates(coordinates))
+        dispatch(setShowMap(true))
+    }
     return (
         <>    
             <div className="mb-2">
                 
-                <div className="text-sm mb-1 mx-2">
-                    {label}
+                <div className="flex justify-between text-sm mb-1 mx-2 font-medium items-center">
+                    <div>
+                        {label}
+                    </div>
+                    <div className="mt-1 flex items-center text-gray-400 cursor-pointer">
+                       View <MapPin size={15} className="ml-1 " onClick={()=>handlePinClick()}/>
+                    </div>
                 </div>
 
                 <input  type="text" value={location} 
@@ -30,7 +48,7 @@ export function AddRideInputBoxAddress({ label , placeholder ,setFinalLocation ,
                             } 
                     } 
                                                                                             
-                    className={`p-4 border-2 border-slate-300 rounded-lg shadow-lg hover:shadow-green-500 transition ease-in-out duration 300ms hover:-translate-y-1 h-12 w-72`}/>
+                    className={`p-4 border-2 border-slate-300 rounded-lg shadow-lg font-medium hover:shadow-blue-300 transition ease-in-out duration 300ms hover:-translate-y-1 h-12 w-full`}/>
 
             </div>
 
