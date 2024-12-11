@@ -4,7 +4,8 @@ const userSlice=createSlice({
     name:"user",
     initialState:{
         authUser:null,
-        showCaptainInfo:null
+        showCaptainInfo:null,
+        passengerDetails:[]
     },
 
     reducers:{
@@ -13,9 +14,12 @@ const userSlice=createSlice({
         },
         setShowCaptainInfo:(state,action)=>{
             state.showCaptainInfo=action.payload
+        },
+        setPassengerDetails:(state,action)=>{
+            state.passengerDetails=action.payload
         }
     }
 })
 
-export const { setAuthUser ,setShowCaptainInfo } =userSlice.actions
+export const { setAuthUser ,setShowCaptainInfo , setPassengerDetails } =userSlice.actions
 export default userSlice.reducer

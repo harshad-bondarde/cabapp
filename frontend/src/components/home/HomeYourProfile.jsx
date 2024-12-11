@@ -11,8 +11,6 @@ export function YourProfile({userInfo}){
     const [pastRidesButton,setPastRidesButton]=useState(false)
     const [rides,setRides]=useState([])
     const [loading,setLoading]=useState(false)
-    console.log(loading)
-
     useEffect(()=>{
         const getrides=async ()=>{
             try{
@@ -37,7 +35,7 @@ export function YourProfile({userInfo}){
         getrides()
     },[])
 
-    console.log(rides)
+    // console.log(rides)
 
     function convertToDateObject(dateString) {
         const [day, month, year] = dateString.split("-").map(Number);
@@ -66,7 +64,7 @@ export function YourProfile({userInfo}){
     return (
         <>  
             <div className="flex flex-col justify-center items-center mt-5">
-                <div className="border-2  bg-gray-400 p-3 rounded-md text-xl font-medium border-gray-400">
+                <div className="border-2  bg-blue-400 p-3 rounded-md text-xl font-semibold shadow-xl shadow-blue-300 bg-opacity-55 border-blue-300">
                     Your Profile
                 </div>  
                 {userInfo ? <Profile userInfo={userInfo}/> : null}

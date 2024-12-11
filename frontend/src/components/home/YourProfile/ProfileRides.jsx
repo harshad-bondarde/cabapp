@@ -6,18 +6,27 @@ import { EmptyRides } from '../../EmptyRides';
 import EndofList from '../../EndofList';
 import { LoadingRed } from '../../Loading';
 import { useState } from 'react';
+import { CircleUser ,Info } from 'lucide-react';
+import { LoadingBlue } from '../../Loading';
+import { setPassengerDetails } from '../../../store/userSlice';
+import { useDispatch , useSelector } from 'react-redux';
 
 export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
     
     function ProfRide({ride , pastRidesButton}){
+        const dispatch=useDispatch()
+        const passengers=useSelector(state=>state.user)
         const rideId=ride?.rideid
         const boolRide=ride?.boolride
         const boolCar=ride?.boolcar
         const date=ride?.date;
         const price=ride?.price
+        const numberOfSeats=ride?.numberofseats
+        const numberOfSeatsAvailable=ride?.numberofseatsavailable
         const seatsBooked=ride?.numberofseats-ride?.numberofseatsavailable
         const vehicleName=ride?.vehiclename
         const [loading,setLoading]=useState(false)
+        const [loadingUserDetails,setLoadingUserDetails]=useState(false)
 
         const fromTime=ride?.fromtime
         const fromLocationArray=ride?.fromlocation.split("-")
@@ -60,6 +69,49 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
                 </>
             )
         }
+        
+        function Seats({numberOfSeats,numberOfSeatsAvailable}){
+            const divs=[]
+            {    
+                for(let i=0;i<numberOfSeats;i++){
+                    divs.push(
+                        i<numberOfSeatsAvailable?
+                            <CircleUser key={i} className='text-green-400 '/>
+                            :
+                            <CircleUser key={i} className='text-red-400'/>
+                    )
+                }
+            }       
+            return (
+                <div className='flex mt-3 ml-4 space-x-1 items-center '>
+                    {divs}
+                </div>
+            )
+        }
+
+        const GetPassengerDetails=async ()=>{
+            if(seatsBooked==0){
+                toast("No User Booked This Ride...")
+                return;
+            }
+            try {
+                setLoadingUserDetails(true)
+                const response=await axios.post("http://localhost:3000/user/rides/getpassengerdetailes",{
+                    rideId
+                },{
+                    headers:{
+                        authorization:localStorage.getItem("token")
+                    }
+                })
+                dispatch(setPassengerDetails(response.data.passengers))
+                
+            } catch (error) {
+                
+            }finally{
+                setLoadingUserDetails(false)
+            }
+        }
+
         return (
             <>  
                 {   ride ?
@@ -68,20 +120,38 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
                         <div className="border-2 border-blue-200 shadow-blue-200 h-32 mx-3 rounded-xl p-2 shadow-md flex justify-between w-full">
                             
                             <div className='w-44 flex justify-start'>
-                                <div className='flex flex-col space-y-3 '>
+                                <div className='flex flex-col space-y-1 items-center'>
                                     
-                                    <div className="flex">
+                                    <div className='ml-5 mb-1'>
                                         Vehicle Name
                                     </div>
 
                                     <div className='flex items-center w-30'>
-                                        <div className="mt-2 ml-4 ">
+                                        <div className="ml-4 ">
                                             {boolCar?<CarFront/>:<Bike/>}
                                         </div>
-                                        <div className='ml-4 mt-2 text-sm font-semibold'>
+                                        <div className='ml-4  text-sm font-semibold'>
                                             {vehicleName?capitaliser(vehicleName):"?"}
                                         </div>
                                     </div>
+
+                                    {   
+                                        boolRide && 
+                                            <div className='flex items-center cursor-pointer' onClick={()=>{GetPassengerDetails()}}>
+                                                <div>                                                
+                                                    <Seats numberOfSeats={numberOfSeats} numberOfSeatsAvailable={numberOfSeatsAvailable}/>
+                                                </div>
+                                                <div className='mt-3 ml-1'>
+                                                    { !loadingUserDetails ?
+                                                            <Info className='text-gray-500'/>
+                                                        :
+                                                        <div className='h-6 w-6'>
+                                                            <LoadingBlue/>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                    }
 
                                 </div>
                             </div>

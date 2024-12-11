@@ -163,11 +163,14 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
 
 
                             <div className='flex flex-col justify-between'>
-                                
-                                <div className='font-medium text-lg mr-2 flex justify-end underline '>
-                                    {date? date:"?"}
+                                <div className='items-center flex justify-between pl-1'>
+                                    <div className='font-semibold border-2 p-1 rounded-lg bg-gray-300 pl-2 pr-2'>
+                                        Ticket ID - {bookedRidesId}
+                                    </div>
+                                    <div className='font-medium text-lg mr-2 flex underline '>
+                                        {date? date:"?"}
+                                    </div>
                                 </div>
-                                
                                 <div className='flex space-x-2 mr-8'>    
                                     <div className='text-center font-medium text-'>
                                         <div className='flex space-x-5 font-medium text-sm'>

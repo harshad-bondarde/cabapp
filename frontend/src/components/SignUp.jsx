@@ -111,6 +111,7 @@ export function SignUp({ setSignIn }) {
                                         gender,
                                         phoneNo
                                     })
+                                    console.log(response)
                                     // console.log(response.data.message)
                                     if (response.data.message == "email already exists") {
                                         setUserExists("* Email already exists")

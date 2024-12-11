@@ -25,8 +25,8 @@ export function Profile({userInfo}){
     
     return (
         <>
-            <div className="flex flex-col justify-center items-center mt-5">
-                <div className="border-2 border-blue-200 p-5 m-3 w-fit h-fit bg-gray-300 rounded-2xl shadow-xl shadow-blue-200 ">    
+            <div className="flex flex-col justify-center items-center mt-5 ">
+                <div className="border-2 border-blue-200 p-5 bg-opacity-20 m-3 w-fit h-fit bg-blue-300 rounded-2xl shadow-xl shadow-blue-200 ">    
                     
                     <div className="flex space-x-8 font-medium">
                         <div className="flex flex-col space-y-7">
