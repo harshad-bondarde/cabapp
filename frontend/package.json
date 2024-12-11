@@ -9,6 +9,14 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
+
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/cabapp/$1"
+    }
+  ],
+  
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
