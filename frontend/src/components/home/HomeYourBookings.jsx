@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { UpcomingBookedRides } from "./YourBookings/UpcomingBookedRides"
 import { useNavigate } from "react-router-dom"
 import {LoadingBlue} from "../Loading"
+import { url } from "../../assets/url"
 import toast from "react-hot-toast"
 import axios from "axios"
 
@@ -15,7 +16,7 @@ export function YourBookings(){
         const getBookingsArray = async () => {
             try {
                 setLoading(true)
-                const response = await axios.get("http://localhost:3000/user/rides/bookings", {
+                const response = await axios.get(`${url}/user/rides/bookings`, {
                     headers: {
                         authorization: localStorage.getItem("token")
                     }

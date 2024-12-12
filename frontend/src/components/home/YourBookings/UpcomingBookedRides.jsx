@@ -2,6 +2,8 @@ import { CarFront } from 'lucide-react';
 import { Bike , IndianRupee  , CircleChevronRight} from 'lucide-react';
 import axios from "axios"
 import toast from 'react-hot-toast';
+
+import { url } from '../../../assets/url';
 import { Profile } from '../YourProfile/Profile';
 import { useEffect, useState } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
@@ -55,7 +57,7 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
 
         async function getCaptainInfo(){
             try{
-                const response=await axios.post("http://localhost:3000/user/getuser",{
+                const response=await axios.post(`${url}/user/getuser`,{
                     userId:captainId
                 },{
                     headers:{
@@ -209,7 +211,7 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
                         { !bookingsButton ? 
                             <div onClick={async()=>{
                                     setLoading(true)
-                                    const response=await axios.post("http://localhost:3000/user/cancelride",{
+                                    const response=await axios.post(`${url}/user/cancelride`,{
                                         bookedRidesId,
                                         rideId:ride?.rideid
                                     },{

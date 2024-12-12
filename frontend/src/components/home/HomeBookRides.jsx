@@ -11,6 +11,8 @@ import dayjs from "dayjs"
 import { X } from 'lucide-react';
 import EndofList from "../EndofList"
 import {LoadingBlue} from "../Loading"
+import { url } from "../../assets/url"
+
 export function BookRides(){
     const [finalfrom,setFinalFrom]=useState("")
     const [finalTo,setFinalTo]=useState("")
@@ -89,7 +91,7 @@ export function BookRides(){
                     onClick={async ()=>{
                             if(finalfrom!="" && finalTo!="" && date!=""){  
                                 setLoading(true)
-                                const response=await axios.post("http://localhost:3000/user/rides/AvailableRides",{
+                                const response=await axios.post(`${url}/user/rides/AvailableRides`,{
                                     fromCoordinates,
                                     toCoordinates,
                                     date

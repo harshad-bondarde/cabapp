@@ -3,12 +3,11 @@ import {CabApp} from "./pages/cabapp"
 import { Home } from "./pages/home"
 import {Test} from "./pages/test"
 import toast, { Toaster } from 'react-hot-toast';
-import Hello from "./pages/Hello";
 function App() {
 
   return (
     <>
-      <BrowserRouter basename="/cabapp">
+      <BrowserRouter>
         <Routes>
           <Route path="/cabapp" element={<CabApp/>}/>
           <Route path="/cabapp/home" element={<Home/>}/>
@@ -19,7 +18,5 @@ function App() {
     </>
   )
 }
-//add feature in your profile rides - map green red people emoji there onclick->display passenger details 
-//add ticket id in bookedride and your profile rides for users 
-//add loading feature everywhere 
+
 export default App

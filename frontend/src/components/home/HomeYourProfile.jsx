@@ -1,6 +1,7 @@
 import { Profile } from "./YourProfile/Profile";
 import { useEffect, useState } from "react";
 import axios from "axios"
+import { url } from "../../assets/url";
 import { ProfileRides } from "./YourProfile/ProfileRides";
 import { useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
@@ -15,7 +16,7 @@ export function YourProfile({userInfo}){
         const getrides=async ()=>{
             try{
                 setLoading(true)
-                const response=await axios.get("http://localhost:3000/user/rides/getrides",{
+                const response=await axios.get(`${url}/user/rides/getrides`,{
                     headers:{
                         authorization:localStorage.getItem("token")
                     }

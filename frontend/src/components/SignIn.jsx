@@ -1,5 +1,5 @@
 import axios from "axios"
-
+import { url } from "../assets/url"
 import { Heading } from "../components/heading"
 import { InputBox } from "../components/InputBox"
 import { Button } from "../components/Button"
@@ -67,7 +67,7 @@ export function SignIn({setSignIn}){
                                             try{  
                                                 
                                                 setLoading(true)  
-                                                const response=await axios.post("http://localhost:3000/user/signin",{
+                                                const response=await axios.post(`${url}/user/signin`,{
                                                     email,
                                                     password
                                                 })

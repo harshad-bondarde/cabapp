@@ -3,9 +3,9 @@ import { AddRideInputBoxAddress } from "./AddRide/AddRideInputBoxAddress"
 import { AddRideInputBox2 } from "./AddRide/AddRideInputBox2"
 import {Warning} from "../warning"
 import {LoadingBlue} from "../Loading"
+import { url } from "../../assets/url"
 
 import axios from "axios"
-
 import {DatePicker} from "@mui/x-date-pickers/DatePicker"
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -210,7 +210,7 @@ export function AddRide(){
                                     }
                                         try{
                                             setLoading(true)
-                                            const response=await axios.post("http://localhost:3000/user/rides/addRide",{
+                                            const response=await axios.post(`${url}/user/rides/addRide`,{
                                                 fromTime,
                                                 fromLocationInfo,
                                                 toTime,

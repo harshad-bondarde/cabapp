@@ -53,7 +53,7 @@ export function Ride({ride}){
     useEffect(()=>{
         const getinfo=async ()=>{
             try {
-                const response=await axios.post("http://localhost:3000/user/getuser",{
+                const response=await axios.post(`${url}/user/getuser`,{
                     "userId":captainId
                 },{
                     headers:{

@@ -1,5 +1,6 @@
 import axios from "axios"
 import toast from "react-hot-toast"
+import { url } from "../../../assets/url"
 // import { useNavigate } from "react-router-dom"
 export async function HandleBooking({rideId,seatsBooked,captainId,captainFirstname,captainLastname,navigate,setLoading}){
     
@@ -12,7 +13,7 @@ export async function HandleBooking({rideId,seatsBooked,captainId,captainFirstna
     
     try{ 
         setLoading(true)
-        const response=await axios.post("http://localhost:3000/user/bookride",{
+        const response=await axios.post(`${url}/user/bookride`,{
             rideId:rideId,
             seatsBooked:seatsBooked,
             date:`${day}-${month}-${year}`,

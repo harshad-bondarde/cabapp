@@ -10,6 +10,7 @@ import { CircleUser ,Info } from 'lucide-react';
 import { LoadingBlue } from '../../Loading';
 import { setPassengerDetails } from '../../../store/userSlice';
 import { useDispatch , useSelector } from 'react-redux';
+import { url } from '../../../assets/url';
 
 export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
     
@@ -90,23 +91,25 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
         }
 
         const GetPassengerDetails=async ()=>{
+            console.log("hi")
             if(seatsBooked==0){
                 toast("No User Booked This Ride...")
                 return;
             }
             try {
                 setLoadingUserDetails(true)
-                const response=await axios.post("http://localhost:3000/user/rides/getpassengerdetailes",{
+                const response=await axios.post(`${url}/user/rides/getpassengerdetailes`,{
                     rideId
                 },{
                     headers:{
                         authorization:localStorage.getItem("token")
                     }
                 })
+                console.log(response)
                 dispatch(setPassengerDetails(response.data.passengers))
                 
             } catch (error) {
-                
+                console.log(error)
             }finally{
                 setLoadingUserDetails(false)
             }
@@ -255,7 +258,7 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
                                     if(!boolRide)
                                         return;
                                     setLoading(true)
-                                    const response=await axios.post("http://localhost:3000/user/deleteride",{
+                                    const response=await axios.post(`${url}/user/deleteride`,{
                                         rideId
                                     },{
                                         headers:{
