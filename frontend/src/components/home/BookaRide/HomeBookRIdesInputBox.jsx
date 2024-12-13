@@ -79,15 +79,6 @@ export function BookRidesInputBox({label , placeholder , searchForAddress ,setFi
                 </div>
             }
 
-            {/* <div>
-                {
-                    showMap && <GetRealTimeLocations
-                                INITIAL_CENTER={[coordinates.longitude,coordinates.latitude]}
-                                INITIAL_ZOOM={5}
-                                setShowMap={setShowMap}
-                               />
-                }
-            </div> */}
         </div>
     )
 }

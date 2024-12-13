@@ -1,15 +1,12 @@
 import axios from "axios"
 import toast from "react-hot-toast"
 import { url } from "../../../assets/url"
-// import { useNavigate } from "react-router-dom"
-export async function HandleBooking({rideId,seatsBooked,captainId,captainFirstname,captainLastname,navigate,setLoading}){
+export async function HandleBooking({rideId,seatsBooked,captainId,captainFirstname,captainLastname,setLoading,setShowBookTicket}){
     
     let date=new Date()
     let day=date.getDate()
     let month=date.getMonth()+1
     let year=date.getFullYear()
-
-    // const navigate=useNavigate()
     
     try{ 
         setLoading(true)
@@ -41,7 +38,8 @@ export async function HandleBooking({rideId,seatsBooked,captainId,captainFirstna
             toast.error("Internal Server Error")
         }
     }finally{
-        setLoading(false)
+        await setLoading(false)
+        setShowBookTicket(false)
     }
     
 }

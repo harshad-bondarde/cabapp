@@ -172,9 +172,7 @@ router.get("/getrides",userMiddleware,async (req,res)=>{
 
 router.post("/getpassengerdetailes",userMiddleware,async (req,res)=>{
     const userId=req.userId;
-    console.log(userId)
     const { rideId }=req.body
-    console.log(rideId)
     const text=`select users.firstname,
                        users.lastname,
                        users.email,

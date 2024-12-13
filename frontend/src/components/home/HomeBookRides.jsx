@@ -90,27 +90,31 @@ export function BookRides(){
                 <button className="border-4 p-3 ml-6 mt-6 mb-20 w-20 h-14  bg-blue-500 border-blue-500 hover:shadow-md rounded-xl text-white"
                     onClick={async ()=>{
                             if(finalfrom!="" && finalTo!="" && date!=""){  
-                                setLoading(true)
-                                const response=await axios.post(`${url}/user/rides/AvailableRides`,{
-                                    fromCoordinates,
-                                    toCoordinates,
-                                    date
-                                },{
-                                    headers:{
-                                        authorization:localStorage.getItem("token")
+                                try{    
+                                    setLoading(true)
+                                    const response=await axios.post(`${url}/user/rides/AvailableRides`,{
+                                        fromCoordinates,
+                                        toCoordinates,
+                                        date
+                                    },{
+                                        headers:{
+                                            authorization:localStorage.getItem("token")
+                                        }
+                                    })
+                                    console.log(response)
+                                    if(response.data.status==403){
+                                        //error while connecting to database try after sometime
+                                        toast.error(response.message)
+                                        console.log(response.message) 
+                                    }else{
+                                        setRides(response.data.rides)
+                                        setShowRides(true)
                                     }
-                                })
-                                if(response){
+                                }catch(e){
+                                    console.log(e)
+                                    toast.error("Error while fetching rides")
+                                }finally{
                                     setLoading(false)
-                                }
-                                console.log(response)
-                                if(response.data.status==403){
-                                    //error while connecting to database try after sometime
-                                    toast.error(response.message)
-                                    console.log(response.message) 
-                                }else{
-                                    setRides(response.data.rides)
-                                    setShowRides(true)
                                 }
                             }else{
                                 toast.error("Enter Valid Inputs")
@@ -120,10 +124,11 @@ export function BookRides(){
             </div>
 
 
-            {   showRides?            
+            {   
+                !loading?            
                 
                     <div>  
-                        {   !loading ?
+                        {   showRides ?
                                 <div>     
                                     { rides.length>0 ? 
                                         <>
@@ -136,15 +141,15 @@ export function BookRides(){
                                     }
                                 </div>
                             :
-                            <div className="flex justify-center mt-10 ">
-                                <div className="w-20 h-20">
-                                    <LoadingBlue/>
-                                </div>
-                            </div>
+                            null
                         }
                     </div>
                 :            
-                    null
+                <div className="flex justify-center mt-10 ">
+                    <div className="w-20 h-20">
+                        <LoadingBlue/>
+                    </div>
+                </div>
             }
             
 

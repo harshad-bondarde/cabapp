@@ -9,6 +9,7 @@ import { Phone } from 'lucide-react';
 import { Mail } from 'lucide-react';
 import { LoadingBlue } from '../../Loading';
 
+import { url } from '../../../assets/url';
 import { useEffect, useState } from 'react';
 import axios from "axios"
 import {Warning} from "../../warning"
@@ -149,7 +150,7 @@ export function Ride({ride}){
                                         <div>{captainInfo.lastname ? capitaliser(captainInfo.lastname) : "?"}</div>
                                     </div>
                                     <div className='text-xs text-blue-500'>
-                                        {captainInfo.numberofrides} ride{captainInfo.numberofrides>1?"s":null} published
+                                        {captainInfo.numberofrides} Ride{captainInfo.numberofrides>1?"s":null} Published
                                     </div>
                                 </div>
                             </div>
@@ -162,9 +163,7 @@ export function Ride({ride}){
                         <div className='flex justify-center mt-5'>
                             <div className="flex space-x-5 items-center">    
                                 <div className="flex flex-col items ml-3 text-sm font-medium space-y-1">
-                                    {/* <div className='w-14'> */}
-                                    {/* </div> */}
-                                    <div className='flex flex-col items-center'>
+                                   <div className='flex flex-col items-center'>
                                         <div className='text-xl'>
                                             {fromLocationArray[0]}
                                         </div>
@@ -235,7 +234,7 @@ export function Ride({ride}){
                         
                         </div>
 
-                        { seatsBooked>0?    
+                        { seatsBooked>0 ?    
                             <div className='flex justify-center mt-3 items-center'>
                                     <div className='text-lg font-medium'>
                                         Total Price : 
@@ -275,9 +274,9 @@ export function Ride({ride}){
                                     return;
                                 }
                                 const rideId=ride.rideid
-                                HandleBooking({rideId,seatsBooked,captainId,captainFirstname,captainLastname,navigate,setLoading})
-                                if(loading==false)
-                                    setShowBookTicket(false);
+                                HandleBooking({rideId,seatsBooked,captainId,captainFirstname,captainLastname,setLoading,setShowBookTicket})
+                                // if(loading==false)
+                                //     setShowBookTicket(false);
                                 }} className=' border-2 bg-blue-500 hover:border-blue-400  text-white p-2 mb-2 rounded-2xl text-center mt-4 w-20 cursor-pointer'>
                                 <BookingLabel/>
                             </div>
@@ -300,7 +299,7 @@ export function Ride({ride}){
                         return;
                     
                 }
-                }} className={`border-2 h-38 mx-40 cursor-pointer rounded-xl p-2 shadow-md ${showBookTicket ?'': 'hover:border-blue-300 transition ease-in-out duration-300 hover:shadow-2xl hover:-translate-y-1'}`}>
+                }} className={`border-2 mb-7 h-38 mx-40 cursor-pointer rounded-xl p-2 shadow-md ${showBookTicket ?'': 'hover:border-blue-300 transition ease-in-out duration-300 hover:shadow-2xl hover:-translate-y-1'}`}>
                     <div className='flex justify-between'>   
                         
                         <div className="flex  space-x-5 items-center">    

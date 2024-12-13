@@ -199,7 +199,6 @@ export function AddRide(){
                                         setToLocationWarning("Both Locations Must be different")
                                     }
                                     if(!valid)  return
-                                        console.log("sent")
                                     if(price==0){
                                         toast.error("Enter Price")
                                         return;
@@ -208,6 +207,7 @@ export function AddRide(){
                                         toast.error("Enter Seats")
                                         return;
                                     }
+                                    console.log("sent")
                                         try{
                                             setLoading(true)
                                             const response=await axios.post(`${url}/user/rides/addRide`,{

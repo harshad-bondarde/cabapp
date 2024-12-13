@@ -10,7 +10,8 @@ import { useDispatch,useSelector } from 'react-redux';
 import { setShowCaptainInfo } from '../../../store/userSlice';
 import { EmptyRides } from '../../EmptyRides';
 import EndofList from '../../EndofList';
-import { LoadingRed } from '../../Loading';
+import { LoadingRed , LoadingBlue } from '../../Loading';
+
 export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButton }){
     const dispatch=useDispatch()
     const [loading,setLoading]=useState(false)
@@ -28,6 +29,7 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
         const captainLastname=ride?.captainlastname
         const captainId=ride?.captainid 
         const {showCaptainInfo}=useSelector(state=>state.user)
+        const [loadCaptainInfo,setLoadCaptainInfo]=useState(false)
         
         const fromTime=ride?.fromtime
         const fromLocationArray=ride?.fromlocation.split("-")
@@ -56,6 +58,7 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
         }
 
         async function getCaptainInfo(){
+            setLoadCaptainInfo(true)
             try{
                 const response=await axios.post(`${url}/user/getuser`,{
                     userId:captainId
@@ -71,6 +74,8 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
             }catch (error) {
                 toast.error("Error While Getting Info")
                 console.log(error)
+            }finally{
+                setLoadCaptainInfo(false)
             }
         }
         const Label=()=>{
@@ -86,6 +91,16 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
                 </>
             )
         }
+
+        const CaptainName=()=>{
+            return (
+                <div>   
+                                      
+                                
+                        
+                </div>
+            )
+        }
         return (
             <>  
                 {   ride ?
@@ -96,14 +111,21 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
                                 <div className='flex flex-col space-y-3 '>
                                     
                                     <div
-                                        className="flex cursor-pointer mt-2 ml-2 transition ease-in-out duration-300 hover:-translate-y-1 "
+                                        className="flex cursor-pointer mt-2 ml-2 items-center transition ease-in-out duration-300 hover:-translate-y-1 "
                                         onClick={getCaptainInfo} >
                                         <div className="text-xl p-1 bg-gray-400 text-white border-2 rounded-full w-10 h-10 text-center">
                                             { captainFirstname?captainFirstname[0].toUpperCase():"?" }
                                         </div>
-                                        <div className="flex items-center font-medium ml-2">
-                                            {captainFirstname && captainLastname ? capitaliser(captainFirstname)+" "+capitaliser(captainLastname) : "?"}
-                                        </div>
+                                        <div>   {   !loadCaptainInfo ?
+                                                        <div className="flex items-center font-medium ml-2">
+                                                            {captainFirstname && captainLastname ? capitaliser(captainFirstname)+" "+capitaliser(captainLastname) : "?"}
+                                                        </div>
+                                                    :
+                                                        <div className='w-5 h-5 ml-4'>
+                                                            <LoadingBlue/>
+                                                        </div>
+                                                }
+                                        </div> 
                                     </div>
 
                                     <div className='flex items-center w-30'>
