@@ -196,6 +196,28 @@ router.post("/getpassengerdetailes",userMiddleware,async (req,res)=>{
     }
 })
 
+router.post("/getpassengernameemail",async (req,res)=>{
+    const rideId=req.body.rideId;
+    const text=`select users.firstname,
+                       users.lastname,
+                       users.email
+                       from users
+                       join bookedrides on bookedrides.userid=users.id
+                       where rideid=$1`
+    try {
+        const response=await client.query(text,[rideId]);
+        return res.status(200).json({
+            passengers:response.rows
+        })
+        console.log(response)
+    } catch (error) {
+        console.log(error)
+        return res.status(503).json({
+            message:"something went wrong while getting user info"
+        })
+    }
+})
+
 module.exports=router;
 
 
