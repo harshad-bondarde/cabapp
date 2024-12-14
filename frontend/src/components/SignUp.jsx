@@ -73,7 +73,6 @@ export function SignUp({ setSignIn }) {
 
         return valid
     }
-    console.log(gender)
     return (
         <div>
             <div className="border-8  shadow-2xl  w-96 h rounded-2xl p-3 mb-10 ">

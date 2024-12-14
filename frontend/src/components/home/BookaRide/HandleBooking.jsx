@@ -1,13 +1,35 @@
 import axios from "axios"
 import toast from "react-hot-toast"
 import { url } from "../../../assets/url"
-export async function HandleBooking({rideId,seatsBooked,captainId,captainFirstname,captainLastname,setLoading,setShowBookTicket}){
+
+export async function HandleBooking({rideId,seatsBooked,captainInfo , ride ,setLoading,setShowBookTicket ,authUser , getEmailJsRideBookedEvent}){
     
+    console.log("hi")
+    //captainId captainFirstname captainLastname
+    const captainId=captainInfo.id
+    const captainFirstname=captainInfo.firstname
+    const captainLastname=captainInfo.lastname
+
+    const fromLocation=ride.fromlocation;
+    const fromLocationArray=fromLocation.split("-")
+    
+    const toLocation=ride.tolocation;
+    const toLocationArray=toLocation.split("-")
     let date=new Date()
     let day=date.getDate()
     let month=date.getMonth()+1
     let year=date.getFullYear()
-    
+    const sendEmail=getEmailJsRideBookedEvent({
+        captain_name:captainFirstname+' '+captainLastname,
+        captain_email:captainInfo.email,
+        src:fromLocationArray[0]+","+fromLocationArray[1],
+        dest:toLocationArray[0]+","+toLocationArray[1],
+        ride_date:ride.date,
+        user_name:authUser.firstname+" "+authUser.lastname,
+        user_emailID:authUser.email,
+        user_phoneno:authUser.phoneno,
+        user_seatsBooked:seatsBooked
+    })
     try{ 
         setLoading(true)
         const response=await axios.post(`${url}/user/bookride`,{
@@ -26,6 +48,8 @@ export async function HandleBooking({rideId,seatsBooked,captainId,captainFirstna
 
         if(response.status==200){
             toast.success("Ride Booked !!!")
+            await sendEmail()
+
         }
     }catch(e){
         if(e.response && e.response.status==403){
@@ -39,7 +63,7 @@ export async function HandleBooking({rideId,seatsBooked,captainId,captainFirstna
         }
     }finally{
         await setLoading(false)
-        setShowBookTicket(false)
+        setShowBookTicket(false)  
     }
     
 }

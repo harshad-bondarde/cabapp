@@ -11,12 +11,15 @@ import { LoadingBlue } from '../../Loading';
 import { setPassengerDetails } from '../../../store/userSlice';
 import { useDispatch , useSelector } from 'react-redux';
 import { url } from '../../../assets/url';
+import { getEmailJsRideDeletedEvent } from '../../EmailJsEvents/emailJsEvents';
 
 export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
     
     function ProfRide({ride , pastRidesButton}){
         const dispatch=useDispatch()
         const passengers=useSelector(state=>state.user)
+        const {authUser}=useSelector(state=>state.user)
+
         const rideId=ride?.rideid
         const boolRide=ride?.boolride
         const boolCar=ride?.boolcar
@@ -55,7 +58,7 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
             }
             return ans;
         }
-        const Lable=()=>{
+        const CancelLable=()=>{
             return (
                 <>
                     {   !loading ?
@@ -113,6 +116,54 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
             }finally{
                 setLoadingUserDetails(false)
             }
+        }
+
+        const CancelRideHandler=async ()=>{
+                if(!boolRide)
+                    return;
+                try{    
+                    setLoading(true)
+                    const response=await axios.post(`${url}/user/deleteride`,{
+                        rideId
+                    },{
+                        headers:{
+                            authorization:localStorage.getItem("token")
+                        }
+                    })
+                    if(response.status==500 || response.status==403){
+                        toast.error("Internal Server Error")
+                    }else if(response.status==200){
+                        toast.success("Ride Deleted Successfully")
+                    }
+                }catch(e){
+                    console.log(error)
+                    toast.error("Error while deleting ride")
+                    return;
+                }finally{
+                    setLoading(false)
+                    const response=await axios.post(`${url}/user/rides/getpassengernameemail`,{
+                        rideId
+                    })
+                    const passengerInfo=response.data.passengers
+                    console.log(passengerInfo)
+                    passengerInfo.forEach((passenger)=>{
+                        const sendEmail=getEmailJsRideDeletedEvent({
+                            passenger_name:passenger?.firstname+" "+passenger?.lastname,
+                            passenger_email:passenger?.email,
+                            src:fromLocationArray[0]+", "+fromLocationArray[1],
+                            dest:toLocationArray[0]+", "+toLocationArray[1],
+                            ride_date:ride?.date ,
+                            user_name:authUser?.firstname+" "+authUser?.lastname,
+                            user_emailID:authUser?.email,
+                            user_phoneno:authUser?.phoneno
+                        })
+                        const send=async()=>{
+                            await sendEmail()
+                        }
+                        send()
+                    })
+
+                }
         }
 
         return (
@@ -254,29 +305,9 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
                         
                         
                         { !pastRidesButton ? 
-                            <div onClick={async()=>{
-                                    if(!boolRide)
-                                        return;
-                                    setLoading(true)
-                                    const response=await axios.post(`${url}/user/deleteride`,{
-                                        rideId
-                                    },{
-                                        headers:{
-                                            authorization:localStorage.getItem("token")
-                                        }
-                                    })
-                                    if(response){
-                                        setLoading(false)
-                                    }
-                                    if(response.status==500 || response.status==403){
-                                        toast.error("Internal Server Error")
-                                    }else if(response.status==200){
-                                        toast.success("Ride Deleted Successfully")
-                                    }
-
-                            }} className={`border-2 rounded-2xl shadow-xl p-2 flex flex-col justify-center ${boolRide ? `cursor-pointer transition ease-in-out duration-300 hover:-translate-y-1 bg-red-300 border-red-300 hover:shadow-red-400 `:`bg-gray-300` } `}>
+                            <div onClick={CancelRideHandler} className={`border-2 rounded-2xl shadow-xl p-2 flex flex-col justify-center ${boolRide ? `cursor-pointer transition ease-in-out duration-300 hover:-translate-y-1 bg-red-300 border-red-300 hover:shadow-red-400 `:`bg-gray-300` } `}>
                                 <button className={`flex flex-col items-center text-sm font-medium ${!boolRide?'cursor-not-allowed':''}`}>
-                                    <Lable/>
+                                    <CancelLable/>
                                 </button> 
                             </div>
                             :

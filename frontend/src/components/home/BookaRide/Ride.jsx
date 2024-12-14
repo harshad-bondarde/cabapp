@@ -16,7 +16,11 @@ import {Warning} from "../../warning"
 import { HandleBooking } from './HandleBooking';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { useSelector } from 'react-redux';
+import { getEmailJsRideBookedEvent } from '../../EmailJsEvents/emailJsEvents';
+
 export function Ride({ride}){
+    const {authUser}=useSelector(state=>state.user)
     const navigate=useNavigate()
     const [loading,setLoading]=useState(false)
     const [seatsBooked,setSeatsBooked]=useState(0)
@@ -73,6 +77,7 @@ export function Ride({ride}){
 
     const captainFirstname=captainInfo.firstname
     const captainLastname=captainInfo.lastname
+    const captain_email=captainInfo.email
     // console.log(captainFirstname)
     // console.log(captainLastname)
     function capitaliser(name){
@@ -274,9 +279,8 @@ export function Ride({ride}){
                                     return;
                                 }
                                 const rideId=ride.rideid
-                                HandleBooking({rideId,seatsBooked,captainId,captainFirstname,captainLastname,setLoading,setShowBookTicket})
-                                // if(loading==false)
-                                //     setShowBookTicket(false);
+                                HandleBooking({rideId,seatsBooked,captainInfo, ride, setLoading,setShowBookTicket , authUser ,getEmailJsRideBookedEvent})
+                                
                                 }} className=' border-2 bg-blue-500 hover:border-blue-400  text-white p-2 mb-2 rounded-2xl text-center mt-4 w-20 cursor-pointer'>
                                 <BookingLabel/>
                             </div>

@@ -11,7 +11,7 @@ function App() {
         <Routes>
           <Route path="/cabapp" element={<CabApp/>}/>
           <Route path="/cabapp/home" element={<Home/>}/>
-          <Route path="/cabapp/Test" element={<Test/>}/> {/*for testing */}
+          <Route path="/cabapp/test" element={<Test/>}/> {/*for testing */}
         </Routes>
       </BrowserRouter>
       <Toaster/>

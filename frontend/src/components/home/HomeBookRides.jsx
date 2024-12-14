@@ -12,7 +12,6 @@ import { X } from 'lucide-react';
 import EndofList from "../EndofList"
 import {LoadingBlue} from "../Loading"
 import { url } from "../../assets/url"
-
 export function BookRides(){
     const [finalfrom,setFinalFrom]=useState("")
     const [finalTo,setFinalTo]=useState("")
@@ -65,7 +64,6 @@ export function BookRides(){
         )
     }
 
-    console.log(rides)
     return (
         <div className="w-full">  
             <div className="flex justify-center mt-5 text-xl font-medium text-stone-700">
