@@ -28,6 +28,8 @@ export function YourProfile({userInfo}){
                     toast.error("You are Not Signed")
                     
                     navigate("/cabapp")
+                }else{
+                    toast.error("Error while getting Rides...")
                 }
             }finally{
                 setLoading(false)

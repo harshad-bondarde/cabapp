@@ -34,8 +34,10 @@ router.post("/addRide",userMiddleware,async(req,res)=>{
                                        numberofseats,
                                        price,
                                        facilities,
-                                       numberofseatsavailable)
-                    values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16);`
+                                       numberofseatsavailable,
+                                       boardingpoint,
+                                       droppingpoint)
+                    values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18);`
         const response1=await client.query(text,[userId,
                                         info.fromTime,
                                         fromLocation, 
@@ -51,7 +53,9 @@ router.post("/addRide",userMiddleware,async(req,res)=>{
                                         info.numberOfSeats,
                                         info.price,
                                         info.facilities,
-                                        info.numberOfSeats
+                                        info.numberOfSeats,
+                                        info.boardingPoint,
+                                        info.droppingPoint
                                         ])
         const text2=`update users
                     set numberofrides=numberofrides+1
@@ -132,10 +136,13 @@ router.get("/bookings",userMiddleware, async(req,res)=>{
                         rides.boolcar,
                         rides.vehiclename,
                         rides.price,
-                        rides.facilities
+                        rides.facilities,
+                        rides.boardingpoint,
+                        rides.droppingpoint 
                     from bookedrides 
                     join rides on bookedrides.rideid=rides.rideid
-                    where bookedrides.userid=$1`
+                    where bookedrides.userid=$1
+                    order by date`
         const response=await client.query(text,[userId]);
         return res.status(200).json({
             bookedRides:response.rows
@@ -203,7 +210,7 @@ router.post("/getpassengernameemail",async (req,res)=>{
                        users.email
                        from users
                        join bookedrides on bookedrides.userid=users.id
-                       where rideid=$1`
+                       where rideid=$1` 
     try {
         const response=await client.query(text,[rideId]);
         return res.status(200).json({
@@ -213,7 +220,7 @@ router.post("/getpassengernameemail",async (req,res)=>{
     } catch (error) {
         console.log(error)
         return res.status(503).json({
-            message:"something went wrong while getting user info"
+            message:"something went wrong while getting user info" 
         })
     }
 })

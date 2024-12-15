@@ -21,7 +21,7 @@ export function AddRide(){
     const [fromTime,setFromTime]=useState("")
     const [fromLocation,setFromLocation]=useState("")
     const [fromLocationInfo,setFromLocationInfo]=useState({})
-    const [boardingPoint,setboardingPoint]=useState("")
+    const [boardingPoint,setBoardingPoint]=useState("")
     
     const [toTime,setToTime]=useState("")
     const [toLocation,setToLocation]=useState("")
@@ -43,13 +43,15 @@ export function AddRide(){
     console.log(fromLocationInfo)
     console.log(toLocationInfo)
     const validateInputs=()=>{
-        if(fromLocation =="" || toLocation==""){
+        if(fromLocation =="" || toLocation=="" || boardingPoint=="" || droppingPoint==""){
             toast.error("Enter Locations !!!")
             return;
         }
         let ans=true;
         const regex = /^[A-Za-z]+$/
-        
+        if(date==""){
+            toast.error("Enter the date")
+        }
         const numberRegex = /^\d+$/;
         if(!numberRegex.test(numberOfSeats)){
             setNumberOfSeatsWarning("* Must be an Integer")
@@ -105,6 +107,10 @@ export function AddRide(){
         setNumberOfSeats(0)
         setPrice(0)
         setFacilities("")    
+        setFromLocationWarning("")
+        setToLocationWarning("")
+        setNumberOfSeatsWarning("")
+        setPriceWarning("")
     }
 
     const Lable=()=>{
@@ -159,6 +165,7 @@ export function AddRide(){
                             </div>
 
                             <AddRideInputBox2 label="Vehicle Name" value={vehicleName}  OnChange={(e)=>{setVehicleName(e.target.value)}}/>
+                            <AddRideInputBox2 label="Boarding Point" value={boardingPoint}  OnChange={(e)=>{setBoardingPoint(e.target.value)}}/>
                             
                         </div>
                         <div className="w-80">
@@ -177,7 +184,7 @@ export function AddRide(){
                                 </div>    
                             </div>
                             <AddRideInputBox2 label="Facilities" value={facilities} OnChange={(e)=>{setFacilities(e.target.value)}}/>
-                            <div className="flex justify-center space-x-9 m-11">
+                            <div className="flex justify-center space-x-9 mt-11 mb-5">
                                 <div>
                                     <input className="mr-1" type="radio" name="vehicle" value={boolCar} onClick={()=>{setBoolCar(true)}}/>Car
                                 </div>
@@ -185,6 +192,7 @@ export function AddRide(){
                                     <input className="mr-1" type="radio" name="vehicle" value={boolCar} onClick={()=>{setBoolCar(false)}}/>Bike
                                 </div>
                             </div>
+                            <AddRideInputBox2 label="Dropping Point" value={droppingPoint} OnChange={(e)=>{setDroppingPoint(e.target.value)}}/>
                         </div>
 
                         
@@ -220,7 +228,9 @@ export function AddRide(){
                                                 vehicleName,
                                                 numberOfSeats,
                                                 price,
-                                                facilities
+                                                facilities,
+                                                boardingPoint,
+                                                droppingPoint
                                             },{
                                                 headers:{
                                                     authorization:localStorage.getItem("token")

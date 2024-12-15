@@ -36,6 +36,7 @@ export function Ride({ride}){
         fromLongitude:ride.fromlongitude,
         fromlatitde:ride.fromlatitude
     }
+    const boardingPoint=ride.boardingpoint
     
     const toLocation=ride.tolocation;
     const toLocationArray=toLocation.split("-")
@@ -43,6 +44,7 @@ export function Ride({ride}){
         toLongitude:ride.tolongitude,
         tolatitde:ride.tolatitude
     }
+    const droppingPoint=ride.droppingpoint
     
     const toTime=ride.totime;
     const date=ride.date;
@@ -136,7 +138,7 @@ export function Ride({ride}){
         console.log(ride)
         return (
             <>  
-                <div className='fixed inset-0 z-20 bg-black bg-opacity-50 backdrop-blur-sm flex flex-col items-center pt-32'>
+                <div className='fixed inset-0 z-20 bg-black bg-opacity-50 backdrop-blur-sm flex flex-col items-center pt-24'>
                     <div className='mb-10'>
                         <X onClick={()=>{setShowBookTicket(false)}} className='rounded-full bg-gray-400 p-1 hover:bg-red-300 hover:p-0 trasition ease-in-out duration-300'/>
                     </div>
@@ -178,6 +180,9 @@ export function Ride({ride}){
                                         <div>
                                             {fromTime}
                                         </div>
+                                        <div className='italic text-xs mt-2 max-w-32 text-center font-normal'>
+                                            {boardingPoint} 
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="flex items-center space-x-1">
@@ -203,7 +208,9 @@ export function Ride({ride}){
                                         <div>
                                             {toTime}
                                         </div>
-                                        
+                                        <div className='text-xs italic mt-2 max-w-32 font-normal text-center'>
+                                             {droppingPoint} 
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -218,18 +225,17 @@ export function Ride({ride}){
                             </div>
                         </div>
 
-                        <div className='flex items-center w-full mx-3 text-sm font-medium'>
+                        <div className='flex items-center w-full text-sm font-medium justify-end'>
                             
-                            <div className='ml-5'> 
+                            <div className='mr-20'> 
                                     Available Seats : {numberOfSeatsAvailable}
                             </div>
                             
-                            <div className=' flex ml-10 mt-1'>
+                            <div className=' flex mt-1'>
                                     <div>
                                         No. of passengers :
                                     </div> 
                                     <div>
-                                        
                                         <input value={seatsBooked} onChange={(e)=>{
                                                 setSeatsBooked(e.target.value)
                                         }} type="number" className='border-2 w-20 pl-1 border-gray-400 rounded ml-2 font-medium'  />

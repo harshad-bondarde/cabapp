@@ -63,7 +63,9 @@ async function CreateRidesTable(){
             fromlongitude real not null,
             fromlatitude real not null,
             tolongitude real not null,
-            tolatitude real not null
+            tolatitude real not null,
+            boardingpoint varchar(255) not null,
+            droppingpoint varchar(255) not null
         )  
     `)
 }

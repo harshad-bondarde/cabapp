@@ -1,5 +1,5 @@
 // import { Cld } from "../components/Cloudinary"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { getEmailJsRideBookedEvent } from "../components/EmailJsEvents/emailJsEvents"
 export function Test(){
     
@@ -20,10 +20,12 @@ export function Test(){
         // send()
 
     },[])
+    const boardingpoint=useState([])
     return(
         <>
             {/* <Cld/> */}
 
+            {/* <input type="text" value={boardingpoint} onChange={()=>}/> */}
         </>
     )
 }

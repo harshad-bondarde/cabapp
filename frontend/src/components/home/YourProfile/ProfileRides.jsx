@@ -38,6 +38,7 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
             fromlongitude:ride?.fromlongitude,
             fromlatitude:ride?.fromlatitude,
         }
+        const boardingPoint=ride.boardingpoint
 
         const toTime=ride?.totime
         const toLocationArray=ride?.tolocation.split("-")
@@ -45,6 +46,7 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
             tolongitude:ride?.tolongitude,
             tolatitude:ride?.tolatitude,
         }
+        const droppingPoint=ride.droppingpoint
         
         
         function capitaliser(name){
@@ -211,9 +213,9 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
                             </div>
 
 
-                            <div className=' mt-3 ml-14 mr-14'>
+                            <div className=' mt-1 ml-14 mr-14'>
                                 <div className="flex space-x-5 items-center">    
-                                    <div className="flex flex-col items mt-1 ml-3 text-lg font-medium space-y-1">
+                                    <div className="flex flex-col items  ml-3 text-lg font-medium space-y-1">
                                         <div className='flex flex-col items-center'>
                                             <div className=''>
                                                 {fromTime}
@@ -223,6 +225,9 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
                                             </div>
                                             <div className='text-sm '>
                                                 {fromLocationArray[1]}
+                                            </div>
+                                            <div className='italic text-xs mt-1 max-w-44 text-center font-normal'>
+                                                {boardingPoint} 
                                             </div>
                                         </div>
                                     </div>
@@ -238,7 +243,7 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
                                         </div>
 
                                     </div>
-                                    <div className="flex flex-col items mt-1 ml-3 text-lg font-medium space-y-1">
+                                    <div className="flex flex-col items ml-3 text-lg font-medium space-y-1">
                                         <div className='flex flex-col items-center'>
                                             <div className=''>
                                                 {toTime}
@@ -248,6 +253,9 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
                                             </div>
                                             <div className='text-sm'>
                                                 {toLocationArray[1]}
+                                            </div>
+                                            <div className='italic text-xs mt-1 max-w-44 text-center font-normal'>
+                                                {droppingPoint} 
                                             </div>
                                         </div>
                                     </div>
