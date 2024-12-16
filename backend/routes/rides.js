@@ -122,6 +122,7 @@ router.get("/bookings",userMiddleware, async(req,res)=>{
                         bookedrides.captainid,
                         bookedrides.captainfirstname,
                         bookedrides.captainlastname,
+                        bookedrides.feedback,
                         rides.rideid,
                         rides.userid,
                         rides.fromtime,
@@ -223,6 +224,31 @@ router.post("/getpassengernameemail",async (req,res)=>{
             message:"something went wrong while getting user info" 
         })
     }
+})
+
+router.post("/addfeedback",async(req,res)=>{
+    const { bookedRidesId , feedback }=req.body
+    console.log(req.body)
+    const text=`update bookedrides
+                set feedback=$1
+                where bookedridesid=$2`
+    try {
+        const response=await client.query(text,[ feedback , bookedRidesId ])
+        if(response.rowCount==1){
+            return res.status(200).json({
+                message:"Thank You For Feedback"
+            })
+        }else{
+            return res.status(503).json({
+                message:"Something Went Wrong..."
+            })
+        }
+    } catch (error) {
+        console.log(error)
+        return res.status(503).json({
+            message:"Womething Went Wrong..."
+        })
+    }                
 })
 
 module.exports=router;
