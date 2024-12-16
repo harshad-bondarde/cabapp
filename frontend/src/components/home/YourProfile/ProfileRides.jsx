@@ -339,7 +339,7 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
                             {
                                 upcomingRides.length>0 ?
                                     <>
-                                        {upcomingRides.map((ride,key)=><ProfRide key={key} ride={ride} />)}
+                                        {upcomingRides.map((ride,key)=><ProfRide key={key} ride={ride} pastRidesButton={pastRidesButton}/>)}
                                         <EndofList/>
                                     </>
                                 :
@@ -355,7 +355,7 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
                             {
                                 pastRides?.length>0 ?
                                 <>
-                                        {pastRides.map((ride,key)=><ProfRide key={key} ride={ride} />)}
+                                        {pastRides.map((ride,key)=><ProfRide key={key} ride={ride} pastRidesButton={pastRidesButton} />)}
                                         <EndofList/>
                                     </>
                                 :

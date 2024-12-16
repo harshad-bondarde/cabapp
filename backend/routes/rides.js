@@ -187,7 +187,8 @@ router.post("/getpassengerdetailes",userMiddleware,async (req,res)=>{
                        users.gender,
                        users.phoneno,
                        bookedrides.seatsbooked,
-                       bookedrides.bookedridesid
+                       bookedrides.bookedridesid,
+                       bookedrides.feedback
                        from users 
                        join bookedrides on bookedrides.userid=users.id 
                        where rideid=$1`

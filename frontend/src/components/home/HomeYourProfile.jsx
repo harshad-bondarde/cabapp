@@ -63,7 +63,8 @@ export function YourProfile({userInfo}){
         
     },[rides])
 
-    // console.log(upcomingRides)
+    console.log(upcomingRides)
+    console.log(pastRides)
     return (
         <>  
             <div className="flex flex-col justify-center items-center mt-5">
@@ -84,7 +85,7 @@ export function YourProfile({userInfo}){
 
             <div>
                 {   !loading ?
-                        <ProfileRides upcomingRides={upcomingRides} bookedRides={pastRides} pastRidesButton={pastRidesButton}/>
+                        <ProfileRides upcomingRides={upcomingRides} pastRides={pastRides} pastRidesButton={pastRidesButton}/>
                     :
                         <div className="flex justify-center mt-20">
                             <div className="w-20 h-20">
