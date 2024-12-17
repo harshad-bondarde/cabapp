@@ -119,10 +119,10 @@ router.get("/bookings",userMiddleware, async(req,res)=>{
     try{    
         const text=`select bookedrides.seatsbooked,
                         bookedrides.bookedridesid,
-                        bookedrides.captainid,
                         bookedrides.captainfirstname,
                         bookedrides.captainlastname,
                         bookedrides.feedback,
+                        rides.userid as captainid,
                         rides.rideid,
                         rides.userid,
                         rides.fromtime,

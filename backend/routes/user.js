@@ -95,6 +95,7 @@ router.post("/signin",async(req,res)=>{
 //to select a user
 router.post("/getuser",userMiddleware,async(req,res)=>{
     let userId=req.body.userId; //if we wan
+    console.log(userId)
     if(userId==null)
             userId=req.userId
     try{

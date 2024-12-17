@@ -17,7 +17,7 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
     const [loading,setLoading]=useState(false)
 
     function UpRide({ride , bookingsButton , showCancel }){
-        
+        console.log(ride)
         const bookedRidesId=ride?.bookedridesid
         const date=ride?.date;
         const boolCar=ride?.boolcar
@@ -32,7 +32,7 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
 
         const captainFirstname=ride?.captainfirstname
         const captainLastname=ride?.captainlastname
-        const captainId=ride?.captainid 
+        const captainId=ride.captainid 
         const {showCaptainInfo}=useSelector(state=>state.user)
         const [loadCaptainInfo,setLoadCaptainInfo]=useState(false)
         
@@ -74,7 +74,7 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
                         authorization:localStorage.getItem("token")
                     }
                 })
-                // console.log(response)
+                console.log(response)
                 dispatch(setShowCaptainInfo(response.data.userInfo))
                 // console.log("HI")
             
