@@ -53,6 +53,7 @@ export function YourProfile({userInfo}){
             const date=new Date()
             return date>convertToDateObject(ride.date)
         })
+        past.reverse()
         setPastRides(past)
         
         let upcoming=rides.filter((ride)=>{

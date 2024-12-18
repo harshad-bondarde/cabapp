@@ -11,12 +11,13 @@ import { setShowCaptainInfo } from '../../../store/userSlice';
 import { EmptyRides } from '../../EmptyRides';
 import EndofList from '../../EndofList';
 import { LoadingRed , LoadingBlue } from '../../Loading';
+import { Star } from 'lucide-react';
 
 export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButton }){
     const dispatch=useDispatch()
     const [loading,setLoading]=useState(false)
 
-    function UpRide({ride , bookingsButton , showCancel }){
+    function UpRide({ride  , showCancel }){
         console.log(ride)
         const bookedRidesId=ride?.bookedridesid
         const date=ride?.date;
@@ -26,6 +27,7 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
         const vehicleName=ride?.vehiclename
         const [sendingFeedback,setSendingFeedback]=useState(false)
         const [feedback,setFeedback]=useState("")
+        const [selectedStars,setSelectedStars]=useState(0)
         const [showFeedback,setShowFeedback]=useState(ride.feedback==null ? true : false)
         const [showFeedbackDiv,setShowFeedbackDiv]=useState(true)
         console.log(ride.feedback)
@@ -100,15 +102,17 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
         }
 
         const handleFeedback=async()=>{
-            if(feedback==""){
-                toast.error("Enter text !!!")
+            if(feedback=="" || selectedStars==0){
+                toast.error("Please complete the details  !!!")
                 return 
             }
             try {
                 setSendingFeedback(true)
                 const response=await axios.post("http://localhost:3000/user/rides/addfeedback",{
                     bookedRidesId,
-                    feedback
+                    feedback,
+                    captainId,
+                    rating:selectedStars
                 })
                 console.log(response)
                 if(response.status==200){
@@ -122,7 +126,16 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
                 setSendingFeedback(false)
             }
         }
-
+        const RatingStars=({selectedStars})=>{
+            const divs=[]
+                 for(let i=1;i<=5;i++)
+                        divs.push(<Star onClick={()=>setSelectedStars(i)} className={`${i<=selectedStars ? `text-yellow-300 bg-yellow-200 rounded-full w-9 h-7 `:``}`}/>)
+            return (
+                <>
+                    {divs}
+                </>
+            )
+        }
         return (
             <>  
                 {   ride ?
@@ -297,6 +310,7 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
                                     <div className='w-full mt-2 flex items-center space-x-3 ml-4 mb-3'>
                                         <input onChange={(e)=>setFeedback(e.target.value)} className='w-full bg-slate-200 p-2 border-1 border-blue-600 shadow-black-100 shadow-md rounded-md h-10 mt-1'
                                          placeholder='Send Feedback...'/>
+                                        <RatingStars selectedStars={selectedStars}/>
                                         <div onClick={()=>handleFeedback()} className='bg-blue-500 p-2 rounded-full text-white font-medium cursor-pointer'>
                                             { !sendingFeedback ?
                                                     'Send'

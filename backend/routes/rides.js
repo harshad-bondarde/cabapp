@@ -228,26 +228,36 @@ router.post("/getpassengernameemail",async (req,res)=>{
 })
 
 router.post("/addfeedback",async(req,res)=>{
-    const { bookedRidesId , feedback }=req.body
+    const { bookedRidesId , feedback , captainId , rating }=req.body
     console.log(req.body)
-    const text=`update bookedrides
+    const text1=`update bookedrides
                 set feedback=$1
                 where bookedridesid=$2`
+    const text2=`update users 
+                 set rating=rating+$1 ,
+                     ratingsgiven=ratingsgiven+1
+                 where id=$2`
+    await client.query('BEGIN')
     try {
-        const response=await client.query(text,[ feedback , bookedRidesId ])
-        if(response.rowCount==1){
+        const response1=await client.query(text1,[ feedback , bookedRidesId ])
+        const response2=await client.query(text2,[ rating , captainId ])
+        if(response1.rowCount==1 && response2.rowCount==1){
+            await client.query('COMMIT')
             return res.status(200).json({
                 message:"Thank You For Feedback"
             })
         }else{
+            await client.query('ROLLBACK')
+            console.log(error.message)
             return res.status(503).json({
                 message:"Something Went Wrong..."
             })
         }
     } catch (error) {
-        console.log(error)
+        await client.query('ROLLBACK')
+        console.log(error.message)
         return res.status(503).json({
-            message:"Womething Went Wrong..."
+            message:"Something Went Wrong..."
         })
     }                
 })

@@ -12,6 +12,7 @@ import { setPassengerDetails } from '../../../store/userSlice';
 import { useDispatch , useSelector } from 'react-redux';
 import { url } from '../../../assets/url';
 import { getEmailJsRideDeletedEvent } from '../../EmailJsEvents/emailJsEvents';
+import Seats from '../../Seats';
 
 export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
     
@@ -73,25 +74,6 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
                             </div>
                     }
                 </>
-            )
-        }
-        
-        function Seats({numberOfSeats,numberOfSeatsAvailable}){
-            const divs=[]
-            {    
-                for(let i=0;i<numberOfSeats;i++){
-                    divs.push(
-                        i<numberOfSeatsAvailable?
-                            <CircleUser key={i} className='text-green-400 '/>
-                            :
-                            <CircleUser key={i} className='text-red-400'/>
-                    )
-                }
-            }       
-            return (
-                <div className='flex mt-3 ml-4 space-x-1 items-center '>
-                    {divs}
-                </div>
             )
         }
 

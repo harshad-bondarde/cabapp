@@ -40,7 +40,7 @@ export function Profile({userInfo}){
                             </div>
 
                             <div className="">
-                                    Email : {userInfo?.email?<>{capitaliser(userInfo?.email)}</>:null}
+                                    Email : {userInfo?.email?<>{userInfo?.email}</>:null}
                             </div>
                         
                         </div>
@@ -63,7 +63,7 @@ export function Profile({userInfo}){
 
                     <div className="w-full flex flex-col space-y-5 justify-center mt-5 items-center">
                         <div className='flex   font-semibold items-center'>
-                            Overall Rating : {userInfo?.ratingsgiven>0 ? userInfo?.ratings/userInfo?.ratingsgiven : "0"}/5 <Star size={20}/>
+                            Overall Rating : {userInfo?.ratingsgiven>0 ? userInfo?.rating/userInfo?.ratingsgiven : "0"}/5 <Star size={20}/>
                         </div>
                     </div>
 

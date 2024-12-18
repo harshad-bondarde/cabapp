@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import { getEmailJsRideBookedEvent } from '../../EmailJsEvents/emailJsEvents';
+import Seats from '../../Seats';
 
 export function Ride({ride}){
     const {authUser}=useSelector(state=>state.user)
@@ -111,26 +112,6 @@ export function Ride({ride}){
             </>
         )
     }
-
-    function Seats({numberOfSeats,numberOfSeatsAvailable}){
-        const divs=[]
-        {    
-            for(let i=0;i<numberOfSeats;i++){
-                divs.push(
-                    i<numberOfSeatsAvailable?
-                        <CircleUser key={i} className='text-green-400'/>
-                        :
-                        <CircleUser key={i} className='text-red-400'/>
-                )
-            }
-        }       
-        return (
-            <div className='flex mt-3 ml-4 space-x-1 items-center '>
-                {divs}
-            </div>
-        )
-    }
-
 
 
     const [showBookTicket,setShowBookTicket]=useState(false)
