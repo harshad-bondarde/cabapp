@@ -15,10 +15,14 @@ import { url } from "../../assets/url"
 export function BookRides(){
     const [finalfrom,setFinalFrom]=useState("")
     const [finalTo,setFinalTo]=useState("")
+    const [fromMapboxId,setFromMapboxId]=useState("")
+    const [toMapboxId,setToMapboxId]=useState("")
     const [fromCoordinates,setFromCoordinates]=useState({})
     const [toCoordinates,setToCoordinates]=useState({})
     const [date,setDate]=useState("");
     const [rides,setRides]=useState([])
+    console.log(fromMapboxId)
+    console.log(toMapboxId)
     // rideid:3,
     // userid:7,
     // fromtime:"9 am",
@@ -71,8 +75,8 @@ export function BookRides(){
             </div>
             <div className="flex space-x-6 justify-center  mt-5 static">    
                 
-                <BookRidesInputBox searchForAddress={true}  setFinalLocation={setFinalFrom} setCoordinates={setFromCoordinates} coordinates={fromCoordinates} label="From"/>
-                <BookRidesInputBox searchForAddress={true}  setFinalLocation={setFinalTo} setCoordinates={setToCoordinates} coordinates={toCoordinates} label="To"/>
+                <BookRidesInputBox searchForAddress={true}  setMapboxId={setFromMapboxId} setCoordinates={setFromCoordinates} coordinates={fromCoordinates} label="From"/>
+                <BookRidesInputBox searchForAddress={true}  setMapboxId={setToMapboxId} setCoordinates={setToCoordinates} coordinates={toCoordinates} label="To"/>
                 
                 <div>    
                     <div onClick={()=>{
@@ -87,12 +91,12 @@ export function BookRides(){
                 
                 <button className="border-4 p-3 ml-6 mt-6 mb-20 w-20 h-14  bg-blue-500 border-blue-500 hover:shadow-md rounded-xl text-white"
                     onClick={async ()=>{
-                            if(finalfrom!="" && finalTo!="" && date!=""){  
+                            if(fromMapboxId!="" && toMapboxId!="" && date!=""){  
                                 try{    
                                     setLoading(true)
                                     const response=await axios.post(`${url}/user/rides/AvailableRides`,{
-                                        fromCoordinates,
-                                        toCoordinates,
+                                        fromMapboxId,
+                                        toMapboxId,
                                         date
                                     },{
                                         headers:{

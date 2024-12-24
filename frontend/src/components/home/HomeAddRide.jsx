@@ -22,11 +22,13 @@ export function AddRide(){
     const [fromLocation,setFromLocation]=useState("")
     const [fromLocationInfo,setFromLocationInfo]=useState({})
     const [boardingPoint,setBoardingPoint]=useState("")
+    const [fromMapboxId,setFromMapboxId]=useState("")
     
     const [toTime,setToTime]=useState("")
     const [toLocation,setToLocation]=useState("")
     const [toLocationInfo,setToLocationInfo]=useState({})
     const [droppingPoint,setDroppingPoint]=useState("")
+    const [toMapboxId,setToMapboxId]=useState("")
 
     const [date,setDate]=useState("")
     const [boolCar,setBoolCar]=useState(false)
@@ -40,8 +42,6 @@ export function AddRide(){
     const [numberOfSeatsWarning,setNumberOfSeatsWarning]=useState("")
     const [priceWarning,setPriceWarning]=useState("")
 
-    console.log(fromLocationInfo)
-    console.log(toLocationInfo)
     const validateInputs=()=>{
         if(fromLocation =="" || toLocation=="" || boardingPoint=="" || droppingPoint==""){
             toast.error("Enter Locations !!!")
@@ -95,9 +95,11 @@ export function AddRide(){
     }
 
     function setAllEmpty(){
+        setFromMapboxId("")
         setFromTime("")
         setFromLocation("")
         setFromLocationInfo({})
+        setToMapboxId("")
         setToTime("")
         setToLocation("")
         setToLocationInfo({})
@@ -143,7 +145,7 @@ export function AddRide(){
                 <div className="border-2 items-center w-full h-full mb-16 flex flex-col justify-center rounded-xl border-slate-200 shadow-lg shadow-blue-200 bg-slate-200">
                     <div className="flex justify-between mx-16 space-x-24  ">
                         <div className="w-80">
-                            <AddRideInputBoxAddress label="From" searchForAddress={true} setFinalLocation={setFromLocation} setFinalLocationInfo={setFromLocationInfo} finalLocationInfo={fromLocationInfo}/>
+                            <AddRideInputBoxAddress label="From" setMapboxId={setFromMapboxId} searchForAddress={true} setFinalLocation={setFromLocation} setFinalLocationInfo={setFromLocationInfo} finalLocationInfo={fromLocationInfo}/>
                                 <Warning label={fromLocationWarning}/>
                             
                             <div className="flex space-x-2">
@@ -169,7 +171,7 @@ export function AddRide(){
                             
                         </div>
                         <div className="w-80">
-                            <AddRideInputBoxAddress label="To" searchForAddress={true} setFinalLocation={setToLocation} setFinalLocationInfo={setToLocationInfo} finalLocationInfo={toLocationInfo}/>
+                            <AddRideInputBoxAddress label="To" setMapboxId={setToMapboxId} searchForAddress={true} setFinalLocation={setToLocation} setFinalLocationInfo={setToLocationInfo} finalLocationInfo={toLocationInfo}/>
                             <Warning label={toLocationWarning}/>
                             
                             
@@ -221,8 +223,10 @@ export function AddRide(){
                                             const response=await axios.post(`${url}/user/rides/addRide`,{
                                                 fromTime,
                                                 fromLocationInfo,
+                                                fromMapboxId,
                                                 toTime,
                                                 toLocationInfo,
+                                                toMapboxId,
                                                 date,
                                                 boolCar,
                                                 vehicleName,

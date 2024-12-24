@@ -17,6 +17,8 @@ router.post("/addRide",userMiddleware,async(req,res)=>{
     const fromCoordinates=fromLocationInfo.coordinates
     const toCoordinates=toLocationInfo.coordinates
 
+    const fromMapboxId=req.body.fromMapboxId
+    const toMapboxId=req.body.toMapboxId
     try{           
         await client.query('BEGIN')     
         const text=`insert into rides (userId,
@@ -36,8 +38,10 @@ router.post("/addRide",userMiddleware,async(req,res)=>{
                                        facilities,
                                        numberofseatsavailable,
                                        boardingpoint,
-                                       droppingpoint)
-                    values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18);`
+                                       droppingpoint,
+                                       frommapboxid,
+                                       tomapboxid)
+                    values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20);`
         const response1=await client.query(text,[userId,
                                         info.fromTime,
                                         fromLocation, 
@@ -55,7 +59,9 @@ router.post("/addRide",userMiddleware,async(req,res)=>{
                                         info.facilities,
                                         info.numberOfSeats,
                                         info.boardingPoint,
-                                        info.droppingPoint
+                                        info.droppingPoint,
+                                        fromMapboxId,
+                                        toMapboxId
                                         ])
         const text2=`update users
                     set numberofrides=numberofrides+1
@@ -84,23 +90,22 @@ router.post("/addRide",userMiddleware,async(req,res)=>{
 
 router.post("/AvailableRides",userMiddleware,async(req,res)=>{
     const userId=req.userId;
-    // const info=req.body;
     const date=req.body.date;
-    const fromCoordinates=req.body.fromCoordinates
-    const toCoordinates=req.body.toCoordinates
-    // implement query to search for only date dest and source loc
+    const fromMapboxId=req.body.fromMapboxId
+    const toMapboxId=req.body.toMapboxId
     try{
         const text=`select * from rides 
-                    where fromlongitude=$1 and fromlatitude=$2 and tolongitude=$3 and tolatitude=$4 and date=$5 and boolride=$6 and userid!=$7`
+                    where frommapboxid=$1 and 
+                          tomapboxid=$2 and  
+                          date=$3 and boolride=$4 and userid!=$5`
         const response=await client.query(text,[
-                                    fromCoordinates.longitude,
-                                    fromCoordinates.latitude,
-                                    toCoordinates.longitude,
-                                    toCoordinates.latitude,
+                                    fromMapboxId,
+                                    toMapboxId,
                                     date,
                                     true,
                                     userId
         ]);
+        console.log(response.rows)
         return res.status(200).json({
             rides:response.rows
         })

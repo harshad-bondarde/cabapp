@@ -4,7 +4,7 @@ import { MapPin } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import { setShowMap , setMapCoordinates } from '../../../store/mapSlice';
-export function BookRidesInputBox({label , placeholder , searchForAddress ,setFinalLocation , coordinates , setCoordinates}){
+export function BookRidesInputBox({label , placeholder , searchForAddress , setMapboxId , coordinates , setCoordinates}){
     
     const [suggestions,setSuggestions]=useState([])
     const [location,setLocation]=useState("")
@@ -41,6 +41,7 @@ export function BookRidesInputBox({label , placeholder , searchForAddress ,setFi
                                                                                     }else{
                                                                                         getSuggestions(e) 
                                                                                     }
+                                                                                    setMapboxId("")
                                                                                     setCoordinates({})
                                                                             }} 
                 placeholder={placeholder ? placeholder : label} className="border-2 shadow-md w-full rounded-2xl p-2 transition ease-in-out duration-300 hover:-translate-y-1 hover:shadow-lg cursor-pointer text-gray-900  h-14 "/>
@@ -56,7 +57,7 @@ export function BookRidesInputBox({label , placeholder , searchForAddress ,setFi
                                         onClick={
                                             ()=>{
                                                 console.log(location.properties)
-                                                setFinalLocation(location.properties.full_address)
+                                                setMapboxId(location.properties.mapbox_id)
                                                 setLocation(location.properties.full_address)
                                                 setCoordinates(location.properties.coordinates)
                                                 setSuggestions([])

@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import { setShowMap ,setMapCoordinates } from "../../../store/mapSlice";
 
-export function AddRideInputBoxAddress({ label , placeholder ,setFinalLocation ,setFinalLocationInfo ,finalLocationInfo }){
+export function AddRideInputBoxAddress({ label , placeholder ,setFinalLocation ,setFinalLocationInfo ,finalLocationInfo , setMapboxId}){
     const dispatch=useDispatch()    
     const [location,setLocation]=useState("")
     const [suggestions,setSuggestions]=useState([])
@@ -37,7 +37,6 @@ export function AddRideInputBoxAddress({ label , placeholder ,setFinalLocation ,
                     placeholder={placeholder ? placeholder : label} 
                     onChange={
                             e=>{
-                                console.log(e.target.value)
                                 setFinalLocationInfo({})
                                 if(e.target.value==""){
                                     setLocation("")
@@ -45,6 +44,7 @@ export function AddRideInputBoxAddress({ label , placeholder ,setFinalLocation ,
                                     return;
                                 }
                                 getSuggestions(e) 
+                                setMapboxId("")
                             } 
                     } 
                                                                                             
@@ -63,6 +63,7 @@ export function AddRideInputBoxAddress({ label , placeholder ,setFinalLocation ,
                                    ()=>{
                                        setFinalLocation(location.properties.full_address)
                                        setLocation(location.properties.full_address)
+                                       setMapboxId(location.properties.mapbox_id)
                                        setFinalLocationInfo({
                                         name_preferred:location.properties.name_preferred,
                                         place_formatted:location.properties.place_formatted,
