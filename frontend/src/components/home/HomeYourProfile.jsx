@@ -27,7 +27,7 @@ export function YourProfile({userInfo}){
                 if(e.response && e.response.status==401){
                     toast.error("You are Not Signed")
                     
-                    navigate("/cabapp")
+                    navigate("/")
                 }else{
                     toast.error("Error while getting Rides...")
                 }

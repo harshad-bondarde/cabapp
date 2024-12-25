@@ -29,7 +29,7 @@ export function Header({setRenderButton , firstname}){
                             localStorage.removeItem("authUser")
                             dispatch(setAuthUser(null))
                         setLoading(false)
-                        navigate("/cabapp")
+                        navigate("/")
                     }}>
                         {   !loading  ?
                                 'Sign Out'

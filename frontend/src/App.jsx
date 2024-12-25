@@ -9,8 +9,8 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/cabapp" element={<CabApp/>}/>
-          <Route path="/cabapp/home" element={<Home/>}/>
+          <Route path="/" element={<CabApp/>}/>
+          <Route path="/home" element={<Home/>}/>
           <Route path="/cabapp/test" element={<Test/>}/> {/*for testing */}
         </Routes>
       </BrowserRouter>

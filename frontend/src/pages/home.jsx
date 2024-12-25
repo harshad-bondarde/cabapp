@@ -25,7 +25,7 @@ export function Home() {
         if(authUserLocal){
             dispatch(setAuthUser(authUserLocal))
         }else{
-            navigate('/cabapp')
+            navigate('/')
             toast.error("You are not Signed In...")
         }
     }

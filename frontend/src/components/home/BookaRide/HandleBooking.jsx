@@ -54,7 +54,7 @@ export async function HandleBooking({rideId,seatsBooked,captainInfo , ride ,setL
         if(e.response && e.response.status==403){
             console.log(e.response)
             toast.error("You are not Signed In !!!")
-            navigate("/cabapp")
+            navigate("/")
         }
         if(e.response && e.response.status==503){
             console.log(response)

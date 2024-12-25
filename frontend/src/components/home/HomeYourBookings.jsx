@@ -26,7 +26,7 @@ export function YourBookings(){
                 setBookings([]);
                 if(e.response && e.response.status==401){
                     toast.error("You are Not Signed In")
-                    navigate("/cabapp")
+                    navigate("/")
                 }else{
                     toast.error("Error while getting rides...")
                     console.log(e)

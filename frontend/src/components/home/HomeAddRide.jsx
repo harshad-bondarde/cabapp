@@ -247,7 +247,7 @@ export function AddRide(){
                                             console.log("error while Adding Rides: ",e);
                                             if(e.response && e.response.status==401){
                                                 toast.error("You are Not Signed In")
-                                                navigate("/cabapp")
+                                                navigate("/")
                                             }else{
                                                 if(e.response && e.reponse.data && e.response.data.message)
                                                     toast.error(e.response.message)

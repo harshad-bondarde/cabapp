@@ -78,7 +78,7 @@ export function SignIn({setSignIn}){
                                                 notifySignedIn()
                                                 localStorage.setItem("authUser",JSON.stringify(response.data.authUser));
 
-                                                navigate("/cabapp/home")
+                                                navigate("/home")
                                                 
                                             }catch(e){
                                                 if(e.status==403){
