@@ -9,12 +9,6 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/cabapp/$1"
-    }
-  ],
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@emotion/react": "^11.13.3",
