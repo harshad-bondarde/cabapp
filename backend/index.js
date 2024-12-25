@@ -1,11 +1,16 @@
 const express=require("express");
 const app=express();
-const PORT=process.env.PORT || 3000
+const PORT=3000
 const mainRouter=require("./routes/index")
 const axios=require("axios")
 
 const cors=require("cors")
-app.use(cors())
+const corsOptions={
+    origin: ["https://cabapp-two.vercel.app","http://localhost:5173","http://localhost:5174"],
+  methods: ["GET", "POST", "PUT", "DELETE"]
+}
+app.use(cors(corsOptions))
+// app.use(cors())
 app.use(express.json());
 app.use("/",mainRouter)
 
