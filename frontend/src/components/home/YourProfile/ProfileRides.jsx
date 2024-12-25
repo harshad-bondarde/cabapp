@@ -118,7 +118,14 @@ export function ProfileRides({upcomingRides , pastRides , pastRidesButton ,setRi
                         toast.error("Internal Server Error")
                     }else if(response.status==200){
                         toast.success("Ride Deleted Successfully")
-                        setRides(e=>e.filter(ride=>ride.rideid!=rideId))
+                        setRides(e=>{
+                            return e.map((ride,index)=>{
+                                if(ride.rideid==rideId){
+                                    ride.boolride=false
+                                }
+                                return ride
+                            })
+                        })
                     }
                 }catch(e){
                     console.log(error)
