@@ -86,7 +86,7 @@ export function YourProfile({userInfo}){
 
             <div>
                 {   !loading ?
-                        <ProfileRides upcomingRides={upcomingRides} pastRides={pastRides} pastRidesButton={pastRidesButton}/>
+                        <ProfileRides upcomingRides={upcomingRides} pastRides={pastRides} pastRidesButton={pastRidesButton} setRides={setRides}/>
                     :
                         <div className="flex justify-center mt-20">
                             <div className="w-20 h-20">

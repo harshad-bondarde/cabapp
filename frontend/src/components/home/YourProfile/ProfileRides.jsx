@@ -14,7 +14,7 @@ import { url } from '../../../assets/url';
 import { getEmailJsRideDeletedEvent } from '../../EmailJsEvents/emailJsEvents';
 import Seats from '../../Seats';
 
-export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
+export function ProfileRides({upcomingRides , pastRides , pastRidesButton ,setRides}){
     
     function ProfRide({ride , pastRidesButton}){
         const dispatch=useDispatch()
@@ -118,6 +118,7 @@ export function ProfileRides({upcomingRides,pastRides,pastRidesButton}){
                         toast.error("Internal Server Error")
                     }else if(response.status==200){
                         toast.success("Ride Deleted Successfully")
+                        setRides(e=>e.filter(ride=>ride.rideid!=rideId))
                     }
                 }catch(e){
                     console.log(error)

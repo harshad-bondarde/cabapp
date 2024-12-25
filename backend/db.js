@@ -80,7 +80,6 @@ async function CreateBookedRidesTable(){
             rideid integer references rides(rideid),
             seatsbooked integer default 0,
             date varchar(20) ,
-            captainid integer references users(id),
             captainfirstname varchar(255) not null,
             captainlastname varchar(255) not null,
             feedback varchar(255) 

@@ -11,7 +11,7 @@ export function YourBookings(){
     const [bookingsButton,setBookingsButton]=useState(false)
     const [bookings,setBookings]=useState([])
     const [loading,setLoading]=useState(false)
-
+    console.log(bookings)
     useEffect(() => {
         const getBookingsArray = async () => {
             try {
@@ -75,7 +75,7 @@ export function YourBookings(){
             </div>
 
             {   !loading ?
-                    <UpcomingBookedRides bookedRides={bookedRides} upcomingRides={upcomingRides} bookingsButton={bookingsButton}/>
+                    <UpcomingBookedRides bookedRides={bookedRides} upcomingRides={upcomingRides} bookingsButton={bookingsButton} setBookings={setBookings}/>
                 :
                     <div className="flex justify-center mt-20">
                         <div className="w-20 h-20">

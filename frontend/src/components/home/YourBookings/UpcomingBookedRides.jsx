@@ -13,7 +13,7 @@ import EndofList from '../../EndofList';
 import { LoadingRed , LoadingBlue } from '../../Loading';
 import { Star } from 'lucide-react';
 
-export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButton }){
+export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButton ,setBookings}){
     const dispatch=useDispatch()
     const [loading,setLoading]=useState(false)
 
@@ -276,7 +276,8 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
                                             setLoading(true)
                                             const response=await axios.post(`${url}/user/cancelride`,{
                                                 bookedRidesId,
-                                                rideId:ride?.rideid
+                                                rideId:ride?.rideid,
+                                                seatsBooked
                                             },{
                                                 headers:{
                                                     authorization:localStorage.getItem("token")
@@ -289,6 +290,7 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
                                                 toast.error("Internal Server Error")
                                             }else if(response.status==200){
                                                 toast.success("Ride Cancelled Successfully")
+                                                setBookings(e=>e.filter((ride)=>ride.bookedridesid!=bookedRidesId))
                                             }
 
                                         }} 
