@@ -6,7 +6,7 @@ const axios=require("axios")
 
 const cors=require("cors")
 const corsOptions={
-    origin: ["https://cabapp-two.vercel.app","http://localhost:5173","http://localhost:5174"],
+    origin: ["https://cabapp-delta.vercel.app","http://localhost:5173","http://localhost:5174"],
   methods: ["GET", "POST", "PUT", "DELETE"]
 }
 app.use(cors(corsOptions))
