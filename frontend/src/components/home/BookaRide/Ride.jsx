@@ -78,11 +78,6 @@ export function Ride({ride}){
         
     },[captainId])
 
-    const captainFirstname=captainInfo.firstname
-    const captainLastname=captainInfo.lastname
-    const captain_email=captainInfo.email
-    // console.log(captainFirstname)
-    // console.log(captainLastname)
     function capitaliser(name){
         let ans=""
         for(let i=0;i<name.length;i++){

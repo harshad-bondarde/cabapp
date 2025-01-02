@@ -48,6 +48,7 @@ export async function HandleBooking({rideId,seatsBooked,captainInfo , ride ,setL
 
         if(response.status==200){
             await sendEmail()
+            toast.success("Ride Booked Successfully")
             
         }
     }catch(e){
@@ -57,13 +58,12 @@ export async function HandleBooking({rideId,seatsBooked,captainInfo , ride ,setL
             navigate("/")
         }
         if(e.response && e.response.status==503){
-            console.log(response)
+            console.log(e.response)
             toast.error("Internal Server Error")
         }
     }finally{
         await setLoading(false)
         setShowBookTicket(false)  
-        toast.success("Ride Booked !!!")
     }
     
 }

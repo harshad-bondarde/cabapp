@@ -1,5 +1,5 @@
 import { CarFront } from 'lucide-react';
-import { Bike , IndianRupee  , CircleChevronRight} from 'lucide-react';
+import { Bike , IndianRupee  , CircleChevronRight , MapPin} from 'lucide-react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { EmptyRides } from '../../EmptyRides';
@@ -13,7 +13,7 @@ import { useDispatch , useSelector } from 'react-redux';
 import { url } from '../../../assets/url';
 import { getEmailJsRideDeletedEvent } from '../../EmailJsEvents/emailJsEvents';
 import Seats from '../../Seats';
-
+import { setShowMap , setMapCoordinates } from '../../../store/mapSlice';
 export function ProfileRides({upcomingRides , pastRides , pastRidesButton ,setRides}){
     
     function ProfRide({ride , pastRidesButton}){
@@ -222,13 +222,33 @@ export function ProfileRides({upcomingRides , pastRides , pastRidesButton ,setRi
                                         </div>
                                     </div>
                                     <div className="flex items-center space-x-1">
-                                        <div className='w-24'>
+                                        <div className='w-24 flex flex-col mb-4'>
+                                            <div onClick={()=>{
+                                                            const coordinates={
+                                                                longitude:fromCoordinates.fromlongitude,
+                                                                latitude:fromCoordinates.fromlatitude
+                                                            }
+                                                            dispatch(setMapCoordinates(coordinates))
+                                                            dispatch(setShowMap(true))
+                                                        }} className='mb-1 mr-1 cursor-pointer text-slate-500'>
+                                                            <MapPin size={13}/>
+                                            </div>
                                             <hr className='border-2 border-slate-500 rounded-full'/>
                                         </div>
                                         <div>
                                             <CircleChevronRight className="text-slate-500 "/>
                                         </div>
-                                        <div className='w-24'>
+                                        <div className='w-24 flex flex-col mb-4'>
+                                            <div  onClick={()=>{
+                                                        const coordinates={
+                                                            longitude:toCoordinates.tolongitude,
+                                                            latitude:toCoordinates.tolatitude
+                                                        }
+                                                        dispatch(setMapCoordinates(coordinates))
+                                                        dispatch(setShowMap(true))
+                                                    }} className='mb-1 mr-1 flex justify-end cursor-pointer text-slate-500'>
+                                                        <MapPin size={13}/>
+                                            </div>
                                             <hr className='border-2 border-slate-500 rounded-full'/>
                                         </div>
 

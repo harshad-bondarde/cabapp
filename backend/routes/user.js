@@ -127,15 +127,15 @@ router.post("/bookride",userMiddleware,async(req,res)=>{
                                               rideid,
                                               seatsbooked,
                                               date,
-                                              captainid,
                                               captainfirstname,
                                               captainlastname) 
-                        values ($1,$2,$3,$4,$5,$6,$7)`
+                                              values ($1,$2,$3,$4,$5,$6)`
+                                            //   captainid,
         const response1=await client.query(text1,[userId,
                                                  body.rideId,
                                                  body.seatsBooked,
                                                  body.date,
-                                                 body.captainId,
+                                                //  body.captainId,
                                                  body.captainFirstname,
                                                  body.captainLastname])
         
@@ -156,6 +156,7 @@ router.post("/bookride",userMiddleware,async(req,res)=>{
         }
     }catch(e){
         client.query('ROLLBACK')
+        console.log(e)
         res.status(503).json({
             message:"error during Booking Transaction"
         })

@@ -23,19 +23,6 @@ export function BookRides(){
     const [rides,setRides]=useState([])
     console.log(fromMapboxId)
     console.log(toMapboxId)
-    // rideid:3,
-    // userid:7,
-    // fromtime:"9 am",
-    // fromlocation:"pune",
-    // totime:"6 pm",
-    // tolocation:"mumbai",
-    // date:"19-10-2024",
-    // boolcar:true,
-    // vehiclename:"Swift",
-    // numberofseats:2,
-    // price:1000,
-    // numberofseatsavailable:2,
-    // facilities:"AC WaterBottle" 
     const [showRides,setShowRides]=useState(false)
     const [loading,setLoading]=useState(false)
 

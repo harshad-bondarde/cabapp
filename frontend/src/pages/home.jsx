@@ -34,15 +34,15 @@ export function Home() {
     },[authUser])
 
     return (
-        <div className="relative bg-slate-100 h-screen">
+        <div className="relative bg-slate-200 h-screen overflow-auto">
 
             <OverHome/>
             
             <Header setRenderButton={setRenderButton} firstname={userInfo.firstname} />
             
-            <div className="flex h-fit overflow-auto">
+            <div className="flex h-fit ">
 
-                <div className="bg-slate-100 mx-1 ml-2 h-screen w-48 mt-2 rounded space-y-4 text-sm shadow-md border-slate-200  ">
+                <div className="bg-gray-100 mx-1 ml-2 h-screen w-48 mt-2 rounded space-y-4 text-sm shadow-md border-slate-200  ">
                     <NavButton label="Book a Ride" renderNumber={1} setRenderButton={setRenderButton} />
                     <NavButton label="Your Bookings" renderNumber={2} setRenderButton={setRenderButton} />
                     <NavButton label="Your Profile" renderNumber={3} setRenderButton={setRenderButton} />
@@ -50,7 +50,7 @@ export function Home() {
 
                 </div>
 
-                <div className="bg-slate-100  w-full  mt-2 mr-2 ml-1 rounded-lg shadow-md ">
+                <div className="bg-gray-100  w-full  mt-2 mr-2 ml-1 rounded-lg shadow-md ">
                     {renderButton == 1 ? <BookRides /> : null}
                     {renderButton == 2 ? <YourBookings /> : null}
                     {renderButton == 3 ? <YourProfile userInfo={userInfo} /> : null}
