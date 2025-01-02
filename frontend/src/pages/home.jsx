@@ -34,7 +34,14 @@ export function Home() {
     },[authUser])
 
     return (
-        <div className="relative bg-slate-200 h-screen overflow-auto">
+        <div className="relative bg-slate-200 h-screen overflow-auto [&::-webkit-scrollbar]:w-2
+                        [&::-webkit-scrollbar]:h-2
+                        [&::-webkit-scrollbar-track]:bg-gray-500
+                        [&::-webkit-scrollbar-thumb]:bg-gray-300
+                        dark:[&::-webkit-scrollbar-track]:bg-neutral-200
+                        dark:[&::-webkit-scrollbar-track]:rounded-full
+                        dark:[&::-webkit-scrollbar-thumb]:bg-neutral-400
+                        dark:[&::-webkit-scrollbar-thumb]:rounded-full">
 
             <OverHome/>
             
