@@ -12,7 +12,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from "dayjs"
 import { X } from 'lucide-react';
 import toast from "react-hot-toast"
-import { useNavigate, useSubmit } from "react-router-dom"
+import { parsePath, useNavigate, useSubmit } from "react-router-dom"
+import PathInputBox from "./AddRide/PathInputBox"
 
 export function AddRide(){
     const navigate=useNavigate()
@@ -36,6 +37,7 @@ export function AddRide(){
     const [numberOfSeats,setNumberOfSeats]=useState(0)
     const [price,setPrice]=useState(0)
     const [facilities,setFacilities]=useState("")
+    const [path,setPath]=useState([])
 
     const [fromLocationWarning,setFromLocationWarning]=useState("")
     const [toLocationWarning,setToLocationWarning]=useState("")
@@ -113,6 +115,7 @@ export function AddRide(){
         setToLocationWarning("")
         setNumberOfSeatsWarning("")
         setPriceWarning("")
+        setPath([])
     }
 
     const Lable=()=>{
@@ -136,13 +139,13 @@ export function AddRide(){
     return (
         <div className="flex justify-center ">
 
-            <div className=" flex flex-col h-screen justify-start">
+            <div className=" flex flex-col min-h-screen h-fit justify-start ">
                 
                 <div className="m-8 font-semibold text-blue-500 rounded-3xl p-2 shadow-lg shadow-blue-200 text-center h-14 text-lg">
                     Become a Captain And Save Costs By Providing Rides To Passengers
                 </div>
 
-                <div className="border-2 items-center w-full h-full mb-16 flex flex-col justify-center rounded-xl border-slate-200 shadow-lg shadow-blue-200 bg-slate-200">
+                <div className="border-2 items-center w-full h-full p-6 mb-16 flex flex-col justify-center rounded-xl border-slate-200 shadow-lg shadow-blue-200 bg-slate-200">
                     <div className="flex justify-between mx-16 space-x-24  ">
                         <div className="w-80">
                             <AddRideInputBoxAddress label="From" setMapboxId={setFromMapboxId} searchForAddress={true} setFinalLocation={setFromLocation} setFinalLocationInfo={setFromLocationInfo} finalLocationInfo={fromLocationInfo}/>
@@ -196,17 +199,17 @@ export function AddRide(){
                             </div>
                             <AddRideInputBox2 label="Dropping Point" value={droppingPoint} OnChange={(e)=>{setDroppingPoint(e.target.value)}}/>
                         </div>
-
-                        
+     
                     </div>
                     
-                    <div className="border cursor-pointer w-20 h-10 bg-blue-700 text-white p-2 text-center border-blue-600 rounded-lg shadow-lg hover:shadow-blue-400 transition ease-in-out"
+                    <PathInputBox path={path} setPath={setPath}/>
+                    
+                    <div className="border cursor-pointer w-20 mb-5 mt-2 h-10 bg-blue-700 text-white p-2 text-center border-blue-600 rounded-lg shadow-lg hover:shadow-blue-400 transition ease-in-out"
                        onClick={async ()=>{
                                     let valid=validateInputs();
                                     if(fromLocation==toLocation){
                                         valid=false;
-                                        setFromLocationWarning("Both Locations Must be different")
-                                        setToLocationWarning("Both Locations Must be different")
+                                        toast.error("Enter valid locations")
                                     }
                                     if(!valid)  return
                                     if(price==0){
@@ -234,7 +237,8 @@ export function AddRide(){
                                                 price,
                                                 facilities,
                                                 boardingPoint,
-                                                droppingPoint
+                                                droppingPoint,
+                                                path
                                             },{
                                                 headers:{
                                                     authorization:localStorage.getItem("token")
@@ -244,19 +248,20 @@ export function AddRide(){
                                             toast.success("Ride Added")
                                             
                                         }catch(e){
+                                            console.log(e)
                                             console.log("error while Adding Rides: ",e);
                                             if(e.response && e.response.status==401){
                                                 toast.error("You are Not Signed In")
                                                 navigate("/")
                                             }else{
-                                                if(e.response && e.reponse.data && e.response.data.message)
-                                                    toast.error(e.response.message)
+                                                if(e.response && e.response.data && e.response.data.message)
+                                                    toast.error(e.response.data.message)
                                                 else    
-                                                toast.error("Unexpected Error Occured")
+                                                    toast.error("Unexpected Error Occured")
                                             }
                                         }finally{
                                             setLoading(false)
-                                            setAllEmpty()
+                                            // setAllEmpty()
                                         }
                                         
                                     

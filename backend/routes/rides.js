@@ -40,8 +40,9 @@ router.post("/addRide",userMiddleware,async(req,res)=>{
                                        boardingpoint,
                                        droppingpoint,
                                        frommapboxid,
-                                       tomapboxid)
-                    values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20);`
+                                       tomapboxid,
+                                       path)
+                    values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21);`
         const response1=await client.query(text,[userId,
                                         info.fromTime,
                                         fromLocation, 
@@ -61,7 +62,8 @@ router.post("/addRide",userMiddleware,async(req,res)=>{
                                         info.boardingPoint,
                                         info.droppingPoint,
                                         fromMapboxId,
-                                        toMapboxId
+                                        toMapboxId,
+                                        JSON.stringify(info.path)
                                         ])
         const text2=`update users
                     set numberofrides=numberofrides+1
@@ -144,7 +146,8 @@ router.get("/bookings",userMiddleware, async(req,res)=>{
                         rides.price,
                         rides.facilities,
                         rides.boardingpoint,
-                        rides.droppingpoint 
+                        rides.droppingpoint,
+                        rides.path 
                     from bookedrides 
                     join rides on bookedrides.rideid=rides.rideid
                     where bookedrides.userid=$1

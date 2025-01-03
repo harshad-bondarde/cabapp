@@ -67,7 +67,8 @@ async function CreateRidesTable(){
             boardingpoint varchar(255) not null,
             droppingpoint varchar(255) not null,
             frommapboxid varchar(255) not null,
-            tomapboxid varchar(255) not null
+            tomapboxid varchar(255) not null,
+            path varchar(10000)
         )  
     `)
 }
@@ -82,7 +83,8 @@ async function CreateBookedRidesTable(){
             date varchar(20) ,
             captainfirstname varchar(255) not null,
             captainlastname varchar(255) not null,
-            feedback varchar(255) 
+            feedback varchar(255),
+            path varchar(500) 
         )
     `)
 }

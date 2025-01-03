@@ -16,11 +16,13 @@ import {Warning} from "../../warning"
 import { HandleBooking } from './HandleBooking';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getEmailJsRideBookedEvent } from '../../EmailJsEvents/emailJsEvents';
 import Seats from '../../Seats';
+import { setShowMap , setPathCoordinates  } from '../../../store/mapSlice';
 
 export function Ride({ride}){
+    const dispatch=useDispatch()
     const {authUser}=useSelector(state=>state.user)
     const navigate=useNavigate()
     const [loading,setLoading]=useState(false)
@@ -39,6 +41,7 @@ export function Ride({ride}){
     }
     const boardingPoint=ride.boardingpoint
     
+    const toTime=ride.totime;
     const toLocation=ride.tolocation;
     const toLocationArray=toLocation.split("-")
     const toCoordinates={
@@ -47,7 +50,6 @@ export function Ride({ride}){
     }
     const droppingPoint=ride.droppingpoint
     
-    const toTime=ride.totime;
     const date=ride.date;
     const boolCar=ride.boolcar;
     const vehicleName=ride.vehiclename;
@@ -55,7 +57,7 @@ export function Ride({ride}){
     const price=ride.price;
     const facilities=ride.facilities.split(" ");
     const numberOfSeatsAvailable=ride.numberofseatsavailable
-
+    const path=JSON.parse(ride?.path)
     
     const [captainInfo,setCaptainInfo]=useState({});
     useEffect(()=>{
@@ -161,17 +163,30 @@ export function Ride({ride}){
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex items-center space-x-1">
-                                    <div className='w-12'>
-                                        <hr className='border-2 border-slate-500 rounded-full'/>
+                                <div className='flex flex-col items-center'>
+                                    <div className="flex items-center space-x-1 mt-6">
+                                        <div className='w-12'>
+                                            <hr className='border-2 border-slate-500 rounded-full'/>
+                                        </div>
+                                        <div>
+                                            <CircleChevronRight className="text-slate-500 "/>
+                                        </div>
+                                        <div className='w-12'>
+                                            <hr className='border-2 border-slate-500 rounded-full'/>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <CircleChevronRight className="text-slate-500 "/>
+                                    <div
+                                        onClick={()=>{
+                                            if(!path){
+                                                toast.error("Sorry Path Not Available")
+                                                return 
+                                            }
+                                            dispatch(setPathCoordinates(path))
+                                            dispatch(setShowMap(true))
+                                        }} 
+                                            className='border-2 text-center p-1 text-xs w-fit mt-2 bg-blue-500 border-blue-500 rounded-md cursor-pointer text-slate-200'>
+                                            View Path
                                     </div>
-                                    <div className='w-12'>
-                                        <hr className='border-2 border-slate-500 rounded-full'/>
-                                    </div>
-
                                 </div>
                                 <div className="flex flex-col items mt-1 ml-3 font-medium text-sm space-y-1">
                                     <div className='flex flex-col items-center'>
@@ -252,12 +267,8 @@ export function Ride({ride}){
                         </div>
                         <div className='flex justify-center'>
                             <div onClick={()=>{
-                                if(seatsBooked>numberOfSeatsAvailable){
+                                if(seatsBooked>numberOfSeatsAvailable || seatsBooked<=0){
                                     toast.error("Enter Valid Number")
-                                    return;
-                                }
-                                if(seatsBooked==0){
-                                    toast.error("Enter Number of Seats")
                                     return;
                                 }
                                 const rideId=ride.rideid

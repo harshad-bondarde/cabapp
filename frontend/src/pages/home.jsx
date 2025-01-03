@@ -49,7 +49,7 @@ export function Home() {
             
             <div className="flex h-fit ">
 
-                <div className="bg-gray-100 mx-1 ml-2 h-screen w-48 mt-2 rounded space-y-4 text-sm shadow-md border-slate-200  ">
+                <div className="bg-gray-100 mx-1 ml-2 min-h-screen w-48 mt-2 rounded space-y-4 text-sm shadow-md border-slate-200  ">
                     <NavButton label="Book a Ride" renderNumber={1} setRenderButton={setRenderButton} />
                     <NavButton label="Your Bookings" renderNumber={2} setRenderButton={setRenderButton} />
                     <NavButton label="Your Profile" renderNumber={3} setRenderButton={setRenderButton} />
@@ -57,7 +57,7 @@ export function Home() {
 
                 </div>
 
-                <div className="bg-gray-100  w-full  mt-2 mr-2 ml-1 rounded-lg shadow-md ">
+                <div className="bg-gray-100  w-full mt-2 mr-2 ml-1 rounded-lg shadow-md overflow-auto">
                     {renderButton == 1 ? <BookRides /> : null}
                     {renderButton == 2 ? <YourBookings /> : null}
                     {renderButton == 3 ? <YourProfile userInfo={userInfo} /> : null}

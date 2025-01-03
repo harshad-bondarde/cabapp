@@ -12,7 +12,7 @@ import { EmptyRides } from '../../EmptyRides';
 import EndofList from '../../EndofList';
 import { LoadingRed , LoadingBlue } from '../../Loading';
 import { Star } from 'lucide-react';
-import { setMapCoordinates, setShowMap } from '../../../store/mapSlice';
+import { setMapCoordinates, setShowMap ,setPathCoordinates } from '../../../store/mapSlice';
 
 export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButton ,setBookings}){
     const dispatch=useDispatch()
@@ -31,6 +31,7 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
         const [selectedStars,setSelectedStars]=useState(0)
         const [showFeedback,setShowFeedback]=useState(ride.feedback==null ? true : false)
         const [showFeedbackDiv,setShowFeedbackDiv]=useState(true)
+        const path=JSON.parse(ride?.path)
         console.log(ride.feedback)
 
         const captainFirstname=ride?.captainfirstname
@@ -197,7 +198,7 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="flex items-center space-x-1">
+                                            {/* <div className="flex items-center space-x-1">
                                                 <div className='w-24 flex flex-col mb-4'>
                                                     <div onClick={()=>{
                                                         const coordinates={
@@ -228,7 +229,54 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
                                                     <hr className='border-2 border-slate-500 rounded-full'/>
                                                 </div>
 
-                                            </div>
+                                            </div> */}
+                                             <div className='flex flex-col items-center mt-5'>
+                                                <div className="flex items-center space-x-1">
+                                                    <div className='w-24 flex flex-col mb-4'>
+                                                        <div onClick={()=>{
+                                                                const coordinates={
+                                                                    longitude:fromCoordinates.fromlongitude,
+                                                                    latitude:fromCoordinates.fromlatitude
+                                                                }
+                                                                dispatch(setMapCoordinates(coordinates))
+                                                                dispatch(setShowMap(true))
+                                                            }} className='mb-1 mr-1 cursor-pointer text-slate-500'>
+                                                            <MapPin size={13}/>
+                                                        </div>
+                                                        <hr className='border-2 border-slate-500 rounded-full'/>
+                                                    </div>
+                                                    <div>
+                                                        <CircleChevronRight className="text-slate-500 "/>
+                                                    </div>
+                                                    <div className='w-24 flex flex-col mb-4'>
+                                                            <div  onClick={()=>{
+                                                                const coordinates={
+                                                                    longitude:toCoordinates.tolongitude,
+                                                                    latitude:toCoordinates.tolatitude
+                                                                }
+                                                                dispatch(setMapCoordinates(coordinates))
+                                                                dispatch(setShowMap(true))
+                                                            }} className='mb-1 mr-1 flex justify-end cursor-pointer text-slate-500'>
+                                                                <MapPin size={13}/>
+                                                            </div>
+                                                        <hr className='border-2 border-slate-500 rounded-full'/>
+                                                    </div>
+                                                
+                                                </div>
+                                                <div
+                                                    onClick={()=>{
+                                                        if(!path){
+                                                            toast.error("Sorry Path Not Available")
+                                                            return 
+                                                        }
+
+                                                        dispatch(setPathCoordinates(path))
+                                                        dispatch(setShowMap(true))
+                                                    }} 
+                                                    className='border-2 text-sm p-1 mt-1 bg-blue-500 border-blue-500 rounded-md cursor-pointer text-slate-200'>
+                                                        View Path
+                                                </div>
+                                            </div>                                                                       
                                             <div className="flex flex-col items ml-3 text-lg font-medium space-y-1">
                                                 <div className='flex flex-col items-center'>
                                                     <div className=''>
