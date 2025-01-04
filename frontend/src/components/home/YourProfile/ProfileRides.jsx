@@ -257,6 +257,10 @@ export function ProfileRides({upcomingRides , pastRides , pastRidesButton ,setRi
                                         </div>
                                         <div
                                             onClick={()=>{
+                                                if(!path){
+                                                    toast.error("Sorry path is not available")
+                                                    return;
+                                                }
                                                 dispatch(setPathCoordinates(path))
                                                 dispatch(setShowMap(true))
                                             }} 
