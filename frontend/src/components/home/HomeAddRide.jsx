@@ -207,11 +207,11 @@ export function AddRide(){
                     <div className="border cursor-pointer w-20 mb-5 mt-2 h-10 bg-blue-700 text-white p-2 text-center border-blue-600 rounded-lg shadow-lg hover:shadow-blue-400 transition ease-in-out"
                        onClick={async ()=>{
                                     let valid=validateInputs();
+                                    if(!valid)  return
                                     if(fromLocation==toLocation){
                                         valid=false;
                                         toast.error("Enter valid locations")
                                     }
-                                    if(!valid)  return
                                     if(price==0){
                                         toast.error("Enter Price")
                                         return;
