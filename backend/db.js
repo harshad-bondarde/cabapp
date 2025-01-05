@@ -1,3 +1,5 @@
+const dotenv=require("dotenv")
+dotenv.config()
 const {Client} =require('pg')
 
 // local configuration 
@@ -18,8 +20,9 @@ const {Client} =require('pg')
 // const {Client} =require('pg')
 
 const client=new Client({
-    connectionString:"postgresql://test_owner:QkMwqh0JOA2v@ep-steep-mouse-a12orcyq.ap-southeast-1.aws.neon.tech/test?sslmode=require"
+    connectionString:process.env.DATABASE_URL
 })
+console.log(process.env.DATABASE_URL)
 
 client.connect()
 async function CreateUsersTable(){

@@ -1,5 +1,7 @@
 const express=require("express");
 const app=express();
+const dotenv=require("dotenv")
+
 const PORT=3000
 const mainRouter=require("./routes/index")
 const axios=require("axios")
@@ -7,6 +9,7 @@ const path=require("path")
 const cors=require("cors")
 const dir=path.resolve()
 
+dotenv.config()
 app.use(cors())
 app.use(express.json());
 app.use("/",mainRouter)
