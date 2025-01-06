@@ -339,7 +339,7 @@ export function ProfileRides({upcomingRides , pastRides , pastRidesButton ,setRi
                         
                         { !pastRidesButton ? 
                             <div onClick={CancelRideHandler} className={`border-2 rounded-2xl shadow-xl p-2 flex flex-col justify-center ${boolRide ? `cursor-pointer transition ease-in-out duration-300 hover:-translate-y-1 bg-red-300 border-red-300 hover:shadow-red-400 `:`bg-gray-300` } `}>
-                                <button className={`flex flex-col items-center text-sm font-medium ${!boolRide?'cursor-not-allowed':''}`}>
+                                <button disabled={boolRide} className={`flex flex-col items-center text-sm font-medium ${!boolRide?'cursor-not-allowed':''}`}>
                                     <CancelLable/>
                                 </button> 
                             </div>

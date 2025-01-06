@@ -23,6 +23,7 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
         const bookedRidesId=ride?.bookedridesid
         const date=ride?.date;
         const boolCar=ride?.boolcar
+        const boolRide=ride?.boolRide
         const price=ride?.price
         const seatsBooked=ride?.seatsbooked
         const vehicleName=ride?.vehiclename
@@ -266,7 +267,7 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
 
 
 
-                                    <div className='flex flex-col justify-between'>
+                                    {/* <div className='flex flex-col justify-between'>
                                         <div className='items-center flex justify-between pl-1'>
                                             <div className='font-semibold border-2 p-1 rounded-lg bg-gray-300 pl-2 pr-2'>
                                                 Ticket ID - {bookedRidesId}
@@ -295,7 +296,7 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
                                                             </div>
                                                             <IndianRupee className='mt-1 ml-1' size={15}/>
                                                             <div>
-                                                                {seatsBooked && price ? seatsBooked*price : "?"}
+                                                                {seatsBooked>0 && price ? seatsBooked*price : "?"}
                                                             </div>
                                                         </div>
                                                         :
@@ -305,11 +306,55 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
                                             </div>
                                         </div>
                                     
-                                    </div>
+                                    </div> */}
+                                    <div className='flex flex-col justify-between'>
+                                
+                                <div className='font-medium text-lg mr-2 flex justify-end underline '>
+                                    {date? date:"?"}
+                                </div>
+                                
+                                <div>   
+                                    { boolRide ?  
+                                        <div className='text-center font-medium'>
+                                            <div className='flex space-x-5 font-medium text-sm'>
+                                                <div>
+                                                    {seatsBooked ? "Seats Booked : "+seatsBooked:"Seats Booked : 0"}
+                                                    
+                                                </div>
+                                                <div>
+                                                    {price?"Ticket Price: "+price:""}
+                                                </div>
+                                            </div>
+
+                                            <div className='bg-gray-400 p-1 rounded-full mt-2'>
+                                                {price?
+                                                    <div 
+                                                    className='flex justify-center items-center'>
+                                                        <div>
+                                                            Net Price : 
+                                                        </div>
+                                                        <IndianRupee className='mt-1 ml-1' size={15}/>
+                                                        <div>
+                                                            {seatsBooked>0 && price ? seatsBooked*price : "0"}
+                                                        </div>
+                                                    </div>
+                                                    :
+                                                    null
+                                                }
+                                            </div>
+                                        </div>
+                                        :
+                                        <div className='border-2 p-4 rounded-lg bg-red-400 font-medium w-56 text-center'>
+                                            Ride Deleted
+                                        </div>
+                                    }
+                                </div>
+                            
+                            </div>
                                     
                                 </div>
                                 { showCancel ? 
-                                    <div onClick={async()=>{
+                                    <button disabled={boolRide} onClick={async()=>{
                                             setLoading(true)
                                             const response=await axios.post(`${url}/user/cancelride`,{
                                                 bookedRidesId,
@@ -332,12 +377,12 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
 
                                         }} 
                                         
-                                        className='border-2 w-15 rounded-2xl shadow-xl p-2 flex flex-col justify-center cursor-pointer transition ease-in-out duration-300 hover:-translate-y-1 bg-red-300 border-red-300 hover:shadow-red-400 '>
+                                        className={`border-2 rounded-2xl shadow-xl p-2 flex flex-col justify-center ${boolRide ? `cursor-pointer transition ease-in-out duration-300 hover:-translate-y-1 bg-red-300 border-red-300 hover:shadow-red-400 `:`bg-gray-300` } `}>
                                         
-                                        <div className='flex flex-col items-center text-sm font-medium'>
+                                        <div className={`flex flex-col items-center text-sm font-medium ${!boolRide?'cursor-not-allowed':''}`}>
                                             <Label/>
                                         </div> 
-                                    </div>
+                                    </button>
                             
                                     :
                                         null
@@ -350,7 +395,7 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
                                         <input onChange={(e)=>setFeedback(e.target.value)} className='w-full bg-slate-200 p-2 border-1 border-blue-600 shadow-black-100 shadow-md rounded-md h-10 mt-1'
                                          placeholder='Send Feedback...'/>
                                         <RatingStars selectedStars={selectedStars}/>
-                                        <div onClick={()=>handleFeedback()} className='bg-blue-500 p-2 rounded-full text-white font-medium cursor-pointer'>
+                                        <button onClick={()=>handleFeedback()} className='bg-blue-500 p-2 rounded-full text-white font-medium cursor-pointer'>
                                             { !sendingFeedback ?
                                                     'Send'
                                                 :
@@ -360,7 +405,7 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
                                                     </div>
                                                 </div>
                                             } 
-                                        </div>           
+                                        </button>           
                                     </div>
                             }                        
                         </div>

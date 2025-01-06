@@ -76,7 +76,7 @@ export function BookRides(){
                 </div>
                 
                 
-                <button className="border-4 p-3 ml-6 mt-6 mb-20 w-20 h-14  bg-blue-500 border-blue-500 hover:shadow-md rounded-xl text-white"
+                <button className="border-4 p-3 ml-6 mt-6 mb-20 w-20 h-14  bg-blue-500 border-blue-500 hover:bg-blue-700 hover:border-blue-700 transition ease-in-out duration-100 rounded-xl text-white font-semibold"
                     onClick={async ()=>{
                             if(fromMapboxId!="" && toMapboxId!="" && date!=""){  
                                 try{    
