@@ -142,6 +142,7 @@ router.get("/bookings",userMiddleware, async(req,res)=>{
                         rides.tolatitude,
                         rides.date,
                         rides.boolcar,
+                        rides.boolride,
                         rides.vehiclename,
                         rides.price,
                         rides.facilities,
