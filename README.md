@@ -20,7 +20,7 @@ CabApp is a comprehensive cab booking application built using the PERN stack (Po
 
 **Styling :** TailwindCSS
 
-**API Integrations :** TailwindCSS
+**API Integrations :** MapBox API
 
 
 
