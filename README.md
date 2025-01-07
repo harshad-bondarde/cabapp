@@ -64,21 +64,21 @@ npm run dev
 
 ![](https://i.postimg.cc/jjbq2mvz/Screenshot-2025-01-06-225214.png)
 
-```http
+```bash
   User Registration
 ```
 
 ***
 ![](https://i.postimg.cc/qM1V9Gmx/Screenshot-2025-01-06-230533.png)
 ![](https://i.postimg.cc/sX14g77S/Screenshot-2025-01-06-230633.png)
-```http
+```bash
   Get real Time Locations Info through MapBox API
 ```
 ***
 
 ![](https://i.postimg.cc/GtWQNtBD/Screenshot-2025-01-06-231432.png)
 ![](https://i.postimg.cc/ydmKbgrq/Screenshot-2025-01-06-231512.png)
-```http
+```bash
     - Captains can publish a Ride specifiying vehicle type,vehicle name 
       also boarding point and drop-off point
     - They Can also define route points to indicate intermediate stops
@@ -88,14 +88,14 @@ npm run dev
 ![](https://i.postimg.cc/mgQbNCTw/Screenshot-2025-01-06-231930.pnghttps://i.postimg.cc/mgQbNCTw/Screenshot-2025-01-06-231930.png)
 ![](https://i.postimg.cc/52SrHhkV/Screenshot-2025-01-06-232452.png)
 
-```http
+```bash
     Users can fetch the Rides, View Ride route points  
 ```
 ***
 ![](https://i.postimg.cc/mkFmwJL8/Screenshot-2025-01-06-232400.png)
 ![](https://i.postimg.cc/XYQ73zW2/Screenshot-2025-01-06-232817.png)
 
-```http
+```bash
     - Users will have two sections their booked upcoming rides and booked rides
     - after ride completions users can rate captain and can give feedback 
 ```
@@ -105,7 +105,7 @@ npm run dev
 
 ![](https://i.postimg.cc/DZDkKw20/Screenshot-2025-01-06-233027.png)
 
-```http
+```bash
     - Captains will have two sections their published upcoming rides and past rides
     - Captains can view information of passengers 
     - after ride completions Captains can get rating and feedback
@@ -114,7 +114,7 @@ npm run dev
 ***
 ![](https://i.postimg.cc/mgRrn8Xq/Screenshot-2025-01-06-233212.png)
 
-```http
+```bash
    - On Booking a ride Captains will get Email notification containing information about the passenger
    - Also on deletion of a particular ride notification mail will be sent to all passengers 
 ```
