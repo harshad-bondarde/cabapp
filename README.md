@@ -20,7 +20,7 @@ CabApp is a comprehensive cab booking application built using the PERN stack (Po
 
 **Styling :** TailwindCSS
 
-**API Integrations :** MapBox API
+**API Integrations :** TailwindCSS
 
 
 
@@ -64,57 +64,57 @@ npm run dev
 
 ![](https://i.postimg.cc/jjbq2mvz/Screenshot-2025-01-06-225214.png)
 
-```bash
+```http
   User Registration
 ```
 
 ***
 ![](https://i.postimg.cc/qM1V9Gmx/Screenshot-2025-01-06-230533.png)
 ![](https://i.postimg.cc/sX14g77S/Screenshot-2025-01-06-230633.png)
-```bash
+```http
   Get real Time Locations Info through MapBox API
 ```
 ***
 
 ![](https://i.postimg.cc/GtWQNtBD/Screenshot-2025-01-06-231432.png)
 ![](https://i.postimg.cc/ydmKbgrq/Screenshot-2025-01-06-231512.png)
-```bash
+```http
     - Captains can publish a Ride specifiying vehicle type,vehicle name 
       also boarding point and drop-off point
     - They Can also define route points to indicate intermediate stops
 ```
  ***
 ![](https://i.postimg.cc/mDc5htHc/Screenshot-2025-01-06-231859.png)
-![](https://i.postimg.cc/tg6rHLQP/Screenshot-2025-01-06-231930.png)
+![](https://i.postimg.cc/mgQbNCTw/Screenshot-2025-01-06-231930.pnghttps://i.postimg.cc/mgQbNCTw/Screenshot-2025-01-06-231930.png)
 ![](https://i.postimg.cc/52SrHhkV/Screenshot-2025-01-06-232452.png)
 
-```bash
+```http
     Users can fetch the Rides, View Ride route points  
 ```
 ***
 ![](https://i.postimg.cc/mkFmwJL8/Screenshot-2025-01-06-232400.png)
 ![](https://i.postimg.cc/XYQ73zW2/Screenshot-2025-01-06-232817.png)
 
-```bash
+```http
     - Users will have two sections their booked upcoming rides and booked rides
     - after ride completions users can rate captain and can give feedback 
 ```
 
 ***
-![](https://i.postimg.cc/28JDCbXZ/Screenshot-2025-01-06-233016.png)
+![](https://i.postimg.cc/rwLTms5t/Screenshot-2025-01-06-233016.png)
 
-![](https://i.postimg.cc/50qzVM4X/Screenshot-2025-01-06-233027.png)
+![](https://i.postimg.cc/DZDkKw20/Screenshot-2025-01-06-233027.png)
 
-```bash
+```http
     - Captains will have two sections their published upcoming rides and past rides
     - Captains can view information of passengers 
     - after ride completions Captains can get rating and feedback
 ```
 
 ***
-![](https://i.postimg.cc/25Tqc72W/Screenshot-2025-01-06-233212.png)
+![](https://i.postimg.cc/mgRrn8Xq/Screenshot-2025-01-06-233212.png)
 
-```bash
+```http
    - On Booking a ride Captains will get Email notification containing information about the passenger
    - Also on deletion of a particular ride notification mail will be sent to all passengers 
 ```
