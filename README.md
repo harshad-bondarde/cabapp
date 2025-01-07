@@ -53,7 +53,7 @@ VITE_YOUR_EMAILJS_PUBLICKEY=
 Run backend and frontend
 ```bash
 npm run dev
-cd backend
+cd frontend
 npm run dev
 ```
 
