@@ -22,7 +22,7 @@ export function SignUp({ setSignIn }) {
     const [phoneNoWarning, setPhoneNoWarning] = useState('')
     const [userExists, setUserExists] = useState('')
     const [loading,setLoading]=useState(false)
-
+    console.log(gender)
     const validateInputs = () => {
         let valid=true;
 
@@ -79,7 +79,7 @@ export function SignUp({ setSignIn }) {
 
                 <div className="flex flex-col items-center">
                     <Heading label="SignUp" />
-                    <div className="w-full">
+                    <div className="w-full flex flex-col">
                         <InputBox label="FirstName" OnChange={e => setFirstName(e.target.value.toLowerCase())} />
                         <Warning label={firstNameWarning} />
 
@@ -92,8 +92,25 @@ export function SignUp({ setSignIn }) {
                         <InputBox label="Password" OnChange={e => setPassword(e.target.value)} />
                         <Warning label={passwordWarning} />
 
-                        <div className="flex">
-                            <InputBox label="Gender" OnChange={e => setGender(e.target.value.toLowerCase())} />
+                        <div className="flex ml-5 text-sm w-full mt-3">
+                            {/* <InputBox label="Gender" OnChange={e => setGender(e.target.value.toLowerCase())} /> */}
+                            <div className="flex font-semibold w-full gap-2 justify-end">
+                                <div className="flex space-x-1">
+                                    <div>
+                                        Gender 
+                                    </div>
+                                    <div>
+                                        :
+                                    </div>
+                                </div>
+                                <div className="w-full">
+                                    <select onChange={e=>setGender(e.target.value)} class="bg-gray-50 w-60 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-400  dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option selected>Choose gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
+                                </div>
+                            </div>
                             <Warning label={genderWarning} />
                         </div>
                         
