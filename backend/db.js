@@ -87,7 +87,7 @@ async function CreateBookedRidesTable(){
             captainfirstname varchar(255) not null,
             captainlastname varchar(255) not null,
             feedback varchar(255),
-            path varchar(500) 
+            path varchar(10000) 
         )
     `)
 }
