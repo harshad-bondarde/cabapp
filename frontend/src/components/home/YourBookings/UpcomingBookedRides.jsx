@@ -19,7 +19,7 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
     const [loading,setLoading]=useState(false)
 
     function UpRide({ride  , showCancel }){
-        console.log(ride)
+        // console.log(ride)
         const bookedRidesId=ride?.bookedridesid
         const date=ride?.date;
         const boolCar=ride?.boolcar
@@ -33,7 +33,7 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
         const [showFeedback,setShowFeedback]=useState(ride.feedback==null ? true : false)
         const [showFeedbackDiv,setShowFeedbackDiv]=useState(true)
         const path=JSON.parse(ride?.path)
-        console.log(ride.feedback)
+        // console.log(ride.feedback)
 
         const captainFirstname=ride?.captainfirstname
         const captainLastname=ride?.captainlastname
@@ -132,7 +132,7 @@ export function UpcomingBookedRides({upcomingRides , bookedRides , bookingsButto
         const RatingStars=({selectedStars})=>{
             const divs=[]
                  for(let i=1;i<=5;i++)
-                        divs.push(<Star onClick={()=>setSelectedStars(i)} className={`${i<=selectedStars ? `text-yellow-300 bg-yellow-200 rounded-full w-9 h-7 `:``}`}/>)
+                        divs.push(<Star key={i} onClick={()=>setSelectedStars(i)} className={`${i<=selectedStars ? `text-yellow-300 bg-yellow-200 rounded-full w-9 h-7 `:``}`}/>)
             return (
                 <>
                     {divs}

@@ -36,7 +36,7 @@ function GetRealTimeLocations({INITIAL_ZOOM}) {
     mapRef.current = new mapboxgl.Map({
       container: mapContainerRef.current,
       center:mapCenter,
-      zoom: zoom
+      zoom: zoom ,
     });
 
     if(Object.keys(location).length>0){
@@ -64,7 +64,7 @@ function GetRealTimeLocations({INITIAL_ZOOM}) {
                   dispatch(setMapCoordinates({}))
                   dispatch(setPathCoordinates([]))
                 }}/>
-            </div>
+              </div>
             </div>
       <div id="map-container" className="border-8 m-2 rounded-3xl"  ref={mapContainerRef} style={{ width: '100%', height: '100vh' }}>
           

@@ -44,7 +44,7 @@ router.post("/signup",async(req,res)=>{
     try {
         const response2=await client.query(addquery,[body.firstName,body.lastName,body.password,body.email,body.gender,body.phoneNo])
         if(response2.rows.length>0){
-
+            
         }
         res.status(200).json({
             msg:"user inserted"
