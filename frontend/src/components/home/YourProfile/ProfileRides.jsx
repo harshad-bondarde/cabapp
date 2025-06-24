@@ -17,6 +17,7 @@ import { setShowMap , setMapCoordinates, setPathCoordinates } from '../../../sto
 export function ProfileRides({upcomingRides , pastRides , pastRidesButton ,setRides}){
     
     function ProfRide({ride , pastRidesButton}){
+        console.log(ride)
         const dispatch=useDispatch()
         const passengers=useSelector(state=>state.user)
         const {authUser}=useSelector(state=>state.user)
@@ -33,7 +34,7 @@ export function ProfileRides({upcomingRides , pastRides , pastRidesButton ,setRi
         const [loading,setLoading]=useState(false)
         const [loadingUserDetails,setLoadingUserDetails]=useState(false)
         const path=JSON.parse(ride?.path)
-        console.log(path)
+        // console.log(path)
         const fromTime=ride?.fromtime
         const fromLocationArray=ride?.fromlocation.split("-")
         const fromCoordinates={
@@ -109,7 +110,10 @@ export function ProfileRides({upcomingRides , pastRides , pastRidesButton ,setRi
                 try{    
                     setLoading(true)
                     const response=await axios.post(`${url}/user/deleteride`,{
-                        rideId
+                        rideId,
+                        fromMapboxId:ride?.frommapboxid,
+                        toMapboxId:ride?.tomapboxid,
+                        date,
                     },{
                         headers:{
                             authorization:localStorage.getItem("token")

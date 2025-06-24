@@ -17,7 +17,6 @@ function userMiddleware(req,res,next){
             next();
         }
         else{
-            
             return res.status(401).res.json({
                 message:"You are not Signed In"
             })

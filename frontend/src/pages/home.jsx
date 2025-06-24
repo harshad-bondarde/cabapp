@@ -26,7 +26,6 @@ export function Home() {
             dispatch(setAuthUser(authUserLocal))
         }else{
             navigate('/')
-            toast.error("You are not Signed In...")
         }
     }
     useEffect(()=>{

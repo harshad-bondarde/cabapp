@@ -6,7 +6,7 @@ const {JWT_SECRET}=require("../config")
 const {client}=require("../db")
 const {userMiddleware}=require("../middlewares/userMiddleware")
 const rides=require("./rides");
-
+const {clientR} =require("../redis")
 router.use("/rides",rides);
 
 const signupSchema=zod.object({
@@ -74,23 +74,68 @@ router.post("/signin",async(req,res)=>{
             message:"invalid credentials"
         })
     }
+    
+    // Redis
+    try {
+        let exists = await clientR.hGetAll(`user:${body.email}`);
+        console.log(exists)
+        if(Object.keys(exists)!=0){
+            const token = exists.token; 
+            const authUser=JSON.parse(exists.authUser);
+            return res.status(200).json({
+                token,
+                authUser,
+                message: "User already logged in from redis",
+            })
+        }
+        console.log("IN DB")
 
-    const text=`select * from users where email=$1 and password=$2`;
-    const response=await client.query(text,[body.email,body.password]);
-    if(response.rows.length==0){
-        return res.status(403).json({
-            message:"User Not Found"
+        const text=`select * from users where email=$1 and password=$2`;
+        const response=await client.query(text,[body.email,body.password]);
+        if(response.rows.length==0){
+            return res.status(403).json({
+                message:"User Not Found"
+            })
+        }
+
+        const userId=response.rows[0].id;
+        const token=jwt.sign({userId:userId},JWT_SECRET);
+        await clientR.hSet(`user:${body.email}`, {
+            token: token,
+            authUser:JSON.stringify(response.rows[0])
+        });
+        return res.status(200).json({
+            token:token,
+            authUser:response.rows[0]
+        })
+    } catch (error) {
+        return res.status(503).json({
+            message:"Error while signing in",
+            error:error.message
         })
     }
-
-    const userId=response.rows[0].id;
-    const token=jwt.sign({userId:userId},JWT_SECRET);
-    return res.status(200).json({
-        token:token,
-        authUser:response.rows[0]
-    })
 })
 
+router.post("/logout",userMiddleware,async(req,res)=>{
+    const email=req.body.email;
+    console.log(email)
+    if(!email){
+        return res.status(400).json({
+            message:"Email is required to logout"
+        })
+    }
+    try {
+        const response=await clientR.del(`user:${email}`);
+        return res.status(200).json({
+            message:"User logged out successfully",
+        })
+    } catch (error) {
+        return res.status(503).json({
+            message:"Error while logging out",
+            error:error.message
+        })
+    }
+})
 
 //to select a user
 router.post("/getuser",userMiddleware,async(req,res)=>{
@@ -218,6 +263,12 @@ router.post("/deleteride",userMiddleware, async(req,res)=>{
         const response2=await client.query(text2,[userId]);
         console.log(response2)
         if(response1.rowCount>0 && response2.rowCount>0){
+            //Redis
+            const cachedRides=await clientR.get(`availableRides:${body.fromMapboxId}-${body.toMapboxId}-${body.date}`);
+            const updatedRides=JSON.parse(cachedRides).filter((ride,index)=>ride.rideid!=body.rideId)
+            const newRides=JSON.stringify(updatedRides);
+            await clientR.set(`availableRides:${body.fromMapboxId}-${body.toMapboxId}-${body.date}`,newRides);
+            
             await client.query('COMMIT')
             return res.status(200).json({
                 message:"ride deleted successfully..."

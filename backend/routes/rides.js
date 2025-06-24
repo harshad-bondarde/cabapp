@@ -2,7 +2,7 @@ const express=require("express")
 const router=express.Router()
 const {userMiddleware}=require("../middlewares/userMiddleware")
 const {client}=require("../db")
-
+const {clientR}=require("../redis")
 
 router.post("/addRide",userMiddleware,async(req,res)=>{
     const userId=req.userId
@@ -71,10 +71,19 @@ router.post("/addRide",userMiddleware,async(req,res)=>{
         const response2=await client.query(text2,[userId])
         if(response1.rowCount>0 && response2.rowCount>0){
             await client.query('COMMIT');
+            const cachedRides=await clientR.get(`availableRides:${fromMapboxId}-${toMapboxId}-${info.date}`)
+            if(Object.keys(cachedRides).length>0){
+                const updatedRides=JSON.parse(cachedRides)
+                const newRides=[
+                    ...updatedRides,
+                    response1.rows[0]
+                ]
+                clientR.set(`availableRides:${fromMapboxId}-${toMapboxId}-${info.date}`,JSON.stringify(newRides))
+            }   
             return res.status(200).json({
                 message:"Ride Inserted"
             })
-        }   
+        }
 
         await client.query('ROLLBACK')
         return res.status(503).json({
@@ -95,6 +104,15 @@ router.post("/AvailableRides",userMiddleware,async(req,res)=>{
     const date=req.body.date;
     const fromMapboxId=req.body.fromMapboxId
     const toMapboxId=req.body.toMapboxId
+    
+    //Redis
+    const cachedRide=await clientR.get(`availableRides:${fromMapboxId}-${toMapboxId}-${date}`)
+    if(cachedRide){
+        return res.status(200).json({
+            rides:JSON.parse(cachedRide)
+        })
+    }
+    
     try{
         const text=`select * from rides 
                     where frommapboxid=$1 and 
@@ -107,7 +125,10 @@ router.post("/AvailableRides",userMiddleware,async(req,res)=>{
                                     true,
                                     userId
         ]);
+
+        await clientR.set(`availableRides:${fromMapboxId}-${toMapboxId}-${date}`,JSON.stringify(response.rows))
         console.log(response.rows)
+        
         return res.status(200).json({
             rides:response.rows
         })

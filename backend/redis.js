@@ -1,13 +1,20 @@
-import {createClient} from 'redis';
+const {createClient} =require('redis');
 const dotenv=require("dotenv")
 dotenv.config()
-const client=createClient({
+const clientR=createClient({
     url: process.env.REDIS_URL
 })
 
-client.on('error', err => console.log('Redis Client Error', err));
-await client.connect();
+async function connectRedis() {
+    clientR.on('error', err => console.log('Redis Client Error', err));
+    clientR.connect();
+}
+connectRedis().then(() => {
+    console.log("Redis connected");
+}).catch(err => {
+    console.error("Redis connection error:", err);
+}); 
 
-mofule.exports={
-    client
+module.exports={
+    clientR
 }
