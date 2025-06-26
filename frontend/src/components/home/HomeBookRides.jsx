@@ -21,8 +21,6 @@ export function BookRides(){
     const [toCoordinates,setToCoordinates]=useState({})
     const [date,setDate]=useState("");
     const [rides,setRides]=useState([])
-    console.log(fromMapboxId)
-    console.log(toMapboxId)
     const [showRides,setShowRides]=useState(false)
     const [loading,setLoading]=useState(false)
 

@@ -71,6 +71,7 @@ router.post("/addRide",userMiddleware,async(req,res)=>{
         const response2=await client.query(text2,[userId])
         if(response1.rowCount>0 && response2.rowCount>0){
             await client.query('COMMIT');
+            //Redis
             const cachedRides=await clientR.get(`availableRides:${fromMapboxId}-${toMapboxId}-${info.date}`)
             if(Object.keys(cachedRides).length>0){
                 const updatedRides=JSON.parse(cachedRides)
@@ -95,6 +96,9 @@ router.post("/addRide",userMiddleware,async(req,res)=>{
         return res.status(403).json({
             message:`Error while inserting ride`
         })
+    }finally{
+        await client.end();
+        await clientR.quit();
     }    
 })
 
@@ -138,6 +142,9 @@ router.post("/AvailableRides",userMiddleware,async(req,res)=>{
         return res.status(403).json({
             message:"error while searching for a ride..."
         })
+    }finally{
+        await client.end();
+        await clientR.quit();
     }
 })
 
@@ -184,6 +191,9 @@ router.get("/bookings",userMiddleware, async(req,res)=>{
         return res.status(500).json({
             message:"internal server error "
         })
+    }finally{
+        await client.end();
+        await clientR.quit();
     }
 })
 
@@ -232,6 +242,9 @@ router.post("/getpassengerdetailes",userMiddleware,async (req,res)=>{
         return res.status(503).json({
             message:"something went wrong"
         })
+    }finally{
+        await client.end();
+        await clientR.quit();
     }
 })
 
@@ -254,6 +267,9 @@ router.post("/getpassengernameemail",async (req,res)=>{
         return res.status(503).json({
             message:"something went wrong while getting user info" 
         })
+    }finally{
+        await client.end();
+        await clientR.quit();
     }
 })
 
@@ -289,6 +305,9 @@ router.post("/addfeedback",async(req,res)=>{
         return res.status(503).json({
             message:"Something Went Wrong..."
         })
+    }finally{
+        await client.end();
+        await clientR.quit();
     }                
 })
 

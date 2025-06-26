@@ -17,11 +17,12 @@ export function Header({setRenderButton , firstname}){
         try {
             setLoading(true)
             const response=await axios.post(`${url}/user/logout`,{email},{
-            headers:{
-                authorization:localStorage.getItem("token")
-            }
-        })
+                headers:{
+                    authorization:localStorage.getItem("token")
+                }
+            })
             if(response.status === 200){
+                
                 localStorage.removeItem("token")
                 localStorage.removeItem("authUser")
                 navigate("/")        

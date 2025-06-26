@@ -54,6 +54,9 @@ router.post("/signup",async(req,res)=>{
         return res.status(503).json({
             msg:"error while inserting in database"
         })
+    }finally{
+        await client.end();
+        await clientR.quit();
     }
 
 
@@ -113,6 +116,9 @@ router.post("/signin",async(req,res)=>{
             message:"Error while signing in",
             error:error.message
         })
+    }finally{
+        await client.end();
+        await clientR.quit();
     }
 })
 
@@ -134,6 +140,9 @@ router.post("/logout",userMiddleware,async(req,res)=>{
             message:"Error while logging out",
             error:error.message
         })
+    }finally{
+        await client.end();
+        await clientR.quit();
     }
 })
 
@@ -159,6 +168,9 @@ router.post("/getuser",userMiddleware,async(req,res)=>{
         res.status(503).json({
             message:"Something Went Wrong try again"
         })
+    }finally{
+        await client.end();
+        await clientR.quit();
     }
 
 })
@@ -205,6 +217,9 @@ router.post("/bookride",userMiddleware,async(req,res)=>{
         res.status(503).json({
             message:"error during Booking Transaction"
         })
+    }finally{
+        await client.end();
+        await clientR.quit();
     }   
 })
 
@@ -240,6 +255,9 @@ router.post("/cancelride",userMiddleware,async(req,res)=>{
         return res.status(503).json({
             error:"error while deleting ride query : "+e
         })
+    }finally{
+        await client.end();
+        await clientR.quit();
     }
 })
 
@@ -284,6 +302,9 @@ router.post("/deleteride",userMiddleware, async(req,res)=>{
         return res.status(503).json({
             message:"Error while deleting the ride"
         })
+    }finally{
+        await client.end();
+        await clientR.quit();
     }
 })
 
