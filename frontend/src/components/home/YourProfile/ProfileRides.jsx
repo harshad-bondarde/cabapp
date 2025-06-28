@@ -67,9 +67,9 @@ export function ProfileRides({upcomingRides , pastRides , pastRidesButton ,setRi
             return (
                 <>
                     {   !loading ?
-                            <>
+                            <div className='cursor-pointer'>
                                 Delete
-                            </>
+                            </div>
                         :
                             <div className='w-10 h-10'>
                                 <LoadingRed/>
