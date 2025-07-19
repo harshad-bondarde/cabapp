@@ -290,4 +290,25 @@ router.post("/deleteride",userMiddleware, async(req,res)=>{
     }
 })
 
+router.get("/getpassengerfromloc",userMiddleware,async(req,res)=>{
+    const userId=req.userId
+    try {
+        const text=`select fromlocation 
+                    from rides
+                    where boolride=$1 and userid=$2`
+        const response=await client.query(text,[true,userId]) 
+        let locations={};
+        response.rows.map(row=>{
+            locations[row.fromlocation]= locations[row.fromlocation] ? locations[row.fromlocation] + 1 : 1
+        })       
+        return res.status(200).json({ 
+            locations:locations
+        })
+    } catch (error) {
+        return res.status(500).json({
+            error:"Error while getting passenger locations "+error
+        })
+    }
+})
+
 module.exports=router;

@@ -6,6 +6,7 @@ import { ProfileRides } from "./YourProfile/ProfileRides";
 import { useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
 import {LoadingBlue} from "../Loading";
+import Pie from "../Pie";
 
 export function YourProfile({userInfo}){
     const navigate=useNavigate()
@@ -68,11 +69,16 @@ export function YourProfile({userInfo}){
     console.log(pastRides)
     return (
         <>  
-            <div className="flex flex-col justify-center items-center mt-5">
-                <div className="border-2  bg-blue-400 p-3 rounded-md text-xl font-semibold shadow-xl shadow-blue-300 bg-opacity-55 border-blue-300">
-                    Your Profile
-                </div>  
-                {userInfo ? <Profile userInfo={userInfo}/> : null}
+            <div className="flex justify-center items-center mt-5">
+                <div className="flex flex-col justify-center items-center">
+                    <div className="border-2 bg-blue-400 p-3 rounded-md text-xl font-semibold shadow-xl shadow-blue-300 bg-opacity-55 border-blue-300">
+                        Your Profile
+                    </div>
+                    {userInfo ? <Profile userInfo={userInfo}/> : null}    
+                </div>
+                <div>
+                    <Pie/>
+                </div>
             </div>
 
             <div className="flex justify-between  mx-3 space-x-1 mt-10">
